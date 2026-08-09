@@ -17,8 +17,8 @@ export default async function MapPage() {
           <div>
             <h1 className="display text-3xl text-[var(--gold)]">Quest Map</h1>
             <p className="mt-1 max-w-2xl text-[var(--muted)]">
-              Move your warrior through 18 syllabus quests. Side quests (✦) and
-              wealth chests (◆) can grow — or drain — your capital.
+              Square snake path: Modules 1→18. Complete a module to unlock the
+              next. Side quests (✦) and wealth chests (◆) sit on the outer frame.
             </p>
           </div>
           <div className="flex gap-2 text-sm">

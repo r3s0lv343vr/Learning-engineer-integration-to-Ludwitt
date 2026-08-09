@@ -1,4 +1,5 @@
 import { MODULES } from "@/lib/content/modules";
+import { moduleGridPosition } from "@/lib/content/map-layout";
 import type {
   GameState,
   Holding,
@@ -35,7 +36,7 @@ export function createInitialState(input: {
     completedModules: [],
     completedSidequests: [],
     unlockedModules: ["m1"],
-    mapPosition: { x: MODULES[0].x, y: MODULES[0].y },
+    mapPosition: moduleGridPosition(0),
     investorProfile: input.investorProfile ?? "exploratory",
     holdings: [],
     cash: STARTING_CAPITAL,
@@ -150,16 +151,14 @@ export function completeModule(state: GameState, moduleId: string): GameState {
   const nextId = MODULES[idx + 1]?.id;
   const unlocked = new Set([...state.unlockedModules, moduleId]);
   if (nextId) unlocked.add(nextId);
-  const mod = MODULES[idx];
   let next = pushEvent(
     {
       ...state,
       completedModules: [...state.completedModules, moduleId],
       unlockedModules: Array.from(unlocked),
       goldBars: state.goldBars + 1,
-      mapPosition: mod
-        ? { x: mod.x, y: mod.y }
-        : state.mapPosition,
+      mapPosition: moduleGridPosition(Math.max(0, idx)),
+      activeQuestId: nextId,
       capital: state.capital + 250,
       cash: state.cash + 250,
     },

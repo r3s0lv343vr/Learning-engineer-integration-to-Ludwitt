@@ -105,6 +105,17 @@ a {
   box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.35);
 }
 
+.map-canvas.map-square {
+  aspect-ratio: 1 / 1;
+  max-width: min(100%, 720px);
+  margin-inline: auto;
+  background:
+    linear-gradient(rgba(198, 161, 91, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(198, 161, 91, 0.08) 1px, transparent 1px),
+    linear-gradient(160deg, #184a33 0%, #0f2c1f 55%, #163820 100%);
+  background-size: 16.66% 33.33%, 16.66% 33.33%, auto;
+}
+
 .map-canvas::before {
   content: "";
   position: absolute;
@@ -131,6 +142,9 @@ a {
   background: #245c3d;
   box-shadow: 0 0 0 4px rgba(11, 31, 23, 0.45);
   transition: transform 180ms ease, box-shadow 180ms ease;
+  color: inherit;
+  cursor: pointer;
+  padding: 0;
 }
 
 .quest-node:hover {
@@ -266,7 +280,7 @@ a {
 }
 
 @media (max-width: 768px) {
-  .map-canvas {
+  .map-canvas:not(.map-square) {
     aspect-ratio: 4 / 5;
   }
 }
