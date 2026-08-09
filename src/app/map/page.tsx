@@ -17,8 +17,8 @@ export default async function MapPage() {
           <div>
             <h1 className="display text-3xl text-[var(--gold)]">Global Quest Map</h1>
             <p className="mt-1 max-w-2xl text-[var(--muted)]">
-              Four fused districts — stone exchange, loft grid, tech bay, glass
-              wharf — with every street named for a syllabus quest.
+              One continuous city — stone, loft, tech, and wharf quarters on a
+              single landmass. Every street is a syllabus quest.
             </p>
           </div>
           <div className="flex gap-2 text-sm">

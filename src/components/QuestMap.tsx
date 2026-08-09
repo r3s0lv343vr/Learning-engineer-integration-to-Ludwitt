@@ -6,8 +6,9 @@ import { MODULES } from "@/lib/content/modules";
 import { SIDEQUESTS } from "@/lib/content/sidequests";
 import {
   CITY_BLOCKS,
-  CONNECTORS,
-  DISTRICTS,
+  CITY_LAND,
+  NEIGHBORHOODS,
+  STREET_GRID,
   WATER_CUTS,
   districtForModule,
   moduleBoardPosition,
@@ -36,11 +37,7 @@ export function QuestMap({ state }: { state: GameState }) {
 
   return (
     <div className="space-y-3">
-      <div
-        className="ws-map"
-        role="img"
-        aria-label="Global quest map: Opening Bell, Style Cross, Crisis Archive, Fund Mandate districts"
-      >
+      <div className="ws-map" role="img" aria-label="One continuous global quest city map">
         <svg
           className="ws-map-svg"
           viewBox="0 0 100 100"
@@ -50,7 +47,7 @@ export function QuestMap({ state }: { state: GameState }) {
           <defs>
             <linearGradient id="harbor" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stopColor="#163246" />
-              <stop offset="40%" stopColor="#1f4a62" />
+              <stop offset="45%" stopColor="#1f4a62" />
               <stop offset="100%" stopColor="#0f2a3a" />
             </linearGradient>
             <pattern id="water-ripple" width="6" height="6" patternUnits="userSpaceOnUse">
@@ -61,6 +58,11 @@ export function QuestMap({ state }: { state: GameState }) {
                 strokeWidth="0.2"
               />
             </pattern>
+            <linearGradient id="city-fill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#2c3544" />
+              <stop offset="55%" stopColor="#243040" />
+              <stop offset="100%" stopColor="#1c2533" />
+            </linearGradient>
             <linearGradient id="glass-sheen" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%" stopColor="rgba(255,255,255,0.22)" />
               <stop offset="100%" stopColor="rgba(255,255,255,0)" />
@@ -70,57 +72,46 @@ export function QuestMap({ state }: { state: GameState }) {
             </filter>
           </defs>
 
+          {/* Harbor */}
           <rect width="100" height="100" fill="url(#harbor)" />
           <rect width="100" height="100" fill="url(#water-ripple)" />
 
-          {/* District landmasses */}
-          {DISTRICTS.map((d) => (
-            <g key={d.id}>
-              <path d={d.land} fill={d.shore} transform="translate(0.5 0.7)" />
-              <path
-                d={d.land}
-                fill={d.fill}
-                stroke={d.accent}
-                strokeWidth="0.4"
-                opacity="0.98"
-              />
-            </g>
+          {/* ONE continuous city landmass */}
+          <path d={CITY_LAND} fill="#15202c" transform="translate(0.6 0.8)" />
+          <path
+            d={CITY_LAND}
+            fill="url(#city-fill)"
+            stroke="#c6a15b"
+            strokeWidth="0.45"
+          />
+
+          {/* Neighborhood tints on the same land */}
+          {NEIGHBORHOODS.map((n) => (
+            <path key={n.id} d={n.d} fill={n.fill} />
           ))}
 
-          {/* Dock basins */}
+          {/* Dock cuts into the land */}
           {WATER_CUTS.map((w) => (
             <path
               key={w.id}
               d={w.d}
               fill={w.fill}
-              stroke="rgba(126,182,255,0.25)"
+              stroke="rgba(126,182,255,0.22)"
               strokeWidth="0.2"
             />
           ))}
 
-          {/* Bridges */}
-          {CONNECTORS.map((c) => (
-            <g key={c.id}>
-              <line
-                x1={c.x1}
-                y1={c.y1}
-                x2={c.x2}
-                y2={c.y2}
-                stroke="#1a1408"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-              />
-              <line
-                x1={c.x1}
-                y1={c.y1}
-                x2={c.x2}
-                y2={c.y2}
-                stroke="#d8c9a0"
-                strokeWidth="0.9"
-                strokeLinecap="round"
-                strokeDasharray="1.2 0.7"
-              />
-            </g>
+          {/* Street grid */}
+          {STREET_GRID.map((s, i) => (
+            <line
+              key={i}
+              x1={s.x1}
+              y1={s.y1}
+              x2={s.x2}
+              y2={s.y2}
+              stroke="rgba(198,161,91,0.16)"
+              strokeWidth="0.35"
+            />
           ))}
 
           {/* Buildings */}
@@ -138,38 +129,31 @@ export function QuestMap({ state }: { state: GameState }) {
               />
               {b.kind === "loft" && (
                 <>
-                  {/* cast-iron window columns */}
                   <path
-                    d={`M${b.x + 1.2},${b.y + 1.5} V${b.y + b.h - 1.2} M${b.x + b.w / 2},${b.y + 1.5} V${b.y + b.h - 1.2} M${b.x + b.w - 1.2},${b.y + 1.5} V${b.y + b.h - 1.2}`}
+                    d={`M${b.x + 1.1},${b.y + 1.4} V${b.y + b.h - 1.1} M${b.x + b.w / 2},${b.y + 1.4} V${b.y + b.h - 1.1} M${b.x + b.w - 1.1},${b.y + 1.4} V${b.y + b.h - 1.1}`}
                     stroke="rgba(232,168,124,0.35)"
                     strokeWidth="0.25"
                   />
-                  <rect
-                    x={b.x}
-                    y={b.y}
-                    width={b.w}
-                    height="1.1"
-                    fill="rgba(0,0,0,0.25)"
-                  />
+                  <rect x={b.x} y={b.y} width={b.w} height="1.1" fill="rgba(0,0,0,0.25)" />
                 </>
               )}
               {(b.kind === "tower" || b.kind === "glass") && (
                 <>
                   <rect
-                    x={b.x + 0.4}
-                    y={b.y + 0.4}
-                    width={b.w - 0.8}
-                    height={b.h - 0.8}
+                    x={b.x + 0.35}
+                    y={b.y + 0.35}
+                    width={b.w - 0.7}
+                    height={b.h - 0.7}
                     fill="url(#glass-sheen)"
                   />
                   {Array.from({ length: Math.max(2, Math.floor(b.h / 3)) }).map((_, i) => (
                     <line
                       key={i}
-                      x1={b.x + 0.6}
-                      y1={b.y + 1.5 + i * 2.4}
-                      x2={b.x + b.w - 0.6}
-                      y2={b.y + 1.5 + i * 2.4}
-                      stroke="rgba(255,255,255,0.15)"
+                      x1={b.x + 0.55}
+                      y1={b.y + 1.4 + i * 2.3}
+                      x2={b.x + b.w - 0.55}
+                      y2={b.y + 1.4 + i * 2.3}
+                      stroke="rgba(255,255,255,0.14)"
                       strokeWidth="0.15"
                     />
                   ))}
@@ -182,12 +166,12 @@ export function QuestMap({ state }: { state: GameState }) {
                   strokeWidth="0.2"
                 />
               )}
-              {b.id === "mandate" && (
+              {b.id === "core" && (
                 <text
                   x={b.x + b.w / 2}
                   y={b.y + b.h / 2 + 0.8}
                   textAnchor="middle"
-                  fontSize="1.8"
+                  fontSize="2"
                   fill="#1a1408"
                   fontFamily="Georgia, serif"
                   fontWeight="700"
@@ -198,12 +182,12 @@ export function QuestMap({ state }: { state: GameState }) {
             </g>
           ))}
 
-          {/* Quest path */}
+          {/* Quest path across the one city */}
           <path
             d={pathD}
             fill="none"
             stroke="#1a1408"
-            strokeWidth="3.2"
+            strokeWidth="3.1"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
@@ -211,7 +195,7 @@ export function QuestMap({ state }: { state: GameState }) {
             d={pathD}
             fill="none"
             stroke="#d8c9a0"
-            strokeWidth="2"
+            strokeWidth="1.95"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
@@ -226,14 +210,14 @@ export function QuestMap({ state }: { state: GameState }) {
           />
         </svg>
 
-        {/* District hub badges — quest names only */}
-        {DISTRICTS.map((d) => (
+        {/* Neighborhood hub badges — quest names */}
+        {NEIGHBORHOODS.map((n) => (
           <div
-            key={d.id}
-            className={`ws-district ws-district-${d.id}`}
-            style={{ left: `${d.labelAt.x}%`, top: `${d.labelAt.y}%` }}
+            key={n.id}
+            className={`ws-district ws-district-${n.id}`}
+            style={{ left: `${n.labelAt.x}%`, top: `${n.labelAt.y}%` }}
           >
-            {d.hubQuest}
+            {n.hubQuest}
           </div>
         ))}
 
@@ -296,7 +280,6 @@ export function QuestMap({ state }: { state: GameState }) {
           );
         })}
 
-        {/* Side quests */}
         {SIDEQUESTS.map((s, i) => {
           const pos = sidequestBoardPosition(i);
           const done = state.completedSidequests.includes(s.id);
@@ -315,7 +298,6 @@ export function QuestMap({ state }: { state: GameState }) {
           );
         })}
 
-        {/* Coin */}
         <div
           className="ws-coin z-30"
           style={{ left: `${coinPos.x}%`, top: `calc(${coinPos.y}% - 3.4%)` }}
@@ -323,13 +305,6 @@ export function QuestMap({ state }: { state: GameState }) {
         >
           <CoinIcon />
         </div>
-      </div>
-
-      <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-wide text-[var(--muted)]">
-        <span className="ws-legend-chip wall">Opening Bell · stone</span>
-        <span className="ws-legend-chip soho">Style Cross · loft</span>
-        <span className="ws-legend-chip nanshan">Crisis Archive · tech</span>
-        <span className="ws-legend-chip canary">Fund Mandate · wharf</span>
       </div>
 
       {toast ? (
@@ -348,9 +323,8 @@ export function QuestMap({ state }: { state: GameState }) {
         </div>
       ) : (
         <p className="text-xs text-[var(--muted)]">
-          Four fused districts on one map — street names are your syllabus
-          quests. Path: Opening Bell → Style Cross → Crisis Archive → Fund
-          Mandate. “?” = side deals, ◆ = vault chests. Token: gold coin.
+          One city map — stone, loft, tech, and wharf quarters on a single
+          landmass. Street names are quests. Token: gold coin.
         </p>
       )}
     </div>
