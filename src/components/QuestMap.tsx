@@ -5,18 +5,21 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { MODULES } from "@/lib/content/modules";
 import { SIDEQUESTS } from "@/lib/content/sidequests";
+import { EXAMS } from "@/lib/content/exams";
+import { MAP_AREAS, areaForModuleNumber } from "@/lib/content/areas";
 import {
   CHEST_MARKERS,
   MAP_HUD_ICONS,
   moduleBoardPosition,
   modulePathPoints,
   pathwayStones,
-  portalColor,
+  portalColorForModule,
   sidequestBoardPosition,
 } from "@/lib/content/map-layout";
 import {
   CoinIcon,
   CompassRose,
+  ExamBadgeIcon,
   HudBookIcon,
   HudCompassIcon,
   HudFlagIcon,
@@ -43,10 +46,12 @@ export function QuestMap({ state }: { state: GameState }) {
   const [showStreets, setShowStreets] = useState(false);
   const [posterStrength, setPosterStrength] = useState(1);
 
+  const unlockedExams = state.unlockedExams ?? [];
+  const completedExams = state.completedExams ?? [];
+
   const path = useMemo(() => modulePathPoints(), []);
   const pathD = path.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ");
   const stones = useMemo(() => pathwayStones(), []);
-
   const doneCount = state.completedModules.length;
 
   const coinPos = useMemo(() => {
@@ -56,18 +61,24 @@ export function QuestMap({ state }: { state: GameState }) {
         !state.completedModules.includes(m.id),
     );
     const useIdx =
-      unlockedIdx >= 0 ? unlockedIdx : Math.min(Math.max(doneCount - 1, 0), 17);
+      unlockedIdx >= 0
+        ? unlockedIdx
+        : Math.min(Math.max(doneCount - 1, 0), MODULES.length - 1);
     return moduleBoardPosition(useIdx);
   }, [state, doneCount]);
 
   const nextModuleHref = useMemo(() => {
+    const exam = EXAMS.find(
+      (e) => unlockedExams.includes(e.id) && !completedExams.includes(e.id),
+    );
+    if (exam) return `/exam/${exam.id}`;
     const unlocked = MODULES.find(
       (m) =>
         state.unlockedModules.includes(m.id) &&
         !state.completedModules.includes(m.id),
     );
     return `/quest/${unlocked?.id ?? "m1"}`;
-  }, [state]);
+  }, [state, unlockedExams, completedExams]);
 
   const sideDeals = useMemo(
     () => SIDEQUESTS.filter((s) => s.kind !== "super-chest"),
@@ -82,16 +93,29 @@ export function QuestMap({ state }: { state: GameState }) {
       state.unlockedModules.includes(to.id) ||
       state.completedModules.includes(to.id);
     if (unlocked) {
-      setToast(`Pathway open: ${from.mapLabel} → ${to.mapLabel}. Enter the portal.`);
+      setToast(`Pathway open: ${from.mapLabel} → ${to.mapLabel}.`);
     } else {
       setToast(
-        `Pathway sealed. Clear “${from.mapLabel}” (Module ${from.number}) to open the road to “${to.mapLabel}”.`,
+        `Pathway sealed. Clear “${from.mapLabel}” (and any exam gate) to reach “${to.mapLabel}”.`,
       );
     }
   }
 
   return (
     <div className="space-y-3">
+      <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-wide">
+        {MAP_AREAS.map((a) => (
+          <span
+            key={a.id}
+            className="rounded-full border px-2 py-1"
+            style={{ borderColor: a.color, color: a.color }}
+            title={a.blurb}
+          >
+            {a.name} · M{a.moduleStart}–{a.moduleEnd}
+          </span>
+        ))}
+      </div>
+
       <div className="flex flex-wrap items-center gap-3 text-xs text-[var(--muted)]">
         <label className="inline-flex items-center gap-2">
           <input
@@ -113,12 +137,15 @@ export function QuestMap({ state }: { state: GameState }) {
             className="w-28"
           />
         </label>
+        <Link href="/formulae" className="text-[var(--accent)] underline">
+          Formulae Desk
+        </Link>
       </div>
 
       <div
         className="hybrid-map invest-map-2"
         role="img"
-        aria-label="Investment Map 2 — portals, pathways, treasure chests"
+        aria-label="Investment Map with 36 portals, 9 exams, treasure chests"
       >
         <div
           className="hybrid-basemap"
@@ -133,7 +160,6 @@ export function QuestMap({ state }: { state: GameState }) {
           <img src="/maps/investment-map-2-poster.png" alt="" draggable={false} />
         </div>
 
-        {/* Operationalized pathway stroke */}
         <svg
           className="hybrid-path"
           viewBox="0 0 100 100"
@@ -144,7 +170,7 @@ export function QuestMap({ state }: { state: GameState }) {
             d={pathD}
             fill="none"
             stroke="rgba(26,20,8,0.45)"
-            strokeWidth="2.4"
+            strokeWidth="2.2"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
@@ -152,13 +178,27 @@ export function QuestMap({ state }: { state: GameState }) {
             d={pathD}
             fill="none"
             stroke="#f7f3e8"
-            strokeWidth="1.35"
+            strokeWidth="1.2"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
         </svg>
 
-        {/* White stepping-stone pathway nodes */}
+        {MAP_AREAS.map((a) => (
+          <div
+            key={a.id}
+            className="area-label"
+            style={{
+              left: `${a.labelAt.x}%`,
+              top: `${a.labelAt.y}%`,
+              borderColor: a.color,
+              color: a.color,
+            }}
+          >
+            {a.name}
+          </div>
+        ))}
+
         {stones.map((stone) => {
           const open = doneCount > stone.segment;
           return (
@@ -167,25 +207,21 @@ export function QuestMap({ state }: { state: GameState }) {
               type="button"
               className={`path-stone z-10 ${open ? "open" : "sealed"}`}
               style={{ left: `${stone.x}%`, top: `${stone.y}%` }}
-              title={
-                open
-                  ? `Open pathway segment ${stone.segment + 1}`
-                  : `Sealed — finish module ${stone.segment + 1}`
-              }
+              title={open ? "Open pathway" : "Sealed pathway"}
               aria-label={`Pathway stone ${stone.id}`}
               onClick={() => onStoneClick(stone.segment)}
             />
           );
         })}
 
-        {/* Glowing portal arches = syllabus quests */}
         {MODULES.map((m, i) => {
           const pos = moduleBoardPosition(i);
           const done = state.completedModules.includes(m.id);
           const unlocked = state.unlockedModules.includes(m.id) || done;
-          const color = portalColor(i);
+          const color = portalColorForModule(m.number);
+          const area = areaForModuleNumber(m.number);
           const labelAbove = i % 2 === 0;
-          const className = `portal-pin z-20 ${done ? "done" : ""} ${
+          const className = `portal-pin z-20 strength-${area.strength} ${done ? "done" : ""} ${
             unlocked ? "unlocked" : "locked"
           }`;
 
@@ -205,7 +241,7 @@ export function QuestMap({ state }: { state: GameState }) {
                 href={`/quest/${m.id}`}
                 className={`${className} pulse`}
                 style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
-                title={`${m.number}. ${m.title}`}
+                title={`${m.number}. ${m.title} · ${area.name}`}
                 aria-label={`${m.number}. ${m.title}`}
               >
                 {body}
@@ -219,11 +255,11 @@ export function QuestMap({ state }: { state: GameState }) {
               type="button"
               className={className}
               style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
-              title={`Locked — complete module ${m.number - 1} first`}
+              title={`Locked — ${area.name}`}
               aria-label={`${m.number}. ${m.title} (locked)`}
               onClick={() =>
                 setToast(
-                  `Portal “${m.mapLabel}” is sealed. Clear Module ${m.number - 1} to enter.`,
+                  `Portal “${m.mapLabel}” in ${area.name} is sealed. Clear prior modules/exams first.`,
                 )
               }
             >
@@ -232,7 +268,53 @@ export function QuestMap({ state }: { state: GameState }) {
           );
         })}
 
-        {/* Treasure chests ×12 (≥10), operationalized */}
+        {/* 9 compulsory exams */}
+        {EXAMS.map((exam) => {
+          const done = completedExams.includes(exam.id);
+          const unlocked = unlockedExams.includes(exam.id) || done;
+          const className = `exam-pin z-25 ${done ? "done" : ""} ${
+            unlocked ? "unlocked" : "locked"
+          }`;
+          const body = (
+            <>
+              <ExamBadgeIcon color={exam.color} roman={exam.roman} />
+              <span className="hybrid-pin-label below">Exam {exam.roman}</span>
+            </>
+          );
+          if (unlocked) {
+            return (
+              <Link
+                key={exam.id}
+                href={`/exam/${exam.id}`}
+                className={`${className} pulse`}
+                style={{ left: `${exam.x}%`, top: `${exam.y}%` }}
+                title={`${exam.title} (compulsory)`}
+                aria-label={`Exam ${exam.roman}: ${exam.title}`}
+              >
+                {body}
+              </Link>
+            );
+          }
+          return (
+            <button
+              key={exam.id}
+              type="button"
+              className={className}
+              style={{ left: `${exam.x}%`, top: `${exam.y}%` }}
+              title="Exam locked"
+              aria-label={`Exam ${exam.roman} locked`}
+              onClick={() =>
+                setToast(
+                  `Exam ${exam.roman} (“${exam.title}”) unlocks after Module ${exam.afterModuleId.replace("m", "")}.`,
+                )
+              }
+            >
+              {body}
+            </button>
+          );
+        })}
+
+        {/* Treasure chests — positions unchanged */}
         {CHEST_MARKERS.map((c) => {
           const done = state.completedSidequests.includes(c.sidequestId);
           return (
@@ -249,7 +331,6 @@ export function QuestMap({ state }: { state: GameState }) {
           );
         })}
 
-        {/* Side-deal markers (scrolls) — non-chest */}
         {sideDeals.map((s, i) => {
           const pos = sidequestBoardPosition(i);
           const done = state.completedSidequests.includes(s.id);
@@ -267,7 +348,6 @@ export function QuestMap({ state }: { state: GameState }) {
           );
         })}
 
-        {/* Coin = user token */}
         <div
           className="hybrid-coin z-30"
           style={{ left: `${coinPos.x}%`, top: `calc(${coinPos.y}% - 3.5%)` }}
@@ -276,7 +356,6 @@ export function QuestMap({ state }: { state: GameState }) {
           <CoinIcon />
         </div>
 
-        {/* Bottom-left HUD icons — operationalized */}
         <nav className="map-hud" aria-label="Map tools">
           {MAP_HUD_ICONS.map((icon) => {
             const Icon = HUD_ICON[icon.id];
@@ -318,9 +397,9 @@ export function QuestMap({ state }: { state: GameState }) {
         </div>
       ) : (
         <p className="text-xs text-[var(--muted)]">
-          Investment Map 2: glowing portals are syllabus quests, white stones are
-          pathways, chests are wealth trials, coin is you. HUD: Book · Scroll ·
-          Compass · Flag.
+          36 portals across four areas · 9 compulsory exams · chests stay put ·
+          coin is you · strength colours: purple bay, blue exchange, green quay,
+          gold highlands.
         </p>
       )}
     </div>

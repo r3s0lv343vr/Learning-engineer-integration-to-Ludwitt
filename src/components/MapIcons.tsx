@@ -36,39 +36,76 @@ export function TreasureChestIcon({ size = 28 }: { size?: number }) {
   );
 }
 
+/** Teardrop map portal — strength colour + module number (icon sheet style). */
 export function PortalArchIcon({ color, number }: { color: string; number: number }) {
+  const gid = `portal-${number}`;
   return (
-    <svg viewBox="0 0 48 56" width="36" height="42" aria-hidden className="portal-svg">
+    <svg viewBox="0 0 56 68" width="34" height="42" aria-hidden className="portal-svg">
       <defs>
-        <linearGradient id={`pg-${number}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={color} stopOpacity="0.95" />
-          <stop offset="100%" stopColor={color} stopOpacity="0.35" />
+        <linearGradient id={gid} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={color} />
+          <stop offset="100%" stopColor="#1a1408" />
         </linearGradient>
+        <radialGradient id={`${gid}-glow`} cx="50%" cy="40%" r="50%">
+          <stop offset="0%" stopColor={color} stopOpacity="0.9" />
+          <stop offset="100%" stopColor={color} stopOpacity="0.15" />
+        </radialGradient>
       </defs>
-      <ellipse cx="24" cy="50" rx="14" ry="4" fill="rgba(0,0,0,0.28)" />
+      <ellipse cx="28" cy="62" rx="12" ry="3.5" fill="rgba(0,0,0,0.3)" />
       <path
-        d="M8 48 V22 C8 8 40 8 40 22 V48"
-        fill={`url(#pg-${number})`}
+        d="M28 66 C12 50 8 34 8 26 C8 12 18 4 28 4 C38 4 48 12 48 26 C48 34 44 50 28 66 Z"
+        fill={`url(#${gid})`}
         stroke="#1a1408"
-        strokeWidth="2.2"
+        strokeWidth="2"
       />
-      <path
-        d="M14 48 V24 C14 14 34 14 34 24 V48"
-        fill="rgba(255,255,255,0.22)"
-        stroke={color}
-        strokeWidth="1.2"
-      />
-      <circle cx="24" cy="30" r="9" fill="#1a1408" stroke={color} strokeWidth="2" />
+      <circle cx="28" cy="28" r="14" fill={`url(#${gid}-glow)`} stroke="#f7f3e8" strokeWidth="1.5" />
+      <circle cx="16" cy="12" r="8" fill="#f7f3e8" stroke="#1a1408" strokeWidth="1.5" />
       <text
-        x="24"
-        y="34"
+        x="16"
+        y="16"
         textAnchor="middle"
-        fontSize="12"
+        fontSize="9"
         fontWeight="800"
-        fill="#f7f3e8"
+        fill="#1a1408"
         fontFamily="system-ui, sans-serif"
       >
         {number}
+      </text>
+    </svg>
+  );
+}
+
+/** Compulsory exam badge — graduation cap + Roman numeral ribbon. */
+export function ExamBadgeIcon({
+  color,
+  roman,
+}: {
+  color: string;
+  roman: string;
+}) {
+  return (
+    <svg viewBox="0 0 56 64" width="38" height="44" aria-hidden className="exam-svg">
+      <ellipse cx="28" cy="58" rx="14" ry="3.5" fill="rgba(0,0,0,0.3)" />
+      <path
+        d="M10 12 h36 l4 10 v20 c0 10-8 18-22 22 C14 60 6 52 6 42 V22 Z"
+        fill={color}
+        stroke="#1a1408"
+        strokeWidth="2"
+      />
+      <path d="M14 20 h28 l-3 8 H17 Z" fill="#1a1408" opacity="0.35" />
+      <path d="M18 26 h20 v4 H18 Z" fill="#f7f3e8" />
+      <path d="M22 30 h12 l2 10 H20 Z" fill="#f0d27a" stroke="#1a1408" strokeWidth="1" />
+      <rect x="12" y="44" width="32" height="12" rx="2" fill="#1a1408" />
+      <text
+        x="28"
+        y="53"
+        textAnchor="middle"
+        fontSize="10"
+        fontWeight="800"
+        fill="#f7f3e8"
+        fontFamily="Georgia, serif"
+      >
+        {roman}
       </text>
     </svg>
   );

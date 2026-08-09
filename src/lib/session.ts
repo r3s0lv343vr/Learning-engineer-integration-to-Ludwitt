@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { SignJWT, jwtVerify } from "jose";
 import type { GameState } from "@/lib/types";
-import { createInitialState } from "@/lib/game-state";
+import { createInitialState, normalizeState } from "@/lib/game-state";
 import { loadProgressFromHosted, syncStateToHosted } from "@/lib/hosted-sync";
 import { clearTokenSet } from "@/lib/tokens";
 
@@ -85,12 +85,12 @@ export async function loadState(): Promise<GameState | null> {
   // Ludwitt users: prefer hosted progress when available.
   if (!session.demo && session.ludwittSub) {
     try {
-      return await loadProgressFromHosted(base);
+      return normalizeState(await loadProgressFromHosted(base));
     } catch {
-      return base;
+      return normalizeState(base);
     }
   }
-  return base;
+  return normalizeState(base);
 }
 
 export async function saveState(state: GameState) {

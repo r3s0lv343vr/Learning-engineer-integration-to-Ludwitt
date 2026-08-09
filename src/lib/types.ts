@@ -48,7 +48,9 @@ export interface LearningEvent {
     | "lesson_completed"
     | "quiz_submitted"
     | "session_heartbeat"
-    | "chest_opened";
+    | "chest_opened"
+    | "exam_started"
+    | "exam_completed";
   sessionId: string;
   userId: string;
   metadata?: Record<string, unknown>;
@@ -73,6 +75,8 @@ export interface GameState {
   completedModules: string[];
   completedSidequests: string[];
   unlockedModules: string[];
+  unlockedExams: string[];
+  completedExams: string[];
   mapPosition: { x: number; y: number };
   activeQuestId?: string;
   investorProfile: InvestorProfile;

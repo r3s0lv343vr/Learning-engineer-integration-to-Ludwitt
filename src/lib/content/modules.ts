@@ -1,7 +1,8 @@
 import type { ModuleQuest } from "@/lib/types";
+import { MODULES_EXTRA } from "@/lib/content/modules-extra";
 
-/** 18 syllabus modules as quest nodes on the adventure map. */
-export const MODULES: ModuleQuest[] = [
+/** 36 syllabus modules as quest portals on the adventure map. */
+const MODULES_CORE: ModuleQuest[] = [
   {
     id: "m1",
     number: 1,
@@ -953,6 +954,8 @@ export const MODULES: ModuleQuest[] = [
     ],
   },
 ];
+
+export const MODULES: ModuleQuest[] = [...MODULES_CORE, ...MODULES_EXTRA];
 
 export function getModule(id: string) {
   return MODULES.find((m) => m.id === id);

@@ -17,13 +17,16 @@ export default async function MapPage() {
           <div>
             <h1 className="display text-3xl text-[var(--gold)]">Investment Map</h1>
             <p className="mt-1 max-w-2xl text-[var(--muted)]">
-              Enter glowing portals, walk the white pathway stones, and claim
-              treasure chests. Your token is the gold coin.
+              Four areas · 36 portals · 9 compulsory exams. Chests stay put.
+              Your token is the gold coin.
             </p>
           </div>
-          <div className="flex gap-2 text-sm">
+          <div className="flex flex-wrap gap-2 text-sm">
             <span className="rounded-full border border-[var(--path)]/40 px-3 py-1">
-              Modules {state.completedModules.length}/18
+              Modules {state.completedModules.length}/36
+            </span>
+            <span className="rounded-full border border-[var(--path)]/40 px-3 py-1">
+              Exams {(state.completedExams ?? []).length}/9
             </span>
             <span className="rounded-full border border-[var(--path)]/40 px-3 py-1">
               Sidequests {state.completedSidequests.length}

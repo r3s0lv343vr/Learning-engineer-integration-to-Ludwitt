@@ -3,6 +3,7 @@ import { loadState, saveState } from "@/lib/session";
 import {
   applyAnswer,
   applySidequestResult,
+  completeExam,
   completeModule,
   leaveDetention,
   upsertHolding,
@@ -31,6 +32,9 @@ export async function POST(req: NextRequest) {
       break;
     case "complete_module":
       next = completeModule(state, body.moduleId);
+      break;
+    case "complete_exam":
+      next = completeExam(state, body.examId);
       break;
     case "sidequest":
       next = applySidequestResult(state, {

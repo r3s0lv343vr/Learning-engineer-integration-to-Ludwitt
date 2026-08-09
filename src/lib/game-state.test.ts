@@ -3,6 +3,7 @@ import {
   applyAnswer,
   createInitialState,
   completeModule,
+  completeExam,
   applySidequestResult,
 } from "./game-state";
 
@@ -38,6 +39,16 @@ describe("game-state", () => {
     s = completeModule(s, "m1");
     expect(s.completedModules).toContain("m1");
     expect(s.unlockedModules).toContain("m2");
+  });
+
+  it("gates m5 behind compulsory exam I after m4", () => {
+    let s = createInitialState({ userId: "u1" });
+    for (const id of ["m1", "m2", "m3", "m4"]) s = completeModule(s, id);
+    expect(s.unlockedExams).toContain("exam-1");
+    expect(s.unlockedModules).not.toContain("m5");
+    s = completeExam(s, "exam-1");
+    expect(s.completedExams).toContain("exam-1");
+    expect(s.unlockedModules).toContain("m5");
   });
 
   it("opens a wealth chest for gold bars", () => {
