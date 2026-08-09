@@ -15,10 +15,11 @@ export default async function MapPage() {
       <section className="panel rounded-2xl p-4 sm:p-6">
         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h1 className="display text-3xl text-[var(--gold)]">Quest City Atlas</h1>
+            <h1 className="display text-3xl text-[var(--gold)]">Quest City Map</h1>
             <p className="mt-1 max-w-2xl text-[var(--muted)]">
-              A street map of one city: irregular downtown tip, loft grid, tech
-              campuses, and dock towers — every street named for a quest.
+              Painted city poster over live Lower Manhattan streets — Wall
+              Street, SoHo, tech bay, and dock towers fused as one. Pins are
+              quests.
             </p>
           </div>
           <div className="flex gap-2 text-sm">

@@ -116,68 +116,112 @@ a {
   background-size: 16.66% 33.33%, 16.66% 33.33%, auto;
 }
 
-/* Cartographic city street atlas */
-.city-map {
+/* Hybrid: real street basemap + painted poster + quest pins */
+.hybrid-map {
   position: relative;
   width: 100%;
   max-width: min(100%, 920px);
   margin-inline: auto;
   aspect-ratio: 1 / 1;
-  border-radius: 0.35rem;
+  border-radius: 0.5rem;
   overflow: hidden;
-  border: 3px solid #3a3428;
+  border: 3px solid #1a1408;
   box-shadow:
     0 0 0 6px #c6a15b,
     0 18px 40px rgba(0, 0, 0, 0.45);
-  background: #e7e0d2;
+  background: #1a3040;
 }
 
-.city-map-svg {
+.hybrid-basemap,
+.hybrid-leaflet,
+.hybrid-leaflet-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hybrid-leaflet-fallback {
+  background:
+    radial-gradient(circle at 40% 60%, #3a5a4a 0%, transparent 50%),
+    #2a3a48;
+}
+
+.hybrid-basemap .leaflet-container {
+  width: 100%;
+  height: 100%;
+  background: #2a3a48;
+  font: inherit;
+}
+
+.hybrid-basemap .leaflet-control-attribution {
+  font-size: 9px;
+  background: rgba(247, 243, 232, 0.75) !important;
+  max-width: 55%;
+}
+
+.hybrid-poster {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity 160ms ease;
+}
+
+.hybrid-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hybrid-path {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  z-index: 2;
   pointer-events: none;
-  z-index: 0;
 }
 
-.city-hood {
+.hybrid-hood {
   position: absolute;
   transform: translate(-50%, -50%);
-  z-index: 6;
+  z-index: 4;
   pointer-events: none;
-  font-size: 0.58rem;
+  font-size: 0.55rem;
   font-weight: 900;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   white-space: nowrap;
-  padding: 0.22rem 0.5rem;
-  border: 1.5px solid #3a3428;
-  background: #f7f3e8;
+  padding: 0.2rem 0.45rem;
+  border: 1.5px solid #1a1408;
+  background: rgba(247, 243, 232, 0.92);
   color: #1a1408;
-  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: 1px 2px 0 rgba(0, 0, 0, 0.3);
 }
 
-.city-hood-wall-street {
-  border-bottom: 3px solid #8a7040;
+.hybrid-hood-wall-street {
+  border-bottom: 3px solid #c6922e;
 }
-.city-hood-soho {
-  border-bottom: 3px solid #a06048;
+.hybrid-hood-soho {
+  border-bottom: 3px solid #c4785c;
 }
-.city-hood-nanshan {
-  border-bottom: 3px solid #2a8080;
+.hybrid-hood-nanshan {
+  border-bottom: 3px solid #2a9d8f;
 }
-.city-hood-canary {
-  border-bottom: 3px solid #3a5a8a;
+.hybrid-hood-canary {
+  border-bottom: 3px solid #4a7ab5;
 }
 
-.city-node {
+.hybrid-pin {
   position: absolute;
   transform: translate(-50%, -50%);
   display: grid;
   place-items: center;
-  width: 1.85rem;
-  height: 1.85rem;
+  width: 1.9rem;
+  height: 1.9rem;
   border: none;
   background: transparent;
   padding: 0;
@@ -186,21 +230,23 @@ a {
   color: inherit;
 }
 
-.city-node-dot {
-  width: 1.85rem;
-  height: 1.85rem;
+.hybrid-pin-dot {
+  width: 1.9rem;
+  height: 1.9rem;
   border-radius: 999px;
-  border: 2px solid #1a1408;
-  background: var(--prop, #8a7040);
+  border: 2.5px solid #1a1408;
+  background: var(--prop, #c6922e);
   color: #fff;
   display: grid;
   place-items: center;
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   font-weight: 900;
-  box-shadow: 0 0 0 2px #f7f3e8;
+  box-shadow:
+    0 0 0 2px rgba(247, 243, 232, 0.95),
+    0 3px 8px rgba(0, 0, 0, 0.35);
 }
 
-.city-street-label {
+.hybrid-pin-label {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -210,88 +256,90 @@ a {
   letter-spacing: 0.02em;
   text-transform: uppercase;
   color: #1a1408;
-  background: rgba(247, 243, 232, 0.92);
-  border: 1px solid #5a5040;
-  padding: 0.1rem 0.3rem;
+  background: rgba(247, 243, 232, 0.94);
+  border: 1px solid #1a1408;
+  padding: 0.1rem 0.32rem;
   pointer-events: none;
   max-width: 7rem;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.city-street-label.above {
-  bottom: calc(100% + 0.45rem);
+.hybrid-pin-label.above {
+  bottom: calc(100% + 0.5rem);
 }
-.city-street-label.below {
-  top: calc(100% + 0.45rem);
+.hybrid-pin-label.below {
+  top: calc(100% + 0.5rem);
 }
 
-.city-node.locked {
-  opacity: 0.7;
+.hybrid-pin.locked {
+  opacity: 0.72;
 }
-.city-node.locked .city-node-dot {
-  filter: grayscale(0.4);
+.hybrid-pin.locked .hybrid-pin-dot {
+  filter: grayscale(0.35);
 }
-.city-node.done .city-node-dot {
-  box-shadow: 0 0 0 2px #c6922e, 0 0 10px rgba(198, 146, 46, 0.45);
+.hybrid-pin.done .hybrid-pin-dot {
+  box-shadow:
+    0 0 0 2px #e2b84a,
+    0 0 12px rgba(226, 184, 74, 0.55);
 }
-.city-node.unlocked:hover .city-node-dot {
+.hybrid-pin.unlocked:hover .hybrid-pin-dot {
   transform: scale(1.08);
 }
 
-.city-side {
+.hybrid-side {
   position: absolute;
   transform: translate(-50%, -50%);
-  width: 1.3rem;
-  height: 1.3rem;
-  border-radius: 0.15rem;
-  border: 1.5px solid #1a1408;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 0.2rem;
+  border: 2px solid #1a1408;
   background: #e07a3a;
   color: #1a1408;
   display: grid;
   place-items: center;
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   font-weight: 900;
   text-decoration: none;
+  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.35);
 }
-.city-side.is-chest {
-  background: #d4a017;
+.hybrid-side.is-chest {
+  background: #e2b84a;
 }
-.city-side.done {
+.hybrid-side.done {
   opacity: 0.45;
 }
 
-.city-coin {
+.hybrid-coin {
   position: absolute;
   transform: translate(-50%, -50%);
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.45));
   animation: bob 2.2s ease-in-out infinite;
   pointer-events: none;
 }
-.city-coin-svg {
+.hybrid-coin-svg {
   display: block;
 }
 
 @media (max-width: 640px) {
-  .city-map {
+  .hybrid-map {
     aspect-ratio: 5 / 6;
   }
-  .city-node-dot {
-    width: 1.55rem;
-    height: 1.55rem;
-    font-size: 0.58rem;
+  .hybrid-pin-dot {
+    width: 1.6rem;
+    height: 1.6rem;
+    font-size: 0.6rem;
   }
-  .city-street-label {
+  .hybrid-pin-label {
     font-size: 0.4rem;
     max-width: 5rem;
   }
-  .city-hood {
+  .hybrid-hood {
     font-size: 0.42rem;
-    padding: 0.12rem 0.3rem;
   }
-  .city-coin-svg {
-    width: 34px;
-    height: 34px;
+  .hybrid-coin-svg {
+    width: 36px;
+    height: 36px;
   }
 }
 
