@@ -1,186 +1,205 @@
 /**
- * One continuous city map — neighborhoods blend Wall Street, SoHo,
- * Shenzhen–Nanshan, and Canary Wharf into a single landmass.
- * All street labels are syllabus quest names.
+ * Cartographic city map — one continuous landmass stitching:
+ * Wall Street (irregular tip) · SoHo (cast-iron grid) ·
+ * Shenzhen–Nanshan (tech parcels) · Canary Wharf (dock basins).
+ * Street / node labels = syllabus quest names only.
  */
 
 export type Point = { x: number; y: number };
-
 export type DistrictId = "wall-street" | "soho" | "nanshan" | "canary";
 
-/** Single continuous path across the city (18 quests). */
+/** Quest intersections along the main avenue (percent). */
 export const MODULE_WORLD_POSITIONS: Point[] = [
-  // South tip — Wall Street stone quarter
-  { x: 48, y: 90 }, // 1 Opening Bell
-  { x: 38, y: 84 }, // 2 Exchange Floor
-  { x: 28, y: 78 }, // 3 Risk Alley
-  { x: 22, y: 68 }, // 4 Research Desk
-  { x: 30, y: 58 }, // 5 Ledger Lane
-  // West–center — SoHo loft grid
-  { x: 40, y: 50 }, // 6 Ratio Row
-  { x: 36, y: 38 }, // 7 Value Spire
-  { x: 46, y: 30 }, // 8 Style Cross
-  { x: 56, y: 24 }, // 9 Asset Pier
-  // East — Nanshan tech ridge
-  { x: 66, y: 32 }, // 10 Portfolio Plaza
-  { x: 74, y: 42 }, // 11 Macro Desk
-  { x: 80, y: 54 }, // 12 News Wire
+  // Wall Street tip — irregular downtown
+  { x: 42, y: 88 }, // 1 Opening Bell
+  { x: 34, y: 82 }, // 2 Exchange Floor
+  { x: 48, y: 78 }, // 3 Risk Alley
+  { x: 38, y: 72 }, // 4 Research Desk
+  { x: 52, y: 68 }, // 5 Ledger Lane
+  // SoHo grid
+  { x: 40, y: 58 }, // 6 Ratio Row
+  { x: 52, y: 52 }, // 7 Value Spire
+  { x: 40, y: 46 }, // 8 Style Cross
+  { x: 52, y: 40 }, // 9 Asset Pier
+  // Nanshan tech east
+  { x: 66, y: 44 }, // 10 Portfolio Plaza
+  { x: 76, y: 50 }, // 11 Macro Desk
+  { x: 84, y: 58 }, // 12 News Wire
   { x: 78, y: 66 }, // 13 Crash Corridor
-  { x: 68, y: 72 }, // 14 Crisis Archive
-  // North dock — Canary Wharf glass
-  { x: 58, y: 62 }, // 15 Risk Bastion
-  { x: 52, y: 48 }, // 16 Thesis Forge
-  { x: 60, y: 38 }, // 17 Bias Mirror
-  { x: 50, y: 42 }, // 18 Fund Mandate (civic core)
+  { x: 70, y: 72 }, // 14 Crisis Archive
+  // Canary Wharf north docks
+  { x: 64, y: 32 }, // 15 Risk Bastion
+  { x: 74, y: 24 }, // 16 Thesis Forge
+  { x: 62, y: 18 }, // 17 Bias Mirror
+  { x: 54, y: 28 }, // 18 Fund Mandate
 ];
 
 export const PATH_WAYPOINTS: Point[] = [
-  { x: 52, y: 94 },
-  ...MODULE_WORLD_POSITIONS,
+  { x: 44, y: 94 },
+  ...MODULE_WORLD_POSITIONS.slice(0, 5),
+  { x: 46, y: 62 },
+  ...MODULE_WORLD_POSITIONS.slice(5, 9),
+  { x: 58, y: 42 },
+  ...MODULE_WORLD_POSITIONS.slice(9, 14),
+  { x: 66, y: 38 },
+  ...MODULE_WORLD_POSITIONS.slice(14),
 ];
 
-export function moduleBoardPosition(indexZeroBased: number): Point {
-  const i = Math.max(0, Math.min(indexZeroBased, MODULE_WORLD_POSITIONS.length - 1));
-  return MODULE_WORLD_POSITIONS[i];
+export function moduleBoardPosition(i: number): Point {
+  const n = Math.max(0, Math.min(i, MODULE_WORLD_POSITIONS.length - 1));
+  return MODULE_WORLD_POSITIONS[n];
 }
 
 export function modulePathPoints(): Point[] {
   return PATH_WAYPOINTS;
 }
 
-export function districtForModule(indexZeroBased: number): DistrictId {
-  if (indexZeroBased <= 4) return "wall-street";
-  if (indexZeroBased <= 8) return "soho";
-  if (indexZeroBased <= 13) return "nanshan";
+export function districtForModule(i: number): DistrictId {
+  if (i <= 4) return "wall-street";
+  if (i <= 8) return "soho";
+  if (i <= 13) return "nanshan";
   return "canary";
 }
 
-/** One peninsula landmass (continuous city in a harbor). */
+/** Continuous peninsula shoreline (harbor on all sides). */
 export const CITY_LAND =
-  "M46,96 C28,94 14,84 10,68 C6,50 12,32 22,20 C34,8 52,4 68,8 C84,12 94,26 96,44 C98,62 90,78 76,88 C64,96 54,98 46,96 Z";
+  "M40,97 C22,94 10,82 8,64 C6,46 12,28 24,16 C36,6 52,3 68,6 C84,10 95,22 96,40 C97,56 92,68 86,76 C90,84 82,94 66,96 C54,98 46,98 40,97 Z";
 
-/** Soft neighborhood tint overlays on the same land (not separate islands). */
-export const NEIGHBORHOODS = [
-  {
-    id: "wall-street" as const,
-    hubQuest: "Opening Bell",
-    d: "M20,70 C28,62 40,68 48,78 C52,88 40,96 28,94 C18,90 16,78 20,70 Z",
-    fill: "rgba(198,161,91,0.18)",
-    labelAt: { x: 34, y: 92 },
-  },
-  {
-    id: "soho" as const,
-    hubQuest: "Style Cross",
-    d: "M24,28 C34,18 52,16 58,28 C54,40 40,46 28,42 C22,36 22,32 24,28 Z",
-    fill: "rgba(232,168,124,0.2)",
-    labelAt: { x: 38, y: 22 },
-  },
-  {
-    id: "nanshan" as const,
-    hubQuest: "Crisis Archive",
-    d: "M66,36 C78,30 92,38 92,54 C90,68 78,76 68,70 C62,60 60,44 66,36 Z",
-    fill: "rgba(78,205,196,0.16)",
-    labelAt: { x: 86, y: 70 },
-  },
-  {
-    id: "canary" as const,
-    hubQuest: "Fund Mandate",
-    d: "M48,18 C60,12 76,14 82,26 C78,36 66,40 54,36 C48,30 46,22 48,18 Z",
-    fill: "rgba(126,182,255,0.16)",
-    labelAt: { x: 70, y: 12 },
-  },
-] as const;
-
-/** Buildings sitting on the one city — mixed styles by quarter. */
-export const CITY_BLOCKS = [
-  // Wall Street south
-  { id: "ws1", x: 34, y: 78, w: 8, h: 7, fill: "#3a4554", kind: "stone" as const },
-  { id: "ws2", x: 44, y: 80, w: 7, h: 9, fill: "#445062", kind: "stone" as const },
-  { id: "ws3", x: 26, y: 72, w: 9, h: 6, fill: "#384454", kind: "stone" as const },
-  { id: "ws4", x: 40, y: 70, w: 8, h: 6, fill: "#5a4a2e", kind: "stone" as const },
-  // SoHo west
-  { id: "sh1", x: 28, y: 34, w: 6, h: 10, fill: "#6b3f36", kind: "loft" as const },
-  { id: "sh2", x: 36, y: 28, w: 8, h: 9, fill: "#7a4a3e", kind: "loft" as const },
-  { id: "sh3", x: 46, y: 32, w: 6, h: 11, fill: "#5c3830", kind: "loft" as const },
-  { id: "sh4", x: 32, y: 44, w: 9, h: 7, fill: "#8a5648", kind: "loft" as const },
-  // Nanshan east towers
-  { id: "ns1", x: 72, y: 48, w: 4, h: 16, fill: "#2a6a7a", kind: "tower" as const },
-  { id: "ns2", x: 80, y: 44, w: 5, h: 20, fill: "#1f5a6a", kind: "tower" as const },
-  { id: "ns3", x: 70, y: 58, w: 6, h: 10, fill: "#34808f", kind: "campus" as const },
-  { id: "ns4", x: 84, y: 56, w: 4, h: 12, fill: "#3a90a0", kind: "tower" as const },
-  // Canary north glass + dock
-  { id: "cw1", x: 56, y: 14, w: 4, h: 14, fill: "#3d5a7a", kind: "glass" as const },
-  { id: "cw2", x: 64, y: 12, w: 5, h: 18, fill: "#4a6d94", kind: "glass" as const },
-  { id: "cw3", x: 72, y: 16, w: 4, h: 12, fill: "#355878", kind: "glass" as const },
-  { id: "core", x: 46, y: 38, w: 7, h: 10, fill: "#c6922e", kind: "glass" as const },
-] as const;
-
-/** Inner dock / canal cut into the same land (wharf feel). */
-export const WATER_CUTS = [
-  {
-    id: "north-dock",
-    d: "M54,16 C62,14 70,16 72,22 C68,26 60,26 54,24 Z",
-    fill: "#1a4a68",
-  },
-  {
-    id: "east-bay",
-    d: "M76,62 C84,60 92,64 90,72 C84,76 76,74 74,68 Z",
-    fill: "#165a68",
-  },
-] as const;
-
-/** Street grid faint lines across the one city. */
-export const STREET_GRID = [
-  { x1: 20, y1: 70, x2: 70, y2: 78 },
-  { x1: 24, y1: 50, x2: 78, y2: 58 },
-  { x1: 30, y1: 30, x2: 82, y2: 38 },
-  { x1: 40, y1: 88, x2: 40, y2: 28 },
-  { x1: 56, y1: 90, x2: 56, y2: 16 },
-  { x1: 72, y1: 80, x2: 72, y2: 20 },
-] as const;
-
-export function sidequestBoardPosition(indexZeroBased: number): Point {
-  const ring: Point[] = [
-    { x: 18, y: 74 },
-    { x: 44, y: 86 },
-    { x: 24, y: 48 },
-    { x: 50, y: 18 },
-    { x: 68, y: 20 },
-    { x: 42, y: 42 },
-    { x: 62, y: 50 },
-    { x: 88, y: 48 },
-    { x: 84, y: 68 },
-    { x: 64, y: 80 },
-    { x: 34, y: 64 },
-    { x: 54, y: 56 },
-    { x: 76, y: 36 },
-    { x: 28, y: 36 },
-    { x: 60, y: 70 },
-  ];
-  return ring[indexZeroBased % ring.length] ?? { x: 50, y: 50 };
-}
-
-export const DISTRICT_NODE_COLORS: Record<DistrictId, string[]> = {
-  "wall-street": ["#c6922e", "#e2b84a", "#a87820", "#d4a017", "#b8953a"],
-  soho: ["#e8a87c", "#d4896a", "#c47a5c", "#f0b896"],
-  nanshan: ["#4ecdc4", "#3ecf8e", "#2a9d8f", "#5ee0d6", "#48b5ae"],
-  canary: ["#7eb6ff", "#5b8def", "#9ec9ff", "#c6922e"],
+/**
+ * City blocks as real parcels — denser/irregular downtown,
+ * orthogonal SoHo, large Nanshan campuses, Wharf towers around docks.
+ */
+export type Block = {
+  id: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  fill: string;
+  district: DistrictId;
 };
 
-export function propertyColor(indexZeroBased: number): string {
-  const d = districtForModule(indexZeroBased);
-  const palette = DISTRICT_NODE_COLORS[d];
-  const local =
-    d === "wall-street"
-      ? indexZeroBased
-      : d === "soho"
-        ? indexZeroBased - 5
-        : d === "nanshan"
-          ? indexZeroBased - 9
-          : indexZeroBased - 14;
-  return palette[local % palette.length];
+export const CITY_BLOCKS: Block[] = [
+  // —— Wall Street: small irregular parcels (rotated feel via offset sizes)
+  { id: "ws-a", x: 30, y: 84, w: 7, h: 5, fill: "#b8b0a0", district: "wall-street" },
+  { id: "ws-b", x: 38, y: 86, w: 6, h: 6, fill: "#c4bcae", district: "wall-street" },
+  { id: "ws-c", x: 45, y: 84, w: 8, h: 5, fill: "#aea698", district: "wall-street" },
+  { id: "ws-d", x: 28, y: 76, w: 5, h: 6, fill: "#bbb3a4", district: "wall-street" },
+  { id: "ws-e", x: 35, y: 74, w: 7, h: 7, fill: "#c9c0b0", district: "wall-street" },
+  { id: "ws-f", x: 44, y: 72, w: 6, h: 8, fill: "#b0a898", district: "wall-street" },
+  { id: "ws-g", x: 52, y: 76, w: 5, h: 6, fill: "#c2b9a8", district: "wall-street" },
+  { id: "ws-h", x: 32, y: 68, w: 6, h: 5, fill: "#a89f90", district: "wall-street" },
+  { id: "ws-i", x: 48, y: 66, w: 7, h: 5, fill: "#bcb4a4", district: "wall-street" },
+  // —— SoHo: regular cast-iron grid (even lots)
+  { id: "sh-1", x: 30, y: 54, w: 8, h: 6, fill: "#c4a090", district: "soho" },
+  { id: "sh-2", x: 40, y: 54, w: 8, h: 6, fill: "#d0ac9a", district: "soho" },
+  { id: "sh-3", x: 50, y: 54, w: 8, h: 6, fill: "#b89484", district: "soho" },
+  { id: "sh-4", x: 30, y: 46, w: 8, h: 6, fill: "#ccaa98", district: "soho" },
+  { id: "sh-5", x: 40, y: 46, w: 8, h: 6, fill: "#d8b4a0", district: "soho" },
+  { id: "sh-6", x: 50, y: 46, w: 8, h: 6, fill: "#c09c8c", district: "soho" },
+  { id: "sh-7", x: 30, y: 38, w: 8, h: 6, fill: "#b89080", district: "soho" },
+  { id: "sh-8", x: 40, y: 38, w: 8, h: 6, fill: "#d2ae9c", district: "soho" },
+  { id: "sh-9", x: 50, y: 38, w: 8, h: 6, fill: "#c8a494", district: "soho" },
+  // —— Nanshan: large tech campus slabs + tower pads
+  { id: "ns-1", x: 62, y: 48, w: 10, h: 8, fill: "#8eb8b8", district: "nanshan" },
+  { id: "ns-2", x: 74, y: 46, w: 12, h: 10, fill: "#7aa8a8", district: "nanshan" },
+  { id: "ns-3", x: 64, y: 58, w: 8, h: 12, fill: "#6a9c9c", district: "nanshan" },
+  { id: "ns-4", x: 74, y: 58, w: 6, h: 14, fill: "#5a9090", district: "nanshan" },
+  { id: "ns-5", x: 82, y: 58, w: 6, h: 10, fill: "#70a4a4", district: "nanshan" },
+  { id: "ns-6", x: 68, y: 72, w: 14, h: 6, fill: "#88b0b0", district: "nanshan" },
+  // —— Canary Wharf: tower pads around dock basins
+  { id: "cw-1", x: 58, y: 12, w: 5, h: 10, fill: "#8aa0b8", district: "canary" },
+  { id: "cw-2", x: 66, y: 10, w: 6, h: 12, fill: "#7a94b0", district: "canary" },
+  { id: "cw-3", x: 75, y: 14, w: 5, h: 9, fill: "#90a8c0", district: "canary" },
+  { id: "cw-4", x: 58, y: 24, w: 6, h: 6, fill: "#849cb8", district: "canary" },
+  { id: "cw-5", x: 68, y: 24, w: 8, h: 7, fill: "#9ab0c4", district: "canary" },
+  { id: "cw-6", x: 52, y: 20, w: 5, h: 8, fill: "#c6a15b", district: "canary" },
+];
+
+/** Dock / river cuts carved into the land (Canary + Nanshan bay). */
+export const WATER_FEATURES = [
+  {
+    id: "west-river",
+    d: "M6,50 C10,40 12,30 16,22 L12,18 C8,28 4,42 4,56 Z",
+  },
+  {
+    id: "east-river",
+    d: "M90,40 C94,50 94,62 90,74 L96,76 C98,62 98,48 94,36 Z",
+  },
+  {
+    id: "wharf-basin-1",
+    d: "M60,16 C66,14 72,16 74,20 C72,24 66,24 60,22 Z",
+  },
+  {
+    id: "wharf-basin-2",
+    d: "M68,20 C74,18 80,20 80,26 C76,28 70,28 68,24 Z",
+  },
+  {
+    id: "tech-inlet",
+    d: "M86,64 C92,62 94,68 90,74 C86,72 84,68 86,64 Z",
+  },
+] as const;
+
+/** Named streets drawn as white corridors (labels = quests in UI). */
+export const STREETS: { id: string; points: Point[]; questIndex?: number }[] = [
+  // Main spine
+  {
+    id: "main",
+    points: PATH_WAYPOINTS,
+  },
+  // Wall St cross streets
+  { id: "ws-x1", points: [{ x: 26, y: 84 }, { x: 56, y: 80 }] },
+  { id: "ws-x2", points: [{ x: 28, y: 72 }, { x: 58, y: 70 }] },
+  // SoHo avenues / streets
+  { id: "sh-ave-w", points: [{ x: 38, y: 62 }, { x: 38, y: 36 }] },
+  { id: "sh-ave-e", points: [{ x: 50, y: 62 }, { x: 50, y: 36 }] },
+  { id: "sh-st-n", points: [{ x: 28, y: 42 }, { x: 60, y: 42 }] },
+  { id: "sh-st-s", points: [{ x: 28, y: 50 }, { x: 60, y: 50 }] },
+  // Nanshan arterials
+  { id: "ns-ring", points: [{ x: 62, y: 44 }, { x: 88, y: 48 }, { x: 86, y: 70 }, { x: 66, y: 74 }, { x: 62, y: 44 }] },
+  // Canary dock roads
+  { id: "cw-loop", points: [{ x: 54, y: 14 }, { x: 80, y: 12 }, { x: 82, y: 28 }, { x: 56, y: 30 }, { x: 54, y: 14 }] },
+];
+
+/** Neighborhood callouts — quest hub names only. */
+export const NEIGHBORHOODS = [
+  { id: "wall-street" as const, hubQuest: "Opening Bell", x: 36, y: 94 },
+  { id: "soho" as const, hubQuest: "Style Cross", x: 34, y: 34 },
+  { id: "nanshan" as const, hubQuest: "Crisis Archive", x: 88, y: 78 },
+  { id: "canary" as const, hubQuest: "Fund Mandate", x: 78, y: 8 },
+] as const;
+
+export function sidequestBoardPosition(i: number): Point {
+  const ring: Point[] = [
+    { x: 24, y: 80 },
+    { x: 56, y: 86 },
+    { x: 26, y: 56 },
+    { x: 60, y: 48 },
+    { x: 34, y: 42 },
+    { x: 58, y: 36 },
+    { x: 90, y: 52 },
+    { x: 72, y: 80 },
+    { x: 86, y: 70 },
+    { x: 56, y: 14 },
+    { x: 80, y: 20 },
+    { x: 46, y: 60 },
+    { x: 68, y: 56 },
+    { x: 30, y: 66 },
+    { x: 62, y: 66 },
+  ];
+  return ring[i % ring.length] ?? { x: 50, y: 50 };
 }
 
-export function moduleGridPosition(indexZeroBased: number) {
-  return moduleBoardPosition(indexZeroBased);
+export function propertyColor(i: number): string {
+  const colors: Record<DistrictId, string> = {
+    "wall-street": "#8a7040",
+    soho: "#a06048",
+    nanshan: "#2a8080",
+    canary: "#3a5a8a",
+  };
+  return colors[districtForModule(i)];
+}
+
+export function moduleGridPosition(i: number) {
+  return moduleBoardPosition(i);
 }
