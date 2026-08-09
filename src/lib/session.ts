@@ -2,6 +2,8 @@ import { cookies } from "next/headers";
 import { SignJWT, jwtVerify } from "jose";
 import type { GameState } from "@/lib/types";
 import { createInitialState } from "@/lib/game-state";
+import { loadProgressFromHosted, syncStateToHosted } from "@/lib/hosted-sync";
+import { clearTokenSet } from "@/lib/tokens";
 
 const COOKIE = "questfolio_session";
 
@@ -53,6 +55,7 @@ export async function setSessionCookie(payload: SessionPayload) {
 export async function clearSessionCookie() {
   const jar = await cookies();
   jar.delete(COOKIE);
+  await clearTokenSet();
 }
 
 const STATE_COOKIE = "questfolio_state";
@@ -62,24 +65,36 @@ export async function loadState(): Promise<GameState | null> {
   if (!session) return null;
   const jar = await cookies();
   const raw = jar.get(STATE_COOKIE)?.value;
+  let local: GameState | null = null;
   if (raw) {
     try {
       const parsed = JSON.parse(decodeURIComponent(raw)) as GameState;
-      if (parsed.userId === session.userId) return parsed;
+      if (parsed.userId === session.userId) local = parsed;
     } catch {
       /* fall through */
     }
   }
-  return createInitialState({
-    userId: session.userId,
-    email: session.email,
-    displayName: session.name,
-  });
+  const base =
+    local ??
+    createInitialState({
+      userId: session.userId,
+      email: session.email,
+      displayName: session.name,
+    });
+
+  // Ludwitt users: prefer hosted progress when available.
+  if (!session.demo && session.ludwittSub) {
+    try {
+      return await loadProgressFromHosted(base);
+    } catch {
+      return base;
+    }
+  }
+  return base;
 }
 
 export async function saveState(state: GameState) {
   const jar = await cookies();
-  // Cookie budget: keep a compact snapshot (drop bulky event history for cookie).
   const slim: GameState = {
     ...state,
     events: state.events.slice(-20),
@@ -91,6 +106,13 @@ export async function saveState(state: GameState) {
     path: "/",
     maxAge: 60 * 60 * 24 * 30,
   });
+
+  // Best-effort hosted sync for Ludwitt-authenticated users.
+  try {
+    await syncStateToHosted(slim);
+  } catch (err) {
+    console.error("hosted_sync_failed", err);
+  }
 }
 
 export { COOKIE as SESSION_COOKIE, STATE_COOKIE };

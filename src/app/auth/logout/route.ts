@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
-import { clearSessionCookie } from "@/lib/session";
-import { appOrigin } from "@/lib/ludwitt";
 import { cookies } from "next/headers";
-import { STATE_COOKIE } from "@/lib/session";
+import { clearSessionCookie, STATE_COOKIE } from "@/lib/session";
+import { appOrigin } from "@/lib/ludwitt";
 
 export async function GET() {
   await clearSessionCookie();

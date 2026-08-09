@@ -5,6 +5,7 @@ import { StatusBar } from "@/components/StatusBar";
 import { CandleChart } from "@/components/CandleChart";
 import { FOREX_CANDLES, STOCK_CANDLES } from "@/lib/content/markets";
 import { QuestClient } from "./QuestClient";
+import { AiMentor } from "@/components/AiMentor";
 
 export default async function QuestPage({
   params,
@@ -51,6 +52,10 @@ export default async function QuestPage({
           </div>
         </div>
         <QuestClient moduleId={mod.id} questions={mod.questions} />
+        <AiMentor
+          moduleId={mod.id}
+          context={`${mod.title}. Scenario: ${mod.scenario}`}
+        />
       </section>
     </main>
   );

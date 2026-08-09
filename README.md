@@ -40,6 +40,12 @@ Registered app (Creator / hosted storage):
 - `LUDWITT_APP_ID` / `client_id`: `le_b752d5261268d3c7607fa2`
 - Slug: `ai-investment-learning-simulator`
 - Keep `LUDWITT_CLIENT_SECRET` only in Vercel / `.env.local` — never commit it
+- Offline docs: `.ludwitt/` (fetched from Ludwitt LE docs)
+- Scopes: `profile credits:read credits:spend data:read data:write`
+- OAuth callback stores access + refresh tokens (httpOnly sealed cookie) and refreshes before expiry
+- Hosted collections used: `progress`, `portfolio`, `sessions`, `event_log`
+- AI mentor: `POST /api/ai/mentor` → Ludwitt `/api/v1/ai/messages` (gates on `spendableCents`, handles 402)
+- Credits: `GET /api/credits` → Ludwitt `/api/v1/credits/balance`
 
 ## Scripts
 

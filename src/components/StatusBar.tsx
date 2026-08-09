@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { GameState } from "@/lib/types";
 import { portfolioValue } from "@/lib/game-state";
+import { CreditsBadge } from "@/components/CreditsBadge";
 
 export function StatusBar({ state }: { state: GameState }) {
   return (
@@ -11,6 +12,7 @@ export function StatusBar({ state }: { state: GameState }) {
         </Link>
       </div>
       <div className="flex flex-wrap items-center gap-4 text-sm">
+        <CreditsBadge />
         <div className="flex items-center gap-1" aria-label={`${state.hearts} hearts`}>
           {Array.from({ length: state.maxHearts }).map((_, i) => (
             <span key={i} className={i < state.hearts ? "heart" : "opacity-25"}>
