@@ -15,11 +15,10 @@ export default async function MapPage() {
       <section className="panel rounded-2xl p-4 sm:p-6">
         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h1 className="display text-3xl text-[var(--gold)]">Questfolio Board</h1>
+            <h1 className="display text-3xl text-[var(--gold)]">Monopoly World</h1>
             <p className="mt-1 max-w-2xl text-[var(--muted)]">
-              Monopoly-style board: move your coin clockwise from GO through 18
-              property quests. “?” side quests and ◆ wealth chests sit inside the
-              board.
+              Sail your coin from GO Bay across property islands to Boardwalk
+              Tower — 18 syllabus quests on a Monopoly-themed overworld.
             </p>
           </div>
           <div className="flex gap-2 text-sm">
