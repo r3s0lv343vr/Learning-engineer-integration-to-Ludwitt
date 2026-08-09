@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Investment Learning Simulator
 
-## Getting Started
+Quest-style investing lab for the Hult Cohort Developer Program (Week 4 · Ludwitt learning).
 
-First, run the development server:
+Guide a small warrior across a Zelda-inspired quest map with Duolingo-like progression: hearts, gold bars, syllabus modules, side quests, wealth chests, Portfolio Lab ($14,800), stock/forex candles, and financial news.
+
+## Stack
+
+- Next.js 15 (App Router) + TypeScript + Tailwind CSS 4
+- Ludwitt Creator OAuth + hosted-data storage
+- Optional cohort JWT launch bridge + events API
+
+## Local setup
 
 ```bash
+npm install
+cp .env.example .env.local
+# fill LUDWITT_* after Create app in the Ludwitt portal
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Demo quest** (no Ludwitt keys): `/api/demo-launch`
+- **Ludwitt sign-in**: `/auth/login` → `/auth/callback`
+- **Health**: `GET /api/health`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Ludwitt registration values
 
-## Learn More
+| Field | Value |
+|-------|--------|
+| Name | AI Investment Learning Simulator |
+| Slug | `ai-investment-learning-simulator` |
+| Tier | Hosted storage |
+| Collections | `progress`, `portfolio`, `sessions`, `event_log` |
+| Redirect URIs | `http://localhost:3000/auth/callback` and `https://ai-investment-learning-r3s0lv343vr.vercel.app/auth/callback` |
 
-To learn more about Next.js, take a look at the following resources:
+After **Create app**, copy:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `client_id` → `LUDWITT_CLIENT_ID`
+- `client_secret` → `LUDWITT_CLIENT_SECRET`
+- app id / slug → `LUDWITT_APP_ID`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Scripts
 
-## Deploy on Vercel
+```bash
+npm run lint
+npm run typecheck
+npm run test
+npm run build
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Game rules (progression)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Start with **5 hearts** and **$14,800**
+- **5 correct answers** → +1 heart (capped) and +1 gold bar
+- **4 consecutive wrong** → −1 heart
+- **0 hearts** → Detention (resit missed questions)
+- Side quests adjust capital; super chests award **3 / 5 / 10** gold bars
+
+## Syllabus
+
+Built from *AI Investment Simulator Learning Syllabus* — 18 modules + Portfolio Lab + Module 18 fund mandate.
