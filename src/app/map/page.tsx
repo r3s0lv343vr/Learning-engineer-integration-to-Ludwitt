@@ -15,10 +15,10 @@ export default async function MapPage() {
       <section className="panel rounded-2xl p-4 sm:p-6">
         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h1 className="display text-3xl text-[var(--gold)]">Monopoly World</h1>
+            <h1 className="display text-3xl text-[var(--gold)]">Wall Street Map</h1>
             <p className="mt-1 max-w-2xl text-[var(--muted)]">
-              Sail your coin from GO Bay across property islands to Boardwalk
-              Tower — 18 syllabus quests on a Monopoly-themed overworld.
+              Walk your coin through the financial district — every street name
+              is a syllabus quest, from Opening Bell to Fund Mandate.
             </p>
           </div>
           <div className="flex gap-2 text-sm">
@@ -35,7 +35,7 @@ export default async function MapPage() {
           <span>♥ Hearts: start 5 · +1 per 5 correct · −1 per 4 wrong streak</span>
           <span>·</span>
           <Link href="/quest/m1" className="text-[var(--accent)] underline">
-            Continue Trailhead
+            Continue Opening Bell
           </Link>
         </div>
       </section>

@@ -116,11 +116,11 @@ a {
   background-size: 16.66% 33.33%, 16.66% 33.33%, auto;
 }
 
-/* Monopoly World overworld (Mario-style islands + Monopoly theme) */
-.mono-world {
+/* Wall Street quest map */
+.ws-map {
   position: relative;
   width: 100%;
-  max-width: min(100%, 860px);
+  max-width: min(100%, 900px);
   margin-inline: auto;
   aspect-ratio: 16 / 11;
   border-radius: 1rem;
@@ -130,10 +130,10 @@ a {
     inset 0 0 0 8px #c6a15b,
     inset 0 0 0 12px #1a1408,
     0 18px 40px rgba(0, 0, 0, 0.45);
-  background: #1470b8;
+  background: #1a3a52;
 }
 
-.mono-world-svg {
+.ws-map-svg {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -142,158 +142,113 @@ a {
   z-index: 0;
 }
 
-.mono-landmark {
+.ws-node {
   position: absolute;
   transform: translate(-50%, -50%);
-  z-index: 3;
-  pointer-events: none;
-  font-size: 0.5rem;
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  padding: 0.2rem 0.35rem;
-  border: 2px solid #1a1408;
-  border-radius: 0.25rem;
-  background: #f3efe4;
-  color: #1a1408;
-  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
-  white-space: nowrap;
-}
-
-.mono-landmark-go {
-  background: #3ecf8e;
-  animation: landmark-pulse 2.8s ease-in-out infinite;
-}
-.mono-landmark-jail {
-  background: #ff6b4a;
-  color: #fff;
-}
-.mono-landmark-park {
-  background: #87ceeb;
-}
-.mono-landmark-tax {
-  background: #e2b84a;
-}
-.mono-landmark-rail {
-  background: #6d4c41;
-  color: #f3efe4;
-  font-size: 0.65rem;
-}
-.mono-landmark-hotel {
-  background: #e53935;
-  color: #fff;
-  font-size: 0.85rem;
-}
-.mono-landmark-tower {
-  background: linear-gradient(180deg, #f0d27a, #c6922e);
-  color: #1a1408;
-  font-size: 1rem;
-  padding: 0.35rem 0.5rem;
-  border-radius: 0.4rem;
-  animation: landmark-pulse 2.4s ease-in-out infinite;
-  box-shadow:
-    0 0 0 3px rgba(226, 184, 74, 0.35),
-    2px 2px 0 #1a1408;
-}
-
-.mono-pile {
-  position: absolute;
-  transform: translate(-50%, -50%) rotate(-14deg);
-  width: 3.4rem;
-  height: 2.2rem;
-  border-radius: 0.3rem;
-  border: 2px solid #1a1408;
   display: grid;
   place-items: center;
-  font-size: 0.55rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  z-index: 4;
-  box-shadow: 3px 3px 0 #1a1408;
-  pointer-events: none;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 }
 
-.mono-pile.chance {
-  background: #ff8c42;
-  color: #1a1408;
-}
-
-.mono-pile.chest {
-  background: #4ea8de;
-  color: #1a1408;
-}
-
-.mono-node {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  width: 2.15rem;
-  height: 2.15rem;
+.ws-node-dot {
+  width: 2rem;
+  height: 2rem;
   border-radius: 999px;
   border: 2.5px solid #1a1408;
-  background: var(--prop, #8b4513);
-  color: #1a1408;
+  background: var(--prop, #c6922e);
+  color: #fff;
   display: grid;
   place-items: center;
-  cursor: pointer;
-  box-shadow:
-    0 0 0 3px #f7f3e8,
-    2px 3px 0 rgba(0, 0, 0, 0.4);
-  text-decoration: none;
-  padding: 0;
-}
-
-.mono-node .mono-node-ring {
-  display: none;
-}
-
-.mono-node .mono-num {
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 900;
-  color: #fff;
   text-shadow: 0 1px 0 #1a1408;
-}
-
-.mono-node.locked {
-  filter: grayscale(0.55);
-  opacity: 0.7;
-}
-
-.mono-node.done {
   box-shadow:
-    0 0 0 3px #e2b84a,
+    0 0 0 2px #d8c9a0,
+    2px 3px 0 rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+}
+
+.ws-street-label {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 0.52rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #f3efe4;
+  background: rgba(14, 20, 28, 0.82);
+  border: 1px solid rgba(198, 161, 91, 0.55);
+  padding: 0.12rem 0.35rem;
+  border-radius: 0.2rem;
+  pointer-events: none;
+  max-width: 7.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ws-street-label.above {
+  bottom: calc(100% + 0.55rem);
+}
+
+.ws-street-label.below {
+  top: calc(100% + 0.55rem);
+}
+
+.ws-node.locked {
+  opacity: 0.72;
+}
+
+.ws-node.locked .ws-node-dot {
+  filter: grayscale(0.45);
+}
+
+.ws-node.done .ws-node-dot {
+  box-shadow:
+    0 0 0 2px #e2b84a,
     0 0 12px rgba(226, 184, 74, 0.55),
     2px 3px 0 rgba(0, 0, 0, 0.4);
 }
 
-.mono-node.unlocked:hover {
-  transform: translate(-50%, -50%) scale(1.1);
+.ws-node.unlocked:hover .ws-node-dot {
+  transform: scale(1.1);
 }
 
-.mono-side {
+.ws-side {
   position: absolute;
   transform: translate(-50%, -50%);
-  width: 1.55rem;
-  height: 1.55rem;
-  border-radius: 999px;
+  width: 1.45rem;
+  height: 1.45rem;
+  border-radius: 0.25rem;
   border: 2px solid #1a1408;
   background: #ff8c42;
   color: #1a1408;
   display: grid;
   place-items: center;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 900;
   text-decoration: none;
   box-shadow: 1px 1px 0 #1a1408;
 }
 
-.mono-side.is-chest {
+.ws-side.is-chest {
   background: #e2b84a;
+  border-radius: 0.2rem;
 }
 
-.mono-side.done {
-  opacity: 0.55;
+.ws-side.done {
+  opacity: 0.5;
 }
 
-.mono-coin {
+.ws-coin {
   position: absolute;
   transform: translate(-50%, -50%);
   filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.45));
@@ -301,33 +256,25 @@ a {
   pointer-events: none;
 }
 
-.mono-coin-svg {
+.ws-coin-svg {
   display: block;
 }
 
-@keyframes landmark-pulse {
-  0%,
-  100% {
-    transform: translate(-50%, -50%) scale(1);
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1.06);
-  }
-}
-
 @media (max-width: 640px) {
-  .mono-world {
+  .ws-map {
     aspect-ratio: 5 / 4;
   }
-  .mono-node {
-    width: 1.85rem;
-    height: 1.85rem;
+  .ws-node-dot {
+    width: 1.7rem;
+    height: 1.7rem;
+    font-size: 0.62rem;
   }
-  .mono-landmark {
+  .ws-street-label {
     font-size: 0.42rem;
-    padding: 0.15rem 0.25rem;
+    max-width: 5.2rem;
+    padding: 0.08rem 0.25rem;
   }
-  .mono-coin-svg {
+  .ws-coin-svg {
     width: 38px;
     height: 38px;
   }

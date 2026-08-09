@@ -4,7 +4,7 @@ import type { SideQuest } from "@/lib/types";
 export const SIDEQUESTS: SideQuest[] = [
   {
     id: "sq-bank-loan",
-    title: "Castle Bank Credit Line",
+    title: "Credit Desk Line",
     kind: "bank-loan",
     summary: "Borrow at a fair rate to fund a researched opportunity — or overextend.",
     risk: "medium",
@@ -35,7 +35,7 @@ export const SIDEQUESTS: SideQuest[] = [
   },
   {
     id: "sq-shark-loan",
-    title: "Harbor Shark Note",
+    title: "Alley Shark Note",
     kind: "shark-loan",
     summary: "A street lender offers fast cash at brutal terms.",
     risk: "high",
@@ -59,7 +59,7 @@ export const SIDEQUESTS: SideQuest[] = [
   },
   {
     id: "sq-buy-company",
-    title: "Acquire Brightforge Co.",
+    title: "Acquire Brightforge",
     kind: "buy-company",
     summary: "A small manufacturer is for sale — diligence or vanity?",
     risk: "high",
@@ -85,7 +85,7 @@ export const SIDEQUESTS: SideQuest[] = [
   },
   {
     id: "sq-reit",
-    title: "Coastal REIT Coupon",
+    title: "REIT Coupon Desk",
     kind: "reit",
     summary: "Listed property exposure with rate sensitivity.",
     risk: "medium",
@@ -110,7 +110,7 @@ export const SIDEQUESTS: SideQuest[] = [
   },
   {
     id: "sq-stock-trade",
-    title: "Brief Equity Skirmish",
+    title: "Equity Pit Skirmish",
     kind: "stock-trade",
     summary: "Use the stock candle chart to decide a short swing.",
     risk: "medium",
@@ -135,7 +135,7 @@ export const SIDEQUESTS: SideQuest[] = [
   },
   {
     id: "sq-forex-trade",
-    title: "FX Candle Crossing",
+    title: "FX Tape Crossing",
     kind: "forex-trade",
     summary: "Read forex candles before risking pip capital.",
     risk: "high",
@@ -160,7 +160,7 @@ export const SIDEQUESTS: SideQuest[] = [
   },
   {
     id: "sq-commodity",
-    title: "Copper Caravan",
+    title: "Copper Trading Desk",
     kind: "commodity",
     summary: "Industrial metal bet tied to growth expectations.",
     risk: "medium",
@@ -184,7 +184,7 @@ export const SIDEQUESTS: SideQuest[] = [
   },
   {
     id: "sq-bond",
-    title: "Duration Gate",
+    title: "Duration Desk",
     kind: "bond",
     summary: "Choose bond duration into a possible hike.",
     risk: "low",
@@ -208,7 +208,7 @@ export const SIDEQUESTS: SideQuest[] = [
   },
   {
     id: "sq-etf",
-    title: "Index Banner Raise",
+    title: "Index Tape Raise",
     kind: "etf",
     summary: "Core vs satellite — keep costs and drift in check.",
     risk: "low",
@@ -232,7 +232,7 @@ export const SIDEQUESTS: SideQuest[] = [
   },
   {
     id: "sq-real-estate",
-    title: "Riverfront Lot Deed",
+    title: "Lot Deed Filing",
     kind: "real-estate",
     summary: "Direct property speculation vs REIT liquidity.",
     risk: "high",
@@ -257,7 +257,7 @@ export const SIDEQUESTS: SideQuest[] = [
   },
   {
     id: "sq-industry",
-    title: "Semiconductor Supply Shock",
+    title: "Chip Supply Shock",
     kind: "industry",
     summary: "Sector event — capacity, geopolitics, and customers.",
     risk: "medium",
@@ -283,7 +283,7 @@ export const SIDEQUESTS: SideQuest[] = [
   },
   {
     id: "sq-insurance-float",
-    title: "Underwriter's Float",
+    title: "Underwriter Float",
     kind: "industry",
     summary: "An insurer's float looks investable — until claims spike.",
     risk: "medium",
@@ -307,7 +307,7 @@ export const SIDEQUESTS: SideQuest[] = [
   },
   {
     id: "sq-chest-3",
-    title: "Bronze Wealth Chest",
+    title: "Bronze Vault Chest",
     kind: "super-chest",
     summary: "Solve a valuation riddle for 3 gold bars.",
     risk: "low",
@@ -332,7 +332,7 @@ export const SIDEQUESTS: SideQuest[] = [
   },
   {
     id: "sq-chest-5",
-    title: "Silver Wealth Chest",
+    title: "Silver Vault Chest",
     kind: "super-chest",
     summary: "Macro + FX puzzle for 5 gold bars.",
     risk: "medium",
@@ -358,7 +358,7 @@ export const SIDEQUESTS: SideQuest[] = [
   },
   {
     id: "sq-chest-10",
-    title: "Gold Sovereign Chest",
+    title: "Gold Vault Chest",
     kind: "super-chest",
     summary: "Mandate ethics trial for 10 gold bars.",
     risk: "high",

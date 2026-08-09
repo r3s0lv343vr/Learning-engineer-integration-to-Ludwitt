@@ -5,9 +5,8 @@ import { useMemo, useState } from "react";
 import { MODULES } from "@/lib/content/modules";
 import { SIDEQUESTS } from "@/lib/content/sidequests";
 import {
-  WORLD_ISLANDS,
-  WORLD_LANDMARKS,
-  chancePilePosition,
+  CITY_BLOCKS,
+  STREET_GRID,
   moduleBoardPosition,
   modulePathPoints,
   propertyColor,
@@ -34,74 +33,114 @@ export function QuestMap({ state }: { state: GameState }) {
 
   return (
     <div className="space-y-3">
-      <div className="mono-world" role="img" aria-label="Monopoly World quest map">
+      <div className="ws-map" role="img" aria-label="Wall Street quest map">
         <svg
-          className="mono-world-svg"
+          className="ws-map-svg"
           viewBox="0 0 100 100"
           preserveAspectRatio="xMidYMid slice"
           aria-hidden
         >
           <defs>
-            <pattern id="sea-grid" width="4" height="4" patternUnits="userSpaceOnUse">
+            <linearGradient id="harbor" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#1a3a52" />
+              <stop offset="55%" stopColor="#234e6d" />
+              <stop offset="100%" stopColor="#163246" />
+            </linearGradient>
+            <pattern id="water-ripple" width="6" height="6" patternUnits="userSpaceOnUse">
               <path
-                d="M0 2 H4 M2 0 V4"
-                stroke="rgba(255,255,255,0.07)"
-                strokeWidth="0.15"
+                d="M0 3 Q1.5 2 3 3 T6 3"
+                fill="none"
+                stroke="rgba(180,210,230,0.12)"
+                strokeWidth="0.2"
               />
             </pattern>
-            <linearGradient id="sea-grad" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#1a5f9e" />
-              <stop offset="45%" stopColor="#1470b8" />
-              <stop offset="100%" stopColor="#0d4a7a" />
-            </linearGradient>
-            <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="0" dy="0.4" stdDeviation="0.35" floodOpacity="0.35" />
+            <pattern id="stone" width="3" height="3" patternUnits="userSpaceOnUse">
+              <rect width="3" height="3" fill="#2a3340" />
+              <path d="M0 3 H3 M3 0 V3" stroke="rgba(255,255,255,0.04)" strokeWidth="0.15" />
+            </pattern>
+            <filter id="block-shadow" x="-10%" y="-10%" width="130%" height="130%">
+              <feDropShadow dx="0.3" dy="0.5" stdDeviation="0.35" floodOpacity="0.45" />
             </filter>
           </defs>
 
-          {/* Ocean */}
-          <rect width="100" height="100" fill="url(#sea-grad)" />
-          <rect width="100" height="100" fill="url(#sea-grid)" />
-          {/* Soft wave bands */}
+          {/* Harbor */}
+          <rect width="100" height="100" fill="url(#harbor)" />
+          <rect width="100" height="100" fill="url(#water-ripple)" />
+
+          {/* Manhattan tip landmass */}
           <path
-            d="M0,22 Q25,18 50,22 T100,22 V28 Q75,24 50,28 T0,28 Z"
-            fill="rgba(255,255,255,0.04)"
+            d="M10,20 C22,12 40,10 58,12 C78,14 94,22 96,40 C98,58 92,78 78,90 C62,98 38,98 22,92 C10,86 6,70 6,52 C6,36 8,26 10,20 Z"
+            fill="#1e2633"
+            stroke="#c6a15b"
+            strokeWidth="0.45"
           />
           <path
-            d="M0,55 Q25,51 50,55 T100,55 V61 Q75,57 50,61 T0,61 Z"
-            fill="rgba(255,255,255,0.035)"
+            d="M14,24 C26,16 42,15 58,17 C74,19 88,26 90,40 C92,56 86,74 74,84 C58,92 38,92 24,86 C14,80 11,64 11,50 C11,36 12,28 14,24 Z"
+            fill="url(#stone)"
           />
 
-          {/* Islands */}
-          {WORLD_ISLANDS.map((isle) => (
-            <g key={isle.id} filter="url(#soft)">
-              <path d={isle.d} fill={isle.shore} transform="translate(0.6 0.9)" />
-              <path d={isle.d} fill={isle.fill} stroke="#1a1408" strokeWidth="0.35" />
-              {/* grass speckles */}
-              <path
-                d={isle.d}
-                fill="rgba(255,255,255,0.06)"
-                transform="translate(-0.2 -0.3) scale(0.98)"
-                style={{ transformOrigin: "50% 50%" }}
+          {/* Building blocks */}
+          {CITY_BLOCKS.map((b) => (
+            <g key={b.id} filter="url(#block-shadow)">
+              <rect
+                x={b.x}
+                y={b.y}
+                width={b.w}
+                height={b.h}
+                rx="0.4"
+                fill={b.fill}
+                stroke="#1a1408"
+                strokeWidth="0.25"
               />
+              {/* window grid */}
+              <path
+                d={`M${b.x + 1.2},${b.y + 2} H${b.x + b.w - 1.2} M${b.x + 1.2},${b.y + b.h / 2} H${b.x + b.w - 1.2} M${b.x + 1.2},${b.y + b.h - 2} H${b.x + b.w - 1.2}`}
+                stroke="rgba(226,184,74,0.18)"
+                strokeWidth="0.2"
+              />
+              {b.id === "exchange" && (
+                <text
+                  x={b.x + b.w / 2}
+                  y={b.y + b.h / 2 + 1}
+                  textAnchor="middle"
+                  fontSize="2.2"
+                  fill="#e2b84a"
+                  fontFamily="Georgia, serif"
+                  fontWeight="700"
+                >
+                  NYSE
+                </text>
+              )}
             </g>
           ))}
 
-          {/* Path — Mario-style white track with dark outline */}
+          {/* Faint street grid */}
+          {STREET_GRID.map((s, i) => (
+            <line
+              key={i}
+              x1={s.x1}
+              y1={s.y1}
+              x2={s.x2}
+              y2={s.y2}
+              stroke="rgba(198,161,91,0.18)"
+              strokeWidth="0.35"
+            />
+          ))}
+
+          {/* Quest street path */}
           <path
             d={pathD}
             fill="none"
             stroke="#1a1408"
-            strokeWidth="3.2"
+            strokeWidth="3.4"
             strokeLinecap="round"
             strokeLinejoin="round"
-            opacity="0.9"
           />
           <path
             d={pathD}
             fill="none"
-            stroke="#f7f3e8"
-            strokeWidth="2.1"
+            stroke="#d8c9a0"
+            strokeWidth="2.2"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
@@ -109,64 +148,38 @@ export function QuestMap({ state }: { state: GameState }) {
             d={pathD}
             fill="none"
             stroke="#1a1408"
-            strokeWidth="0.35"
-            strokeDasharray="1.4 1.1"
+            strokeWidth="0.3"
+            strokeDasharray="1.2 1.0"
             strokeLinecap="round"
             opacity="0.55"
           />
 
-          {/* Tiny trees / houses decoration */}
-          <g opacity="0.85">
-            <ellipse cx="18" cy="70" rx="1.2" ry="1.4" fill="#2d6b32" />
-            <ellipse cx="40" cy="90" rx="1.1" ry="1.3" fill="#2d6b32" />
-            <ellipse cx="84" cy="52" rx="1.2" ry="1.4" fill="#2d6b32" />
-            <ellipse cx="54" cy="14" rx="1.1" ry="1.3" fill="#2d6b32" />
-            <rect x="79" y="28" width="2.2" height="2.8" fill="#c0392b" stroke="#1a1408" strokeWidth="0.2" />
-            <rect x="81.5" y="30" width="1.6" height="2" fill="#e74c3c" stroke="#1a1408" strokeWidth="0.2" />
-          </g>
+          {/* Small pier / bull tips */}
+          <rect x="4" y="78" width="8" height="1.2" fill="#6b5a3a" />
+          <rect x="88" y="30" width="8" height="1.2" fill="#6b5a3a" />
         </svg>
 
-        {/* Landmarks */}
-        {WORLD_LANDMARKS.map((lm) => (
-          <div
-            key={lm.id}
-            className={`mono-landmark mono-landmark-${lm.kind}`}
-            style={{ left: `${lm.x}%`, top: `${lm.y}%` }}
-            title={lm.label}
-          >
-            {lm.kind === "tower" ? "◆" : lm.kind === "hotel" ? "⌂" : lm.kind === "rail" ? "▣" : lm.label}
-          </div>
-        ))}
-
-        {/* Chance / Community Chest piles */}
-        <div
-          className="mono-pile chance"
-          style={{
-            left: `${chancePilePosition("chance").x}%`,
-            top: `${chancePilePosition("chance").y}%`,
-          }}
-        >
-          Chance
-        </div>
-        <div
-          className="mono-pile chest"
-          style={{
-            left: `${chancePilePosition("chest").x}%`,
-            top: `${chancePilePosition("chest").y}%`,
-          }}
-        >
-          Chest
-        </div>
-
-        {/* Module nodes — property colored dots on the path */}
+        {/* Quest nodes with street names */}
         {MODULES.map((m, i) => {
           const pos = moduleBoardPosition(i);
           const done = state.completedModules.includes(m.id);
           const unlocked = state.unlockedModules.includes(m.id) || done;
           const color = propertyColor(i);
-          const className = `mono-node z-20 ${done ? "done" : ""} ${
+          const labelAbove = i % 2 === 0;
+          const className = `ws-node z-20 ${done ? "done" : ""} ${
             unlocked ? "unlocked" : "locked"
           }`;
+
+          const body = (
+            <>
+              <span className="ws-node-dot" style={{ ["--prop" as string]: color }}>
+                {m.number}
+              </span>
+              <span className={`ws-street-label ${labelAbove ? "above" : "below"}`}>
+                {m.mapLabel}
+              </span>
+            </>
+          );
 
           if (unlocked) {
             return (
@@ -174,16 +187,11 @@ export function QuestMap({ state }: { state: GameState }) {
                 key={m.id}
                 href={`/quest/${m.id}`}
                 className={`${className} pulse`}
-                style={{
-                  left: `${pos.x}%`,
-                  top: `${pos.y}%`,
-                  ["--prop" as string]: color,
-                }}
+                style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
                 title={`${m.number}. ${m.title}`}
                 aria-label={`${m.number}. ${m.title}`}
               >
-                <span className="mono-node-ring" />
-                <span className="mono-num">{m.number}</span>
+                {body}
               </Link>
             );
           }
@@ -193,37 +201,32 @@ export function QuestMap({ state }: { state: GameState }) {
               key={m.id}
               type="button"
               className={className}
-              style={{
-                left: `${pos.x}%`,
-                top: `${pos.y}%`,
-                ["--prop" as string]: color,
-              }}
+              style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
               title={`Locked — complete module ${m.number - 1} first`}
               aria-label={`${m.number}. ${m.title} (locked)`}
               onClick={() =>
                 setToast(
-                  `Property ${m.number} “${m.title}” is locked. Clear Module ${
+                  `Quest “${m.mapLabel}” (${m.title}) is locked. Clear Module ${
                     m.number - 1
-                  } to unlock this syllabus quest.`,
+                  } to unlock this street.`,
                 )
               }
             >
-              <span className="mono-node-ring" />
-              <span className="mono-num">{m.number}</span>
+              {body}
             </button>
           );
         })}
 
-        {/* Side quests on islets */}
+        {/* Side quests — alley deals */}
         {SIDEQUESTS.map((s, i) => {
-          const pos = sidequestBoardPosition(i, SIDEQUESTS.length);
+          const pos = sidequestBoardPosition(i);
           const done = state.completedSidequests.includes(s.id);
           const chest = s.kind === "super-chest";
           return (
             <Link
               key={s.id}
               href={`/sidequest/${s.id}`}
-              className={`mono-side z-10 ${chest ? "is-chest" : ""} ${done ? "done" : ""}`}
+              className={`ws-side z-10 ${chest ? "is-chest" : ""} ${done ? "done" : ""}`}
               style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
               title={s.title}
               aria-label={s.title}
@@ -235,8 +238,8 @@ export function QuestMap({ state }: { state: GameState }) {
 
         {/* Coin player token */}
         <div
-          className="mono-coin z-30"
-          style={{ left: `${coinPos.x}%`, top: `calc(${coinPos.y}% - 3.2%)` }}
+          className="ws-coin z-30"
+          style={{ left: `${coinPos.x}%`, top: `calc(${coinPos.y}% - 3.4%)` }}
           aria-label="Your coin token"
         >
           <CoinIcon />
@@ -247,7 +250,7 @@ export function QuestMap({ state }: { state: GameState }) {
         <div className="rounded-xl border border-[var(--path)]/40 bg-black/40 px-4 py-3 text-sm text-[var(--muted)]">
           {toast}{" "}
           <Link href="/quest/m1" className="text-[var(--accent)] underline">
-            Open Module 1 (GO)
+            Open Opening Bell
           </Link>
           <button
             type="button"
@@ -259,8 +262,8 @@ export function QuestMap({ state }: { state: GameState }) {
         </div>
       ) : (
         <p className="text-xs text-[var(--muted)]">
-          Monopoly World: sail the path from GO Bay to Boardwalk Tower. Colored
-          dots are syllabus properties. “?” = Chance side quests, ◆ = wealth
+          Wall Street map: walk the street from Opening Bell to Fund Mandate.
+          Street names are your syllabus quests. “?” = side deals, ◆ = vault
           chests. Your token is the gold coin.
         </p>
       )}
@@ -270,7 +273,7 @@ export function QuestMap({ state }: { state: GameState }) {
 
 function CoinIcon() {
   return (
-    <svg viewBox="0 0 64 64" width="48" height="48" aria-hidden className="mono-coin-svg">
+    <svg viewBox="0 0 64 64" width="48" height="48" aria-hidden className="ws-coin-svg">
       <ellipse cx="32" cy="36" rx="22" ry="10" fill="rgba(0,0,0,0.25)" />
       <ellipse cx="32" cy="34" rx="22" ry="22" fill="#a87820" />
       <ellipse cx="32" cy="30" rx="22" ry="22" fill="#e2b84a" />
