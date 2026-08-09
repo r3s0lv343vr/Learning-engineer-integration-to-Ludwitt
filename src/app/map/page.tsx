@@ -15,10 +15,10 @@ export default async function MapPage() {
       <section className="panel rounded-2xl p-4 sm:p-6">
         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h1 className="display text-3xl text-[var(--gold)]">Wall Street Map</h1>
+            <h1 className="display text-3xl text-[var(--gold)]">Global Quest Map</h1>
             <p className="mt-1 max-w-2xl text-[var(--muted)]">
-              Walk your coin through the financial district — every street name
-              is a syllabus quest, from Opening Bell to Fund Mandate.
+              Four fused districts — stone exchange, loft grid, tech bay, glass
+              wharf — with every street named for a syllabus quest.
             </p>
           </div>
           <div className="flex gap-2 text-sm">

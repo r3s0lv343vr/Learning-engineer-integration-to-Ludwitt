@@ -260,6 +260,62 @@ a {
   display: block;
 }
 
+.ws-district {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  pointer-events: none;
+  font-size: 0.55rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 0.2rem 0.45rem;
+  border: 1.5px solid #1a1408;
+  border-radius: 0.2rem;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
+  animation: bob 3.2s ease-in-out infinite;
+}
+
+.ws-district-wall-street {
+  background: #c6a15b;
+  color: #1a1408;
+}
+.ws-district-soho {
+  background: #e8a87c;
+  color: #1a1408;
+}
+.ws-district-nanshan {
+  background: #4ecdc4;
+  color: #0f2832;
+}
+.ws-district-canary {
+  background: #7eb6ff;
+  color: #0f1a28;
+}
+
+.ws-legend-chip {
+  border: 1px solid rgba(198, 161, 91, 0.35);
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+}
+.ws-legend-chip.wall {
+  border-color: rgba(198, 161, 91, 0.7);
+  color: #e2b84a;
+}
+.ws-legend-chip.soho {
+  border-color: rgba(232, 168, 124, 0.7);
+  color: #e8a87c;
+}
+.ws-legend-chip.nanshan {
+  border-color: rgba(78, 205, 196, 0.7);
+  color: #4ecdc4;
+}
+.ws-legend-chip.canary {
+  border-color: rgba(126, 182, 255, 0.7);
+  color: #7eb6ff;
+}
+
 @media (max-width: 640px) {
   .ws-map {
     aspect-ratio: 5 / 4;
@@ -273,6 +329,10 @@ a {
     font-size: 0.42rem;
     max-width: 5.2rem;
     padding: 0.08rem 0.25rem;
+  }
+  .ws-district {
+    font-size: 0.42rem;
+    padding: 0.12rem 0.3rem;
   }
   .ws-coin-svg {
     width: 38px;
