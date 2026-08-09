@@ -15,10 +15,11 @@ export default async function MapPage() {
       <section className="panel rounded-2xl p-4 sm:p-6">
         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h1 className="display text-3xl text-[var(--gold)]">Quest Map</h1>
+            <h1 className="display text-3xl text-[var(--gold)]">Questfolio Board</h1>
             <p className="mt-1 max-w-2xl text-[var(--muted)]">
-              Square snake path: Modules 1→18. Complete a module to unlock the
-              next. Side quests (✦) and wealth chests (◆) sit on the outer frame.
+              Monopoly-style board: move your coin clockwise from GO through 18
+              property quests. “?” side quests and ◆ wealth chests sit inside the
+              board.
             </p>
           </div>
           <div className="flex gap-2 text-sm">
