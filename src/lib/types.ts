@@ -130,7 +130,7 @@ export interface SideQuest {
   capitalDeltaSuccess: number;
   capitalDeltaFail: number;
   goldReward?: number;
-  chestGold?: 3 | 5 | 10;
+  chestGold?: 1 | 2 | 3 | 5 | 10;
   prompt: string;
   choices: { label: string; success: boolean; feedback: string }[];
   x: number;

@@ -15,11 +15,10 @@ export default async function MapPage() {
       <section className="panel rounded-2xl p-4 sm:p-6">
         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h1 className="display text-3xl text-[var(--gold)]">Quest City Map</h1>
+            <h1 className="display text-3xl text-[var(--gold)]">Investment Map</h1>
             <p className="mt-1 max-w-2xl text-[var(--muted)]">
-              Painted city poster over live Lower Manhattan streets — Wall
-              Street, SoHo, tech bay, and dock towers fused as one. Pins are
-              quests.
+              Enter glowing portals, walk the white pathway stones, and claim
+              treasure chests. Your token is the gold coin.
             </p>
           </div>
           <div className="flex gap-2 text-sm">

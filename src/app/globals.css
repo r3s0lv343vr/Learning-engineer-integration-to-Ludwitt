@@ -317,8 +317,170 @@ a {
   animation: bob 2.2s ease-in-out infinite;
   pointer-events: none;
 }
-.hybrid-coin-svg {
+
+/* Investment Map 2 — portals, stones, chests, HUD */
+.invest-map-2 {
+  background: #0d3a5c;
+}
+
+.portal-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.8rem;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.35));
+}
+
+.portal-pin .portal-svg {
   display: block;
+  filter: drop-shadow(0 0 6px currentColor);
+}
+
+.portal-pin.locked {
+  opacity: 0.62;
+  filter: grayscale(0.35) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+.portal-pin.done {
+  filter: drop-shadow(0 0 12px rgba(226, 184, 74, 0.85));
+}
+
+.portal-pin.unlocked:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.path-stone {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 999px;
+  border: 2px solid #1a1408;
+  background: #f7f3e8;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+  padding: 0;
+  cursor: pointer;
+}
+
+.path-stone.open {
+  background: #e2b84a;
+  box-shadow: 0 0 8px rgba(226, 184, 74, 0.75);
+}
+
+.path-stone.sealed {
+  opacity: 0.55;
+}
+
+.path-stone:hover {
+  transform: translate(-50%, -50%) scale(1.15);
+}
+
+.map-chest {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.4));
+  animation: bob 2.8s ease-in-out infinite;
+  z-index: 15;
+}
+
+.map-chest.done {
+  opacity: 0.45;
+  filter: grayscale(0.4);
+}
+
+.map-chest:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.map-deal {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 0.2rem;
+  border: 2px solid #1a1408;
+  background: #ff8c42;
+  color: #1a1408;
+  display: grid;
+  place-items: center;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-decoration: none;
+  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.35);
+}
+
+.map-deal.done {
+  opacity: 0.4;
+}
+
+.map-hud {
+  position: absolute;
+  left: 0.65rem;
+  bottom: 0.65rem;
+  z-index: 40;
+  display: flex;
+  gap: 0.45rem;
+}
+
+.map-hud-btn {
+  width: 3.1rem;
+  height: 3.1rem;
+  border-radius: 999px;
+  border: 2.5px solid #c6a15b;
+  background: radial-gradient(circle at 35% 30%, #2a3544, #121820);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.05rem;
+  text-decoration: none;
+  color: #f7f3e8;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
+  transition: transform 140ms ease;
+}
+
+.map-hud-btn span {
+  font-size: 0.42rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.map-hud-btn:hover {
+  transform: translateY(-2px) scale(1.04);
+}
+
+.map-hud-btn.hue-purple {
+  box-shadow: 0 0 0 2px rgba(124, 77, 255, 0.45), 0 4px 10px rgba(0, 0, 0, 0.45);
+}
+.map-hud-btn.hue-blue {
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.45), 0 4px 10px rgba(0, 0, 0, 0.45);
+}
+.map-hud-btn.hue-green {
+  box-shadow: 0 0 0 2px rgba(67, 160, 71, 0.45), 0 4px 10px rgba(0, 0, 0, 0.45);
+}
+.map-hud-btn.hue-red {
+  box-shadow: 0 0 0 2px rgba(229, 57, 53, 0.45), 0 4px 10px rgba(0, 0, 0, 0.45);
+}
+
+.map-compass {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  z-index: 35;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
 }
 
 @media (max-width: 640px) {
@@ -337,9 +499,20 @@ a {
   .hybrid-hood {
     font-size: 0.42rem;
   }
-  .hybrid-coin-svg {
-    width: 36px;
-    height: 36px;
+  .map-hud-btn {
+    width: 2.55rem;
+    height: 2.55rem;
+  }
+  .map-hud-btn span {
+    display: none;
+  }
+  .compass-rose-svg {
+    width: 52px;
+    height: 52px;
+  }
+  .portal-pin .portal-svg {
+    width: 30px;
+    height: 35px;
   }
 }
 

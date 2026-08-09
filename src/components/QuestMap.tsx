@@ -6,13 +6,24 @@ import { useMemo, useState } from "react";
 import { MODULES } from "@/lib/content/modules";
 import { SIDEQUESTS } from "@/lib/content/sidequests";
 import {
-  NEIGHBORHOODS,
-  districtForModule,
+  CHEST_MARKERS,
+  MAP_HUD_ICONS,
   moduleBoardPosition,
   modulePathPoints,
-  propertyColor,
+  pathwayStones,
+  portalColor,
   sidequestBoardPosition,
 } from "@/lib/content/map-layout";
+import {
+  CoinIcon,
+  CompassRose,
+  HudBookIcon,
+  HudCompassIcon,
+  HudFlagIcon,
+  HudScrollIcon,
+  PortalArchIcon,
+  TreasureChestIcon,
+} from "@/components/MapIcons";
 import type { GameState } from "@/lib/types";
 
 const RealBasemap = dynamic(
@@ -20,13 +31,23 @@ const RealBasemap = dynamic(
   { ssr: false, loading: () => <div className="hybrid-leaflet-fallback" /> },
 );
 
+const HUD_ICON = {
+  book: HudBookIcon,
+  scroll: HudScrollIcon,
+  compass: HudCompassIcon,
+  flag: HudFlagIcon,
+} as const;
+
 export function QuestMap({ state }: { state: GameState }) {
   const [toast, setToast] = useState<string | null>(null);
-  const [showStreets, setShowStreets] = useState(true);
-  const [posterStrength, setPosterStrength] = useState(0.78);
+  const [showStreets, setShowStreets] = useState(false);
+  const [posterStrength, setPosterStrength] = useState(1);
 
   const path = useMemo(() => modulePathPoints(), []);
   const pathD = path.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ");
+  const stones = useMemo(() => pathwayStones(), []);
+
+  const doneCount = state.completedModules.length;
 
   const coinPos = useMemo(() => {
     const unlockedIdx = MODULES.findIndex(
@@ -34,11 +55,40 @@ export function QuestMap({ state }: { state: GameState }) {
         state.unlockedModules.includes(m.id) &&
         !state.completedModules.includes(m.id),
     );
-    const doneCount = state.completedModules.length;
     const useIdx =
       unlockedIdx >= 0 ? unlockedIdx : Math.min(Math.max(doneCount - 1, 0), 17);
     return moduleBoardPosition(useIdx);
+  }, [state, doneCount]);
+
+  const nextModuleHref = useMemo(() => {
+    const unlocked = MODULES.find(
+      (m) =>
+        state.unlockedModules.includes(m.id) &&
+        !state.completedModules.includes(m.id),
+    );
+    return `/quest/${unlocked?.id ?? "m1"}`;
   }, [state]);
+
+  const sideDeals = useMemo(
+    () => SIDEQUESTS.filter((s) => s.kind !== "super-chest"),
+    [],
+  );
+
+  function onStoneClick(segment: number) {
+    const from = MODULES[segment];
+    const to = MODULES[segment + 1];
+    if (!to) return;
+    const unlocked =
+      state.unlockedModules.includes(to.id) ||
+      state.completedModules.includes(to.id);
+    if (unlocked) {
+      setToast(`Pathway open: ${from.mapLabel} → ${to.mapLabel}. Enter the portal.`);
+    } else {
+      setToast(
+        `Pathway sealed. Clear “${from.mapLabel}” (Module ${from.number}) to open the road to “${to.mapLabel}”.`,
+      );
+    }
+  }
 
   return (
     <div className="space-y-3">
@@ -66,11 +116,10 @@ export function QuestMap({ state }: { state: GameState }) {
       </div>
 
       <div
-        className="hybrid-map"
+        className="hybrid-map invest-map-2"
         role="img"
-        aria-label="Illustrated quest city over a real street basemap"
+        aria-label="Investment Map 2 — portals, pathways, treasure chests"
       >
-        {/* Layer 1 — real OSM/Carto streets (Lower Manhattan) */}
         <div
           className="hybrid-basemap"
           style={{ opacity: showStreets ? 1 : 0 }}
@@ -79,21 +128,12 @@ export function QuestMap({ state }: { state: GameState }) {
           <RealBasemap />
         </div>
 
-        {/* Layer 2 — painted poster blending four district vibes */}
-        <div
-          className="hybrid-poster"
-          style={{ opacity: posterStrength }}
-          aria-hidden
-        >
+        <div className="hybrid-poster" style={{ opacity: posterStrength }} aria-hidden>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/maps/quest-city-poster.png"
-            alt=""
-            draggable={false}
-          />
+          <img src="/maps/investment-map-2-poster.png" alt="" draggable={false} />
         </div>
 
-        {/* Layer 3 — quest path + pins */}
+        {/* Operationalized pathway stroke */}
         <svg
           className="hybrid-path"
           viewBox="0 0 100 100"
@@ -103,48 +143,55 @@ export function QuestMap({ state }: { state: GameState }) {
           <path
             d={pathD}
             fill="none"
-            stroke="rgba(26,20,8,0.55)"
-            strokeWidth="2.2"
+            stroke="rgba(26,20,8,0.45)"
+            strokeWidth="2.4"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
           <path
             d={pathD}
             fill="none"
-            stroke="#f0d27a"
-            strokeWidth="1.15"
+            stroke="#f7f3e8"
+            strokeWidth="1.35"
             strokeLinecap="round"
             strokeLinejoin="round"
-            strokeDasharray="1.4 0.9"
           />
         </svg>
 
-        {NEIGHBORHOODS.map((n) => (
-          <div
-            key={n.id}
-            className={`hybrid-hood hybrid-hood-${n.id}`}
-            style={{ left: `${n.x}%`, top: `${n.y}%` }}
-          >
-            {n.hubQuest}
-          </div>
-        ))}
+        {/* White stepping-stone pathway nodes */}
+        {stones.map((stone) => {
+          const open = doneCount > stone.segment;
+          return (
+            <button
+              key={stone.id}
+              type="button"
+              className={`path-stone z-10 ${open ? "open" : "sealed"}`}
+              style={{ left: `${stone.x}%`, top: `${stone.y}%` }}
+              title={
+                open
+                  ? `Open pathway segment ${stone.segment + 1}`
+                  : `Sealed — finish module ${stone.segment + 1}`
+              }
+              aria-label={`Pathway stone ${stone.id}`}
+              onClick={() => onStoneClick(stone.segment)}
+            />
+          );
+        })}
 
+        {/* Glowing portal arches = syllabus quests */}
         {MODULES.map((m, i) => {
           const pos = moduleBoardPosition(i);
           const done = state.completedModules.includes(m.id);
           const unlocked = state.unlockedModules.includes(m.id) || done;
-          const color = propertyColor(i);
-          const district = districtForModule(i);
+          const color = portalColor(i);
           const labelAbove = i % 2 === 0;
-          const className = `hybrid-pin z-20 district-${district} ${done ? "done" : ""} ${
+          const className = `portal-pin z-20 ${done ? "done" : ""} ${
             unlocked ? "unlocked" : "locked"
           }`;
 
           const body = (
             <>
-              <span className="hybrid-pin-dot" style={{ ["--prop" as string]: color }}>
-                {m.number}
-              </span>
+              <PortalArchIcon color={color} number={m.number} />
               <span className={`hybrid-pin-label ${labelAbove ? "above" : "below"}`}>
                 {m.mapLabel}
               </span>
@@ -175,7 +222,9 @@ export function QuestMap({ state }: { state: GameState }) {
               title={`Locked — complete module ${m.number - 1} first`}
               aria-label={`${m.number}. ${m.title} (locked)`}
               onClick={() =>
-                setToast(`“${m.mapLabel}” is locked. Finish Module ${m.number - 1} first.`)
+                setToast(
+                  `Portal “${m.mapLabel}” is sealed. Clear Module ${m.number - 1} to enter.`,
+                )
               }
             >
               {body}
@@ -183,38 +232,85 @@ export function QuestMap({ state }: { state: GameState }) {
           );
         })}
 
-        {SIDEQUESTS.map((s, i) => {
-          const pos = sidequestBoardPosition(i);
-          const done = state.completedSidequests.includes(s.id);
-          const chest = s.kind === "super-chest";
+        {/* Treasure chests ×12 (≥10), operationalized */}
+        {CHEST_MARKERS.map((c) => {
+          const done = state.completedSidequests.includes(c.sidequestId);
           return (
             <Link
-              key={s.id}
-              href={`/sidequest/${s.id}`}
-              className={`hybrid-side z-10 ${chest ? "is-chest" : ""} ${done ? "done" : ""}`}
-              style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
-              title={s.title}
-              aria-label={s.title}
+              key={c.id}
+              href={`/sidequest/${c.sidequestId}`}
+              className={`map-chest ${done ? "done" : ""}`}
+              style={{ left: `${c.x}%`, top: `${c.y}%` }}
+              title="Wealth treasure chest"
+              aria-label="Wealth treasure chest"
             >
-              {chest ? "◆" : "?"}
+              <TreasureChestIcon />
             </Link>
           );
         })}
 
+        {/* Side-deal markers (scrolls) — non-chest */}
+        {sideDeals.map((s, i) => {
+          const pos = sidequestBoardPosition(i);
+          const done = state.completedSidequests.includes(s.id);
+          return (
+            <Link
+              key={s.id}
+              href={`/sidequest/${s.id}`}
+              className={`map-deal z-10 ${done ? "done" : ""}`}
+              style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
+              title={s.title}
+              aria-label={s.title}
+            >
+              ?
+            </Link>
+          );
+        })}
+
+        {/* Coin = user token */}
         <div
           className="hybrid-coin z-30"
-          style={{ left: `${coinPos.x}%`, top: `calc(${coinPos.y}% - 2.8%)` }}
+          style={{ left: `${coinPos.x}%`, top: `calc(${coinPos.y}% - 3.5%)` }}
           aria-label="Your coin token"
         >
           <CoinIcon />
+        </div>
+
+        {/* Bottom-left HUD icons — operationalized */}
+        <nav className="map-hud" aria-label="Map tools">
+          {MAP_HUD_ICONS.map((icon) => {
+            const Icon = HUD_ICON[icon.id];
+            const href =
+              icon.id === "book"
+                ? nextModuleHref
+                : icon.id === "scroll"
+                  ? `/sidequest/${sideDeals.find((s) => !state.completedSidequests.includes(s.id))?.id ?? sideDeals[0]?.id ?? "sq-bank-loan"}`
+                  : icon.href;
+            return (
+              <Link
+                key={icon.id}
+                href={href}
+                className={`map-hud-btn hue-${icon.hue}`}
+                title={icon.title}
+                aria-label={icon.label}
+              >
+                <Icon />
+                <span>{icon.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="map-compass" aria-hidden>
+          <CompassRose />
         </div>
       </div>
 
       {toast ? (
         <div className="rounded-xl border border-[var(--path)]/40 bg-black/40 px-4 py-3 text-sm text-[var(--muted)]">
           {toast}{" "}
-          <Link href="/quest/m1" className="text-[var(--accent)] underline">
-            Open Opening Bell
+          <Link href={nextModuleHref} className="text-[var(--accent)] underline">
+            Continue
           </Link>
           <button type="button" className="ml-3 text-xs underline" onClick={() => setToast(null)}>
             Dismiss
@@ -222,34 +318,11 @@ export function QuestMap({ state }: { state: GameState }) {
         </div>
       ) : (
         <p className="text-xs text-[var(--muted)]">
-          Painted city poster over live Lower Manhattan streets. Drag the
-          basemap to explore real geography; dial poster strength to let streets
-          show through. Pins are syllabus quests. Token: gold coin.
+          Investment Map 2: glowing portals are syllabus quests, white stones are
+          pathways, chests are wealth trials, coin is you. HUD: Book · Scroll ·
+          Compass · Flag.
         </p>
       )}
     </div>
-  );
-}
-
-function CoinIcon() {
-  return (
-    <svg viewBox="0 0 64 64" width="46" height="46" aria-hidden className="hybrid-coin-svg">
-      <ellipse cx="32" cy="36" rx="22" ry="10" fill="rgba(0,0,0,0.25)" />
-      <ellipse cx="32" cy="34" rx="22" ry="22" fill="#a87820" />
-      <ellipse cx="32" cy="30" rx="22" ry="22" fill="#e2b84a" />
-      <ellipse cx="32" cy="30" rx="16" ry="16" fill="#f0d27a" />
-      <ellipse cx="32" cy="30" rx="16" ry="16" fill="none" stroke="#a87820" strokeWidth="2" />
-      <text
-        x="32"
-        y="37"
-        textAnchor="middle"
-        fontSize="20"
-        fontWeight="800"
-        fill="#5b3a1e"
-        fontFamily="Georgia, serif"
-      >
-        $
-      </text>
-    </svg>
   );
 }
