@@ -99,3 +99,22 @@ npm install
 cp .env.example .env.local   # add Ludwitt + SESSION_SECRET
 npm run dev
 ```
+
+## Ludwitt Creator integration prompt (hosted-storage) — completed
+
+Implemented against Ludwitt's generated integration prompt:
+
+1. Docs ingested at `.ludwitt/` in the build repo
+2. Sign in with Ludwitt → authorize with scopes `profile credits:read credits:spend data:read data:write`
+3. Callback verifies `state`, exchanges code server-to-server, stores access + refresh tokens (httpOnly sealed cookie), reads userinfo (`sub`)
+4. Token refresh before expiry (single-use refresh rotation)
+5. Hosted-data sync for declared collections: `progress`, `portfolio`, `sessions`, `event_log`
+6. AI mentor via `POST /api/v1/ai/messages` (`POST /api/ai/mentor`), gated on `spendableCents`, handles HTTP 402 `INSUFFICIENT_PAID_CREDITS`
+7. Credits badge via `GET /api/v1/credits/balance` (`GET /api/credits`)
+
+Production verify (2026-08-09 redeploy):
+
+```text
+GET /auth/login → scope includes credits%3Aspend
+GET /api/health → ludwittConfigured:true
+```
