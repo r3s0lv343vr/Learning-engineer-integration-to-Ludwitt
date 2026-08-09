@@ -35,11 +35,11 @@ Open http://localhost:3000
 | Collections | `progress`, `portfolio`, `sessions`, `event_log` |
 | Redirect URIs | `http://localhost:3000/auth/callback` and `https://ai-investment-learning-r3s0lv343vr.vercel.app/auth/callback` |
 
-After **Create app**, copy:
+Registered app (Creator / hosted storage):
 
-- `client_id` → `LUDWITT_CLIENT_ID`
-- `client_secret` → `LUDWITT_CLIENT_SECRET`
-- app id / slug → `LUDWITT_APP_ID`
+- `LUDWITT_APP_ID` / `client_id`: `le_b752d5261268d3c7607fa2`
+- Slug: `ai-investment-learning-simulator`
+- Keep `LUDWITT_CLIENT_SECRET` only in Vercel / `.env.local` — never commit it
 
 ## Scripts
 
