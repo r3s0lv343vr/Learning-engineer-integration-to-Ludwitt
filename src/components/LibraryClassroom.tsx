@@ -178,7 +178,14 @@ export function LibraryClassroom({
             className="classroom-board"
             style={{ ["--slide-accent" as string]: slide.accent }}
           >
+            <div className="classroom-board-frame" aria-hidden>
+              <span className="corner tl" />
+              <span className="corner tr" />
+              <span className="corner bl" />
+              <span className="corner br" />
+            </div>
             <div className="classroom-board-inner">
+              <div className="classroom-board-seal" aria-hidden />
               <p className="classroom-board-kicker">Teaching board · PowerPoint lesson</p>
               <h1>{slide.title}</h1>
               {slide.subtitle && <p className="classroom-board-sub">{slide.subtitle}</p>}
@@ -286,6 +293,7 @@ export function LibraryClassroom({
           </section>
 
           <section className="classroom-quote">
+            <div className="classroom-quote-ink" aria-hidden />
             <p>“{lesson.quote.text}”</p>
             <footer>— {lesson.quote.author}</footer>
           </section>
