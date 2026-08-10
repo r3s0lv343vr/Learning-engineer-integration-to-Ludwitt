@@ -3,6 +3,12 @@ import path from "path";
 import type { AreaId } from "@/lib/content/areas";
 import { CITY_LIBRARIES } from "@/lib/content/libraries";
 import {
+  deleteBlobUpload,
+  putBlobUpload,
+  readBlobCatalog,
+  writeBlobCatalog,
+} from "@/lib/library-blob";
+import {
   defaultClassroomRole,
   detectPlatform,
   inferKindFromFileName,
@@ -52,6 +58,10 @@ function catalogPaths(areaId: AreaId) {
 }
 
 async function readAreaCustom(areaId: AreaId): Promise<LibraryCatalogItem[]> {
+  const fromBlob = await readBlobCatalog(areaId);
+  if (fromBlob) {
+    return fromBlob.filter((i) => i && i.areaId === areaId && i.source !== "seed");
+  }
   for (const file of catalogPaths(areaId)) {
     try {
       const raw = await readFile(file, "utf8");
@@ -67,6 +77,8 @@ async function readAreaCustom(areaId: AreaId): Promise<LibraryCatalogItem[]> {
 
 async function writeAreaCustom(areaId: AreaId, items: LibraryCatalogItem[]) {
   const custom = items.filter((i) => i.source !== "seed" && i.areaId === areaId);
+  if (await writeBlobCatalog(areaId, custom)) return;
+
   const payload = JSON.stringify(custom, null, 2);
   const targets = [
     { dir: DATA_ROOT, file: path.join(DATA_ROOT, `${areaId}.json`) },
@@ -135,7 +147,31 @@ export async function addLibraryLink(input: {
   return item;
 }
 
-async function writeUploadBytes(areaId: AreaId, stored: string, bytes: Buffer) {
+function contentTypeFor(name: string) {
+  const lower = name.toLowerCase();
+  if (lower.endsWith(".pdf")) return "application/pdf";
+  if (lower.endsWith(".pptx"))
+    return "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+  if (lower.endsWith(".ppt")) return "application/vnd.ms-powerpoint";
+  if (lower.endsWith(".png")) return "image/png";
+  if (lower.endsWith(".jpg") || lower.endsWith(".jpeg")) return "image/jpeg";
+  if (lower.endsWith(".webp")) return "image/webp";
+  return "application/octet-stream";
+}
+
+async function writeUploadBytes(
+  areaId: AreaId,
+  stored: string,
+  bytes: Buffer,
+): Promise<{ href: string }> {
+  const blobUrl = await putBlobUpload(
+    areaId,
+    stored,
+    bytes,
+    contentTypeFor(stored),
+  );
+  if (blobUrl) return { href: blobUrl };
+
   const targets = [
     path.join(PUBLIC_UPLOAD_ROOT, areaId, "uploads", stored),
     path.join(TMP_UPLOAD_ROOT, areaId, stored),
@@ -145,7 +181,7 @@ async function writeUploadBytes(areaId: AreaId, stored: string, bytes: Buffer) {
     try {
       await mkdir(path.dirname(abs), { recursive: true });
       await writeFile(abs, bytes);
-      return abs;
+      return { href: `/api/library/file/${areaId}/${stored}` };
     } catch (err) {
       lastError = err;
     }
@@ -189,7 +225,7 @@ export async function addLibraryUpload(input: {
     .slice(0, 120);
   const stamp = Date.now();
   const stored = `${stamp}-${safeName}`;
-  await writeUploadBytes(input.areaId, stored, input.bytes);
+  const { href } = await writeUploadBytes(input.areaId, stored, input.bytes);
 
   const kind = input.kind || inferKindFromFileName(input.fileName);
   const item: LibraryCatalogItem = {
@@ -200,8 +236,7 @@ export async function addLibraryUpload(input: {
     description:
       input.description?.trim() ||
       `Uploaded ${libraryItemKindLabel(kind)} for ${input.areaId}`,
-    // Served via API so uploads work when public/ is read-only (e.g. Vercel).
-    href: `/api/library/file/${input.areaId}/${stored}`,
+    href,
     downloadName: safeName,
     source: "upload",
     createdAt: new Date().toISOString(),
@@ -226,11 +261,14 @@ export async function removeLibraryItem(
   if (target.source === "upload") {
     const stored =
       target.href.split(`/api/library/file/${areaId}/`)[1] ||
-      target.href.split(`/library/${areaId}/uploads/`)[1];
+      target.href.split(`/library/${areaId}/uploads/`)[1] ||
+      target.href.split(`/library-files/${areaId}/`)[1];
     if (stored) {
+      const base = path.basename(stored.split("?")[0] || stored);
+      await deleteBlobUpload(areaId, base);
       for (const abs of [
-        path.join(PUBLIC_UPLOAD_ROOT, areaId, "uploads", path.basename(stored)),
-        path.join(TMP_UPLOAD_ROOT, areaId, path.basename(stored)),
+        path.join(PUBLIC_UPLOAD_ROOT, areaId, "uploads", base),
+        path.join(TMP_UPLOAD_ROOT, areaId, base),
       ]) {
         try {
           await unlink(abs);
