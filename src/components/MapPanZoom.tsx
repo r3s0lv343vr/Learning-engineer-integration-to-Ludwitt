@@ -5,14 +5,16 @@ import {
   useEffect,
   useRef,
   useState,
+  type CSSProperties,
   type PointerEvent as ReactPointerEvent,
   type ReactNode,
 } from "react";
 
-const MIN_ZOOM = 0.8;
-const MAX_ZOOM = 2.4;
-const DEFAULT_ZOOM = 1.28;
-const ZOOM_STEP = 0.18;
+/** 1 = full poster fit (no letterbox). Higher = expanded city scale. */
+const MIN_ZOOM = 1;
+const MAX_ZOOM = 2.5;
+const DEFAULT_ZOOM = 1.35;
+const ZOOM_STEP = 0.2;
 const DRAG_THRESHOLD = 7;
 
 type Pan = { x: number; y: number };
@@ -159,9 +161,12 @@ export function MapPanZoom({
       >
         <div
           className="map-world"
-          style={{
-            transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
-          }}
+          style={
+            {
+              transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
+              ["--map-zoom" as string]: String(zoom),
+            } as React.CSSProperties
+          }
         >
           {children}
         </div>
