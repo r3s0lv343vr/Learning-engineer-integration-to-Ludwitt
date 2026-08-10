@@ -204,13 +204,13 @@ export function completeModule(state: GameState, moduleId: string): GameState {
   const gate = examAfterModule(moduleId);
   const unlocked = new Set([...state.unlockedModules, moduleId]);
   const unlockedExams = new Set(state.unlockedExams);
-  let activeQuestId = nextId;
+  // Portals unlock sequentially so the coin can advance city-by-city.
+  // Exams still unlock as checkpoints but no longer soft-lock the next portal.
+  if (nextId) unlocked.add(nextId);
   if (gate && !state.completedExams.includes(gate.id)) {
     unlockedExams.add(gate.id);
-    activeQuestId = gate.id;
-  } else if (nextId) {
-    unlocked.add(nextId);
   }
+  const coinIdx = nextId ? idx + 1 : Math.max(0, idx);
   let next = pushEvent(
     {
       ...state,
@@ -218,13 +218,13 @@ export function completeModule(state: GameState, moduleId: string): GameState {
       unlockedModules: Array.from(unlocked),
       unlockedExams: Array.from(unlockedExams),
       goldBars: state.goldBars + 1,
-      mapPosition: moduleGridPosition(Math.max(0, idx)),
-      activeQuestId,
+      mapPosition: moduleGridPosition(coinIdx),
+      activeQuestId: nextId,
       capital: state.capital + 250,
       cash: state.cash + 250,
     },
     "module_completed",
-    { moduleId, examUnlocked: gate?.id },
+    { moduleId, examUnlocked: gate?.id, nextModuleId: nextId },
   );
   next = pushEvent(next, "lesson_completed", { moduleId });
   next = pushEvent(next, "competency_demonstrated", { moduleId });

@@ -2,7 +2,16 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
+import { useRouter } from "next/navigation";
 import { MODULES } from "@/lib/content/modules";
 import { SIDEQUESTS } from "@/lib/content/sidequests";
 import { EXAMS } from "@/lib/content/exams";
@@ -30,7 +39,6 @@ import {
   TreasureChestIcon,
 } from "@/components/MapIcons";
 import { MapPanZoom } from "@/components/MapPanZoom";
-import type { CSSProperties } from "react";
 import type { GameState } from "@/lib/types";
 
 const RealBasemap = dynamic(
@@ -45,10 +53,20 @@ const HUD_ICON = {
   flag: HudFlagIcon,
 } as const;
 
+function clampPct(n: number) {
+  return Math.min(96, Math.max(4, n));
+}
+
 export function QuestMap({ state }: { state: GameState }) {
+  const router = useRouter();
   const [toast, setToast] = useState<string | null>(null);
   const [showStreets, setShowStreets] = useState(false);
   const [posterStrength, setPosterStrength] = useState(1);
+  const mapRef = useRef<HTMLDivElement>(null);
+  const coinDragRef = useRef<{
+    id: number;
+    moved: boolean;
+  } | null>(null);
 
   const unlockedExams = useMemo(
     () => state.unlockedExams ?? [],
@@ -64,7 +82,7 @@ export function QuestMap({ state }: { state: GameState }) {
   const stones = useMemo(() => pathwayStones(), []);
   const doneCount = state.completedModules.length;
 
-  const coinPos = useMemo(() => {
+  const defaultCoinPos = useMemo(() => {
     const unlockedIdx = MODULES.findIndex(
       (m) =>
         state.unlockedModules.includes(m.id) &&
@@ -77,17 +95,83 @@ export function QuestMap({ state }: { state: GameState }) {
     return moduleBoardPosition(useIdx);
   }, [state, doneCount]);
 
+  const [coinPos, setCoinPos] = useState(() => ({
+    x: state.mapPosition?.x ?? defaultCoinPos.x,
+    y: state.mapPosition?.y ?? defaultCoinPos.y,
+  }));
+
+  useEffect(() => {
+    if (state.mapPosition?.x != null && state.mapPosition?.y != null) {
+      setCoinPos({ x: state.mapPosition.x, y: state.mapPosition.y });
+      return;
+    }
+    setCoinPos(defaultCoinPos);
+  }, [state.mapPosition, defaultCoinPos]);
+
+  const persistCoin = useCallback(async (x: number, y: number) => {
+    await fetch("/api/state", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "move", x, y }),
+    });
+    router.refresh();
+  }, [router]);
+
+  function clientToPct(clientX: number, clientY: number) {
+    const el = mapRef.current;
+    if (!el) return null;
+    const rect = el.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return null;
+    return {
+      x: clampPct(((clientX - rect.left) / rect.width) * 100),
+      y: clampPct(((clientY - rect.top) / rect.height) * 100),
+    };
+  }
+
+  function onCoinPointerDown(e: ReactPointerEvent<HTMLButtonElement>) {
+    if (e.button !== 0) return;
+    e.stopPropagation();
+    coinDragRef.current = { id: e.pointerId, moved: false };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  }
+
+  function onCoinPointerMove(e: ReactPointerEvent<HTMLButtonElement>) {
+    const d = coinDragRef.current;
+    if (!d || d.id !== e.pointerId) return;
+    d.moved = true;
+    const next = clientToPct(e.clientX, e.clientY);
+    if (next) setCoinPos(next);
+  }
+
+  async function onCoinPointerUp(e: ReactPointerEvent<HTMLButtonElement>) {
+    const d = coinDragRef.current;
+    if (!d || d.id !== e.pointerId) return;
+    coinDragRef.current = null;
+    try {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    } catch {
+      /* already released */
+    }
+    if (d.moved) {
+      const next = clientToPct(e.clientX, e.clientY) ?? coinPos;
+      setCoinPos(next);
+      await persistCoin(next.x, next.y);
+      setToast("Coin moved — drag it onto the next open portal.");
+    }
+  }
+
   const nextModuleHref = useMemo(() => {
-    const exam = EXAMS.find(
-      (e) => unlockedExams.includes(e.id) && !completedExams.includes(e.id),
-    );
-    if (exam) return `/exam/${exam.id}`;
     const unlocked = MODULES.find(
       (m) =>
         state.unlockedModules.includes(m.id) &&
         !state.completedModules.includes(m.id),
     );
-    return `/quest/${unlocked?.id ?? "m1"}`;
+    if (unlocked) return `/quest/${unlocked.id}`;
+    const exam = EXAMS.find(
+      (e) => unlockedExams.includes(e.id) && !completedExams.includes(e.id),
+    );
+    if (exam) return `/exam/${exam.id}`;
+    return `/quest/m1`;
   }, [state, unlockedExams, completedExams]);
 
   const sideDeals = useMemo(
@@ -185,6 +269,7 @@ export function QuestMap({ state }: { state: GameState }) {
         }
       >
       <div
+        ref={mapRef}
         className="hybrid-map invest-map-2"
         role="img"
         aria-label="Investment Map with 36 portals, 9 exams, treasure chests, trade desks"
@@ -448,13 +533,20 @@ export function QuestMap({ state }: { state: GameState }) {
           );
         })}
 
-        <div
-          className="hybrid-coin z-30"
+        <button
+          type="button"
+          data-coin-token
+          className="hybrid-coin z-30 movable"
           style={{ left: `${coinPos.x}%`, top: `calc(${coinPos.y}% - 3.5%)` }}
-          aria-label="Your coin token"
+          aria-label="Your coin token — drag to move"
+          title="Drag your coin to the next portal"
+          onPointerDown={onCoinPointerDown}
+          onPointerMove={onCoinPointerMove}
+          onPointerUp={onCoinPointerUp}
+          onPointerCancel={onCoinPointerUp}
         >
           <CoinIcon />
-        </div>
+        </button>
       </div>
       </MapPanZoom>
 
@@ -470,8 +562,8 @@ export function QuestMap({ state }: { state: GameState }) {
         </div>
       ) : (
         <p className="text-xs text-[var(--muted)]">
-          Drag to pan · zoom +/− · icons shrink when zoomed out · chests stay
-          put · coin is you.
+          Drag to pan · zoom +/− · drag the gold coin · click open portals to
+          complete them · chests stay put.
         </p>
       )}
     </div>

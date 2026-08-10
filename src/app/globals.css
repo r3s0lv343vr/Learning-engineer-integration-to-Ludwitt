@@ -425,6 +425,19 @@ a {
   filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.45));
   animation: bob 2.2s ease-in-out infinite;
   pointer-events: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+.hybrid-coin.movable {
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+  z-index: 40;
+}
+.hybrid-coin.movable:active {
+  cursor: grabbing;
+  animation: none;
 }
 
 /* Investment Map 2 — portals, stones, chests, HUD */

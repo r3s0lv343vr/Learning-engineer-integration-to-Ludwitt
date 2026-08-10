@@ -1,7 +1,14 @@
 import type { AreaId } from "@/lib/content/areas";
 import { MAP_AREAS } from "@/lib/content/areas";
 
-export type ResourceKind = "pdf" | "ebook" | "infographic" | "jpeg" | "powerpoint";
+export type ResourceKind =
+  | "pdf"
+  | "ebook"
+  | "infographic"
+  | "jpeg"
+  | "powerpoint"
+  | "notes"
+  | "paper";
 
 export interface LibraryResource {
   id: string;
@@ -38,6 +45,8 @@ const KIND_LABEL: Record<ResourceKind, string> = {
   infographic: "Infographic",
   jpeg: "JPEG",
   powerpoint: "PowerPoint",
+  notes: "Study notes",
+  paper: "Research paper",
 };
 
 export function resourceKindLabel(kind: ResourceKind) {
@@ -48,7 +57,8 @@ export const CITY_LIBRARIES: CityLibrary[] = [
   {
     areaId: "coral-ledger-bay",
     name: "Coral Ledger Bay Library",
-    tagline: "Foundations classroom — capital, behaviour, and first formulae.",
+    tagline:
+      "Purple City foundations — syllabus, study notes, and layman slide decks for portals 1–9.",
     x: 14,
     y: 84,
     classes: [
@@ -66,12 +76,51 @@ export const CITY_LIBRARIES: CityLibrary[] = [
         summary: "Bias fire-drill with journal templates for Coral Ledger Bay modules.",
         outline: ["Confirmation bias", "Loss aversion", "Pre-mortem", "Journal sprint"],
       },
+      {
+        id: "bay-class-3",
+        title: "Purple City Notes Walkthrough",
+        duration: "45 min",
+        summary:
+          "Layman briefing of the Purple City Foundation notes aligned to portals 1–9.",
+        outline: [
+          "Enter the market",
+          "Know your investor",
+          "Asset classes & market mechanics",
+          "Research → first portfolio → challenge",
+        ],
+      },
     ],
     resources: [
       {
+        id: "bay-purple-notes",
+        title: "Purple City Foundation Study Notes",
+        kind: "notes",
+        description:
+          "Expanded study notes for Coral Ledger Bay (Purple City) portals 1–9. Downloadable PDF.",
+        file: "purple-city-foundation-notes.pdf",
+        downloadName: "purple-city-foundation-study-notes.pdf",
+      },
+      {
+        id: "bay-purple-layman-ppt",
+        title: "Purple City Notes — Layman PowerPoint",
+        kind: "powerpoint",
+        description:
+          "Plain-language slide deck explaining the foundation notes so they are easy to enhance and teach.",
+        file: "purple-city-notes-layman.pptx",
+        downloadName: "purple-city-notes-layman.pptx",
+      },
+      {
+        id: "bay-syllabus",
+        title: "36-Portal Syllabus",
+        kind: "pdf",
+        description: "Full AI Investment Simulator syllabus for all four cities.",
+        file: "36-portal-syllabus.pdf",
+        downloadName: "ai-investment-simulator-36-portal-syllabus.pdf",
+      },
+      {
         id: "bay-pdf",
         title: "Bay Research Brief",
-        kind: "pdf",
+        kind: "paper",
         description: "Peer-style paper on starter capital allocation.",
         file: "research-brief.pdf",
         downloadName: "coral-ledger-bay-research-brief.pdf",

@@ -74,6 +74,7 @@ export function MapPanZoom({
   function onPointerDown(e: ReactPointerEvent<HTMLDivElement>) {
     if (e.button !== 0) return;
     if ((e.target as HTMLElement).closest("[data-map-chrome]")) return;
+    if ((e.target as HTMLElement).closest("[data-coin-token]")) return;
     dragRef.current = {
       id: e.pointerId,
       startX: e.clientX,

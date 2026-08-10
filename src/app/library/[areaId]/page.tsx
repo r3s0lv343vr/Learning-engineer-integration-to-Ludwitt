@@ -3,10 +3,9 @@ import Link from "next/link";
 import { loadState } from "@/lib/session";
 import { StatusBar } from "@/components/StatusBar";
 import { areaById, type AreaId } from "@/lib/content/areas";
-import {
-  getLibrary,
-  resourceKindLabel,
-} from "@/lib/content/libraries";
+import { getLibrary } from "@/lib/content/libraries";
+import { listLibraryItems } from "@/lib/library-catalog";
+import { LibraryManage } from "@/components/LibraryManage";
 
 const AREA_IDS: AreaId[] = [
   "coral-ledger-bay",
@@ -28,6 +27,7 @@ export default async function LibraryPage({
   const library = getLibrary(areaId);
   if (!library) notFound();
   const area = areaById(areaId as AreaId);
+  const items = await listLibraryItems(areaId as AreaId);
 
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-6">
@@ -61,63 +61,30 @@ export default async function LibraryPage({
           </Link>
         </div>
 
-        <div className="mt-8 grid gap-6 lg:grid-cols-2">
-          <div>
-            <h2 className="display text-xl text-[var(--accent)]">Online classes</h2>
-            <div className="mt-3 space-y-3">
-              {library.classes.map((c) => (
-                <article
-                  key={c.id}
-                  className="rounded-xl border border-[var(--path)]/30 bg-black/25 p-4"
-                >
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <h3 className="font-bold text-[var(--gold)]">{c.title}</h3>
-                    <span className="text-xs text-[var(--muted)]">{c.duration}</span>
-                  </div>
-                  <p className="mt-2 text-sm text-[var(--muted)]">{c.summary}</p>
-                  <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">
-                    {c.outline.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                  <p className="mt-3 text-xs text-[var(--accent)]">
-                    Class room ready — pair with downloads below.
-                  </p>
-                </article>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h2 className="display text-xl text-[var(--accent)]">Downloads</h2>
-            <p className="mt-1 text-xs text-[var(--muted)]">
-              PDF papers · e-books · infographics · JPEGs · PowerPoints
-            </p>
-            <div className="mt-3 space-y-3">
-              {library.resources.map((r) => (
-                <article
-                  key={r.id}
-                  className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[var(--path)]/30 bg-black/25 p-4"
-                >
-                  <div>
-                    <p className="text-xs uppercase tracking-wide text-[var(--accent)]">
-                      {resourceKindLabel(r.kind)}
-                    </p>
-                    <h3 className="font-bold text-[var(--gold)]">{r.title}</h3>
-                    <p className="mt-1 text-sm text-[var(--muted)]">{r.description}</p>
-                  </div>
-                  <a
-                    className="btn btn-gold text-sm"
-                    href={`/library/${library.areaId}/${r.file}`}
-                    download={r.downloadName}
-                  >
-                    Download
-                  </a>
-                </article>
-              ))}
-            </div>
+        <div className="mt-8">
+          <h2 className="display text-xl text-[var(--accent)]">Online classes</h2>
+          <div className="mt-3 grid gap-3 lg:grid-cols-2">
+            {library.classes.map((c) => (
+              <article
+                key={c.id}
+                className="rounded-xl border border-[var(--path)]/30 bg-black/25 p-4"
+              >
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h3 className="font-bold text-[var(--gold)]">{c.title}</h3>
+                  <span className="text-xs text-[var(--muted)]">{c.duration}</span>
+                </div>
+                <p className="mt-2 text-sm text-[var(--muted)]">{c.summary}</p>
+                <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">
+                  {c.outline.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </article>
+            ))}
           </div>
         </div>
+
+        <LibraryManage areaId={areaId as AreaId} initialItems={items} />
 
         <div className="mt-8 flex flex-wrap gap-2 text-xs">
           {AREA_IDS.map((id) => (

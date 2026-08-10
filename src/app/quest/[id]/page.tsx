@@ -1,6 +1,6 @@
 import { redirect, notFound } from "next/navigation";
 import { loadState } from "@/lib/session";
-import { getModule } from "@/lib/content/modules";
+import { getModule, getNextModuleId } from "@/lib/content/modules";
 import { StatusBar } from "@/components/StatusBar";
 import { CandleChart } from "@/components/CandleChart";
 import { FOREX_CANDLES, STOCK_CANDLES } from "@/lib/content/markets";
@@ -51,7 +51,11 @@ export default async function QuestPage({
             <CandleChart title="EURUSD tape" candles={FOREX_CANDLES.EURUSD} />
           </div>
         </div>
-        <QuestClient moduleId={mod.id} questions={mod.questions} />
+        <QuestClient
+          moduleId={mod.id}
+          questions={mod.questions}
+          nextModuleId={getNextModuleId(mod.id)}
+        />
         <AiMentor
           moduleId={mod.id}
           context={`${mod.title}. Scenario: ${mod.scenario}`}

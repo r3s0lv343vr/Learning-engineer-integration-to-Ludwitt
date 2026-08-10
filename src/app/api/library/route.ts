@@ -1,0 +1,95 @@
+import { NextRequest, NextResponse } from "next/server";
+import { readSession } from "@/lib/session";
+import type { AreaId } from "@/lib/content/areas";
+import {
+  addLibraryLink,
+  addLibraryUpload,
+  inferKindFromFileName,
+  listLibraryItems,
+  removeLibraryItem,
+  type LibraryItemKind,
+  type LinkPlatform,
+} from "@/lib/library-catalog";
+
+const AREA_IDS: AreaId[] = [
+  "coral-ledger-bay",
+  "brick-exchange",
+  "signal-quay",
+  "mandate-highlands",
+];
+
+function isAreaId(value: string): value is AreaId {
+  return AREA_IDS.includes(value as AreaId);
+}
+
+export async function GET(req: NextRequest) {
+  const session = await readSession();
+  if (!session) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  const areaId = req.nextUrl.searchParams.get("areaId") ?? "";
+  if (!isAreaId(areaId)) {
+    return NextResponse.json({ error: "invalid_area" }, { status: 400 });
+  }
+  const items = await listLibraryItems(areaId);
+  return NextResponse.json({ items });
+}
+
+export async function POST(req: NextRequest) {
+  const session = await readSession();
+  if (!session) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+
+  const contentType = req.headers.get("content-type") ?? "";
+
+  if (contentType.includes("multipart/form-data")) {
+    const form = await req.formData();
+    const areaId = String(form.get("areaId") ?? "");
+    if (!isAreaId(areaId)) {
+      return NextResponse.json({ error: "invalid_area" }, { status: 400 });
+    }
+    const file = form.get("file");
+    if (!(file instanceof File)) {
+      return NextResponse.json({ error: "file_required" }, { status: 400 });
+    }
+    const title = String(form.get("title") ?? file.name);
+    const description = String(form.get("description") ?? "");
+    const kindRaw = String(form.get("kind") ?? "");
+    const kind = (kindRaw || inferKindFromFileName(file.name)) as LibraryItemKind;
+    const bytes = Buffer.from(await file.arrayBuffer());
+    if (bytes.length > 25 * 1024 * 1024) {
+      return NextResponse.json({ error: "file_too_large" }, { status: 413 });
+    }
+    const item = await addLibraryUpload({
+      areaId,
+      title,
+      description,
+      kind,
+      fileName: file.name,
+      bytes,
+    });
+    return NextResponse.json({ item });
+  }
+
+  const body = await req.json();
+  const action = String(body.action ?? "link");
+
+  if (action === "remove") {
+    const ok = await removeLibraryItem(String(body.id ?? ""));
+    return NextResponse.json({ ok });
+  }
+
+  const areaId = String(body.areaId ?? "");
+  if (!isAreaId(areaId)) {
+    return NextResponse.json({ error: "invalid_area" }, { status: 400 });
+  }
+  const url = String(body.url ?? "").trim();
+  if (!/^https?:\/\//i.test(url)) {
+    return NextResponse.json({ error: "invalid_url" }, { status: 400 });
+  }
+  const item = await addLibraryLink({
+    areaId,
+    title: String(body.title ?? "Reading link"),
+    description: body.description ? String(body.description) : undefined,
+    url,
+    platform: body.platform as LinkPlatform | undefined,
+  });
+  return NextResponse.json({ item });
+}

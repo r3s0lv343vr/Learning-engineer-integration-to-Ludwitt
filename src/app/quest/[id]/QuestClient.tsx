@@ -7,9 +7,11 @@ import type { QuizQuestion } from "@/lib/types";
 export function QuestClient({
   moduleId,
   questions,
+  nextModuleId,
 }: {
   moduleId: string;
   questions: QuizQuestion[];
+  nextModuleId?: string | null;
 }) {
   const router = useRouter();
   const [index, setIndex] = useState(0);
@@ -57,11 +59,12 @@ export function QuestClient({
       return;
     }
     startTransition(async () => {
-      await fetch("/api/state", {
+      const res = await fetch("/api/state", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "complete_module", moduleId }),
       });
+      const state = await res.json();
       await fetch("/api/events", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -70,7 +73,12 @@ export function QuestClient({
           metadata: { moduleId, correctCount },
         }),
       });
-      router.push("/map");
+      const destination =
+        (typeof state.activeQuestId === "string" && state.activeQuestId.startsWith("m")
+          ? `/quest/${state.activeQuestId}`
+          : null) ??
+        (nextModuleId ? `/quest/${nextModuleId}` : "/map");
+      router.push(destination);
       router.refresh();
     });
   }
@@ -122,7 +130,11 @@ export function QuestClient({
             onClick={next}
             disabled={pending}
           >
-            {index + 1 < questions.length ? "Next challenge" : "Claim quest reward"}
+            {index + 1 < questions.length
+              ? "Next challenge"
+              : nextModuleId
+                ? "Complete portal → next"
+                : "Claim quest reward"}
           </button>
         )}
       </div>

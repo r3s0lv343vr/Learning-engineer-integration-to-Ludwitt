@@ -41,11 +41,17 @@ describe("game-state", () => {
     expect(s.unlockedModules).toContain("m2");
   });
 
-  it("gates m5 behind compulsory exam I after m4", () => {
+  it("unlocks exam I after m4 while still advancing the next portal", () => {
     let s = createInitialState({ userId: "u1" });
     for (const id of ["m1", "m2", "m3", "m4"]) s = completeModule(s, id);
     expect(s.unlockedExams).toContain("exam-1");
-    expect(s.unlockedModules).not.toContain("m5");
+    expect(s.unlockedModules).toContain("m5");
+    expect(s.mapPosition).toEqual(
+      expect.objectContaining({
+        x: expect.any(Number),
+        y: expect.any(Number),
+      }),
+    );
     s = completeExam(s, "exam-1");
     expect(s.completedExams).toContain("exam-1");
     expect(s.unlockedModules).toContain("m5");
