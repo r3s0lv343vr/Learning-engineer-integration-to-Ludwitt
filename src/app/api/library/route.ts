@@ -83,16 +83,24 @@ export async function POST(req: NextRequest) {
     if (bytes.length > 25 * 1024 * 1024) {
       return NextResponse.json({ error: "file_too_large" }, { status: 413 });
     }
-    const item = await addLibraryUpload({
-      areaId,
-      title,
-      description,
-      kind,
-      fileName: file.name,
-      bytes,
-      classroomRole,
-    });
-    return NextResponse.json({ item });
+    try {
+      const item = await addLibraryUpload({
+        areaId,
+        title,
+        description,
+        kind,
+        fileName: file.name,
+        bytes,
+        classroomRole,
+      });
+      return NextResponse.json({ item });
+    } catch (err) {
+      console.error("library_upload_failed", err);
+      return NextResponse.json(
+        { error: "upload_failed", detail: err instanceof Error ? err.message : "write_error" },
+        { status: 500 },
+      );
+    }
   }
 
   let body: Record<string, unknown>;

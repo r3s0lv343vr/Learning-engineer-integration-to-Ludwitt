@@ -21,9 +21,10 @@ export {
   libraryItemKindLabel,
 };
 
-const UPLOAD_ROOT = path.join(process.cwd(), "public", "library");
+const PUBLIC_UPLOAD_ROOT = path.join(process.cwd(), "public", "library");
 const DATA_ROOT = path.join(process.cwd(), "data", "library");
 const TMP_ROOT = path.join("/tmp", "questfolio-library");
+const TMP_UPLOAD_ROOT = path.join(TMP_ROOT, "files");
 
 function seedItems(): LibraryCatalogItem[] {
   const now = "2026-01-01T00:00:00.000Z";
@@ -134,6 +135,45 @@ export async function addLibraryLink(input: {
   return item;
 }
 
+async function writeUploadBytes(areaId: AreaId, stored: string, bytes: Buffer) {
+  const targets = [
+    path.join(PUBLIC_UPLOAD_ROOT, areaId, "uploads", stored),
+    path.join(TMP_UPLOAD_ROOT, areaId, stored),
+  ];
+  let lastError: unknown;
+  for (const abs of targets) {
+    try {
+      await mkdir(path.dirname(abs), { recursive: true });
+      await writeFile(abs, bytes);
+      return abs;
+    } catch (err) {
+      lastError = err;
+    }
+  }
+  throw lastError ?? new Error("upload_write_failed");
+}
+
+/** Resolve bytes for an admin upload (public path or /tmp fallback). */
+export async function readUploadBytes(
+  areaId: AreaId,
+  stored: string,
+): Promise<Buffer | null> {
+  const safe = path.basename(stored);
+  if (!safe || safe !== stored || stored.includes("..")) return null;
+  const candidates = [
+    path.join(PUBLIC_UPLOAD_ROOT, areaId, "uploads", safe),
+    path.join(TMP_UPLOAD_ROOT, areaId, safe),
+  ];
+  for (const abs of candidates) {
+    try {
+      return await readFile(abs);
+    } catch {
+      /* try next */
+    }
+  }
+  return null;
+}
+
 export async function addLibraryUpload(input: {
   areaId: AreaId;
   title: string;
@@ -149,9 +189,7 @@ export async function addLibraryUpload(input: {
     .slice(0, 120);
   const stamp = Date.now();
   const stored = `${stamp}-${safeName}`;
-  const dir = path.join(UPLOAD_ROOT, input.areaId, "uploads");
-  await mkdir(dir, { recursive: true });
-  await writeFile(path.join(dir, stored), input.bytes);
+  await writeUploadBytes(input.areaId, stored, input.bytes);
 
   const kind = input.kind || inferKindFromFileName(input.fileName);
   const item: LibraryCatalogItem = {
@@ -162,7 +200,8 @@ export async function addLibraryUpload(input: {
     description:
       input.description?.trim() ||
       `Uploaded ${libraryItemKindLabel(kind)} for ${input.areaId}`,
-    href: `/library/${input.areaId}/uploads/${stored}`,
+    // Served via API so uploads work when public/ is read-only (e.g. Vercel).
+    href: `/api/library/file/${input.areaId}/${stored}`,
     downloadName: safeName,
     source: "upload",
     createdAt: new Date().toISOString(),
@@ -184,12 +223,21 @@ export async function removeLibraryItem(
   const next = all.filter((i) => i.id !== id);
   await writeAreaCustom(areaId, next);
 
-  if (target.source === "upload" && target.href.startsWith(`/library/${areaId}/uploads/`)) {
-    try {
-      const abs = path.join(process.cwd(), "public", target.href.replace(/^\//, ""));
-      await unlink(abs);
-    } catch {
-      /* file may already be gone */
+  if (target.source === "upload") {
+    const stored =
+      target.href.split(`/api/library/file/${areaId}/`)[1] ||
+      target.href.split(`/library/${areaId}/uploads/`)[1];
+    if (stored) {
+      for (const abs of [
+        path.join(PUBLIC_UPLOAD_ROOT, areaId, "uploads", path.basename(stored)),
+        path.join(TMP_UPLOAD_ROOT, areaId, path.basename(stored)),
+      ]) {
+        try {
+          await unlink(abs);
+        } catch {
+          /* ignore */
+        }
+      }
     }
   }
   return true;
