@@ -1,22 +1,29 @@
-import { cookies } from "next/headers";
-import { mkdir, writeFile, readFile } from "fs/promises";
+import { mkdir, writeFile, readFile, unlink } from "fs/promises";
 import path from "path";
 import type { AreaId } from "@/lib/content/areas";
 import { CITY_LIBRARIES } from "@/lib/content/libraries";
 import {
+  defaultClassroomRole,
   detectPlatform,
   inferKindFromFileName,
   libraryItemKindLabel,
+  type ClassroomRole,
   type LibraryCatalogItem,
   type LibraryItemKind,
   type LinkPlatform,
 } from "@/lib/library-types";
 
-export type { LibraryCatalogItem, LibraryItemKind, LinkPlatform };
-export { detectPlatform, inferKindFromFileName, libraryItemKindLabel };
+export type { ClassroomRole, LibraryCatalogItem, LibraryItemKind, LinkPlatform };
+export {
+  defaultClassroomRole,
+  detectPlatform,
+  inferKindFromFileName,
+  libraryItemKindLabel,
+};
 
-const COOKIE = "questfolio_library";
 const UPLOAD_ROOT = path.join(process.cwd(), "public", "library");
+const DATA_ROOT = path.join(process.cwd(), "data", "library");
+const TMP_ROOT = path.join("/tmp", "questfolio-library");
 
 function seedItems(): LibraryCatalogItem[] {
   const now = "2026-01-01T00:00:00.000Z";
@@ -31,40 +38,70 @@ function seedItems(): LibraryCatalogItem[] {
       downloadName: r.downloadName,
       source: "seed" as const,
       createdAt: now,
+      classroomRole: "none" as const,
     })),
   );
 }
 
-async function readCookieCatalog(): Promise<LibraryCatalogItem[]> {
-  const jar = await cookies();
-  const raw = jar.get(COOKIE)?.value;
-  if (!raw) return [];
-  try {
-    const parsed = JSON.parse(decodeURIComponent(raw)) as LibraryCatalogItem[];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
+function catalogPaths(areaId: AreaId) {
+  return [
+    path.join(DATA_ROOT, `${areaId}.json`),
+    path.join(TMP_ROOT, `${areaId}.json`),
+  ];
+}
+
+async function readAreaCustom(areaId: AreaId): Promise<LibraryCatalogItem[]> {
+  for (const file of catalogPaths(areaId)) {
+    try {
+      const raw = await readFile(file, "utf8");
+      const parsed = JSON.parse(raw) as LibraryCatalogItem[];
+      if (!Array.isArray(parsed)) continue;
+      return parsed.filter((i) => i && i.areaId === areaId && i.source !== "seed");
+    } catch {
+      /* try next location */
+    }
   }
+  return [];
 }
 
-async function writeCookieCatalog(items: LibraryCatalogItem[]) {
-  const jar = await cookies();
-  const custom = items.filter((i) => i.source !== "seed");
-  jar.set(COOKIE, encodeURIComponent(JSON.stringify(custom)), {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 30,
-  });
+async function writeAreaCustom(areaId: AreaId, items: LibraryCatalogItem[]) {
+  const custom = items.filter((i) => i.source !== "seed" && i.areaId === areaId);
+  const payload = JSON.stringify(custom, null, 2);
+  const targets = [
+    { dir: DATA_ROOT, file: path.join(DATA_ROOT, `${areaId}.json`) },
+    { dir: TMP_ROOT, file: path.join(TMP_ROOT, `${areaId}.json`) },
+  ];
+  let wrote = false;
+  let lastError: unknown;
+  for (const target of targets) {
+    try {
+      await mkdir(target.dir, { recursive: true });
+      await writeFile(target.file, payload, "utf8");
+      wrote = true;
+      break;
+    } catch (err) {
+      lastError = err;
+    }
+  }
+  if (!wrote) throw lastError ?? new Error("catalog_write_failed");
 }
 
+/** Seed shelf + admin uploads/links for one city library only. */
 export async function listLibraryItems(areaId: AreaId): Promise<LibraryCatalogItem[]> {
   const seeded = seedItems().filter((i) => i.areaId === areaId);
-  const custom = (await readCookieCatalog()).filter((i) => i.areaId === areaId);
+  const custom = await readAreaCustom(areaId);
   const byId = new Map<string, LibraryCatalogItem>();
   for (const item of [...seeded, ...custom]) byId.set(item.id, item);
   return Array.from(byId.values()).sort((a, b) =>
+    a.createdAt.localeCompare(b.createdAt),
+  );
+}
+
+/** Admin-authored items only (uploads + links) for one area. */
+export async function listAdminLibraryItems(
+  areaId: AreaId,
+): Promise<LibraryCatalogItem[]> {
+  return (await readAreaCustom(areaId)).sort((a, b) =>
     a.createdAt.localeCompare(b.createdAt),
   );
 }
@@ -75,21 +112,25 @@ export async function addLibraryLink(input: {
   description?: string;
   url: string;
   platform?: LinkPlatform;
+  classroomRole?: ClassroomRole;
 }): Promise<LibraryCatalogItem> {
   const item: LibraryCatalogItem = {
     id: `link-${crypto.randomUUID()}`,
     areaId: input.areaId,
-    title: input.title.trim(),
+    title: input.title.trim() || "Reading link",
     kind: "link",
-    description: input.description?.trim() || `Linked reading (${input.platform ?? "web"})`,
+    description:
+      input.description?.trim() ||
+      `Linked reading (${input.platform ?? "web"})`,
     href: input.url.trim(),
     platform: input.platform ?? detectPlatform(input.url),
     source: "link",
     createdAt: new Date().toISOString(),
+    classroomRole: input.classroomRole ?? "link",
   };
-  const all = await readCookieCatalog();
+  const all = await readAreaCustom(input.areaId);
   all.push(item);
-  await writeCookieCatalog(all);
+  await writeAreaCustom(input.areaId, all);
   return item;
 }
 
@@ -100,6 +141,7 @@ export async function addLibraryUpload(input: {
   kind: LibraryItemKind;
   fileName: string;
   bytes: Buffer;
+  classroomRole?: ClassroomRole;
 }): Promise<LibraryCatalogItem> {
   const safeName = input.fileName
     .replace(/[^a-zA-Z0-9._-]+/g, "-")
@@ -111,41 +153,45 @@ export async function addLibraryUpload(input: {
   await mkdir(dir, { recursive: true });
   await writeFile(path.join(dir, stored), input.bytes);
 
-  try {
-    const metaDir = path.join("/tmp", "questfolio-library");
-    await mkdir(metaDir, { recursive: true });
-    await writeFile(
-      path.join(metaDir, `${input.areaId}-${stamp}.json`),
-      JSON.stringify({ stored, areaId: input.areaId }),
-    );
-  } catch {
-    /* optional */
-  }
-
+  const kind = input.kind || inferKindFromFileName(input.fileName);
   const item: LibraryCatalogItem = {
     id: `upload-${stamp}`,
     areaId: input.areaId,
     title: input.title.trim() || safeName,
-    kind: input.kind,
+    kind,
     description:
       input.description?.trim() ||
-      `Uploaded ${libraryItemKindLabel(input.kind)} for ${input.areaId}`,
+      `Uploaded ${libraryItemKindLabel(kind)} for ${input.areaId}`,
     href: `/library/${input.areaId}/uploads/${stored}`,
     downloadName: safeName,
     source: "upload",
     createdAt: new Date().toISOString(),
+    classroomRole: input.classroomRole ?? defaultClassroomRole(kind),
   };
-  const all = await readCookieCatalog();
+  const all = await readAreaCustom(input.areaId);
   all.push(item);
-  await writeCookieCatalog(all);
+  await writeAreaCustom(input.areaId, all);
   return item;
 }
 
-export async function removeLibraryItem(id: string): Promise<boolean> {
-  const all = await readCookieCatalog();
+export async function removeLibraryItem(
+  areaId: AreaId,
+  id: string,
+): Promise<boolean> {
+  const all = await readAreaCustom(areaId);
+  const target = all.find((i) => i.id === id);
+  if (!target) return false;
   const next = all.filter((i) => i.id !== id);
-  if (next.length === all.length) return false;
-  await writeCookieCatalog(next);
+  await writeAreaCustom(areaId, next);
+
+  if (target.source === "upload" && target.href.startsWith(`/library/${areaId}/uploads/`)) {
+    try {
+      const abs = path.join(process.cwd(), "public", target.href.replace(/^\//, ""));
+      await unlink(abs);
+    } catch {
+      /* file may already be gone */
+    }
+  }
   return true;
 }
 

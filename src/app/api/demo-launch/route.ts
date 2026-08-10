@@ -1,9 +1,15 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { setSessionCookie, saveState } from "@/lib/session";
 import { createInitialState, pushEvent } from "@/lib/game-state";
 import { appOrigin } from "@/lib/ludwitt";
 
-export async function GET() {
+function safeNextPath(raw: string | null): string {
+  if (!raw) return "/map";
+  if (!raw.startsWith("/") || raw.startsWith("//")) return "/map";
+  return raw;
+}
+
+export async function GET(req: NextRequest) {
   const userId = `demo-${crypto.randomUUID().slice(0, 8)}`;
   await setSessionCookie({
     userId,
@@ -19,5 +25,6 @@ export async function GET() {
   state = pushEvent(state, "session_started", { source: "demo-launch" });
   state = pushEvent(state, "lesson_started", { moduleId: "m1" });
   await saveState(state);
-  return NextResponse.redirect(new URL("/map", appOrigin()));
+  const next = safeNextPath(req.nextUrl.searchParams.get("next"));
+  return NextResponse.redirect(new URL(next, appOrigin()));
 }

@@ -24,6 +24,9 @@
 .env
 .env*.local
 
+# Per-city library admin catalogs (uploads live under public/library/*/uploads)
+/data/library/*.json
+
 # debug
 npm-debug.log*
 yarn-debug.log*

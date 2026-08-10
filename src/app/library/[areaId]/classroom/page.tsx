@@ -1,7 +1,7 @@
 import { redirect, notFound } from "next/navigation";
 import { loadState } from "@/lib/session";
 import type { AreaId } from "@/lib/content/areas";
-import { getClassroomLesson } from "@/lib/content/classroom";
+import { resolveClassroomLesson } from "@/lib/content/resolve-classroom";
 import { LibraryClassroom } from "@/components/LibraryClassroom";
 
 const AREA_IDS: AreaId[] = [
@@ -21,7 +21,8 @@ export default async function LibraryClassroomPage({
   if (!state) redirect("/api/demo-launch");
   if (!AREA_IDS.includes(areaId as AreaId)) notFound();
 
-  const lesson = getClassroomLesson(areaId);
+  // Overlay admin uploads/links for this area only — classroom shell UI unchanged.
+  const lesson = await resolveClassroomLesson(areaId);
   if (!lesson) notFound();
 
   return <LibraryClassroom lesson={lesson} state={state} />;

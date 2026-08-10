@@ -1,12 +1,7 @@
 import { redirect, notFound } from "next/navigation";
-import Link from "next/link";
 import { loadState } from "@/lib/session";
-import { StatusBar } from "@/components/StatusBar";
-import { areaById, type AreaId } from "@/lib/content/areas";
-import { getLibrary, libraryHref } from "@/lib/content/libraries";
+import type { AreaId } from "@/lib/content/areas";
 import { getClassroomLesson } from "@/lib/content/classroom";
-import { listLibraryItems } from "@/lib/library-catalog";
-import { LibraryManage } from "@/components/LibraryManage";
 
 const AREA_IDS: AreaId[] = [
   "coral-ledger-bay",
@@ -15,6 +10,7 @@ const AREA_IDS: AreaId[] = [
   "mandate-highlands",
 ];
 
+/** Learner entry: always open the Library Classroom shell for the city. */
 export default async function LibraryPage({
   params,
 }: {
@@ -24,90 +20,6 @@ export default async function LibraryPage({
   const state = await loadState();
   if (!state) redirect("/api/demo-launch");
   if (!AREA_IDS.includes(areaId as AreaId)) notFound();
-
-  // Cities with a Library Classroom open that room directly (no old shelf room).
-  if (getClassroomLesson(areaId)) {
-    redirect(`/library/${areaId}/classroom`);
-  }
-
-  const library = getLibrary(areaId);
-  if (!library) notFound();
-  const area = areaById(areaId as AreaId);
-  const items = await listLibraryItems(areaId as AreaId);
-
-  return (
-    <main className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-6">
-      <StatusBar state={state} />
-      <section className="panel rounded-2xl p-5 sm:p-7">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div className="flex items-start gap-4">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/icons/library-icon.png"
-              alt=""
-              width={72}
-              height={72}
-              className="library-hero-icon"
-            />
-            <div>
-              <p
-                className="text-sm uppercase tracking-[0.2em]"
-                style={{ color: area.color }}
-              >
-                City library · {area.name}
-              </p>
-              <h1 className="display mt-1 text-3xl text-[var(--gold)]">
-                {library.name}
-              </h1>
-              <p className="mt-2 max-w-2xl text-[var(--muted)]">{library.tagline}</p>
-            </div>
-          </div>
-          <Link href="/map" className="btn btn-ghost text-sm">
-            Back to map
-          </Link>
-        </div>
-
-        <div className="mt-8">
-          <h2 className="display text-xl text-[var(--accent)]">Online classes</h2>
-          <div className="mt-3 grid gap-3 lg:grid-cols-2">
-            {library.classes.map((c) => (
-              <article
-                key={c.id}
-                className="rounded-xl border border-[var(--path)]/30 bg-black/25 p-4"
-              >
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <h3 className="font-bold text-[var(--gold)]">{c.title}</h3>
-                  <span className="text-xs text-[var(--muted)]">{c.duration}</span>
-                </div>
-                <p className="mt-2 text-sm text-[var(--muted)]">{c.summary}</p>
-                <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">
-                  {c.outline.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
-        </div>
-
-        <LibraryManage areaId={areaId as AreaId} initialItems={items} />
-
-        <div className="mt-8 flex flex-wrap gap-2 text-xs">
-          {AREA_IDS.map((id) => (
-            <Link
-              key={id}
-              href={libraryHref(id)}
-              className={`rounded-full border px-3 py-1 ${
-                id === areaId
-                  ? "border-[var(--gold)] text-[var(--gold)]"
-                  : "border-[var(--path)]/40 text-[var(--muted)]"
-              }`}
-            >
-              {areaById(id).name}
-            </Link>
-          ))}
-        </div>
-      </section>
-    </main>
-  );
+  if (!getClassroomLesson(areaId)) notFound();
+  redirect(`/library/${areaId}/classroom`);
 }
