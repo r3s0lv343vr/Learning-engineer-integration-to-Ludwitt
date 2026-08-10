@@ -56,7 +56,8 @@ export const MAP_AREAS: MapArea[] = [
     moduleEnd: 27,
     strength: "green",
     color: "#43a047",
-    labelAt: { x: 86, y: 28 },
+    // Clear of chest/library/HUD overlap so the sign stays readable
+    labelAt: { x: 68, y: 12 },
   },
   {
     id: "mandate-highlands",
@@ -67,7 +68,8 @@ export const MAP_AREAS: MapArea[] = [
     moduleEnd: 36,
     strength: "gold",
     color: "#c6922e",
-    labelAt: { x: 28, y: 18 },
+    // Clear of chest overlap on the highland ridge
+    labelAt: { x: 14, y: 12 },
   },
 ];
 

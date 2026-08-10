@@ -350,8 +350,8 @@ const QUAY: TradeArea[] = [
     capitalDeltaGain: 480,
     capitalDeltaLoss: -360,
     goldReward: 1,
-    x: 76,
-    y: 26,
+    x: 66,
+    y: 24,
     prompt: "Position for the policy print?",
     choices: [
       {
@@ -374,8 +374,8 @@ const QUAY: TradeArea[] = [
     risk: "medium",
     capitalDeltaGain: 300,
     capitalDeltaLoss: -210,
-    x: 82,
-    y: 24,
+    x: 84,
+    y: 18,
     prompt: "Add the glass tower REIT slice?",
     choices: [
       {
@@ -398,8 +398,8 @@ const QUAY: TradeArea[] = [
     risk: "high",
     capitalDeltaGain: 520,
     capitalDeltaLoss: -400,
-    x: 78,
-    y: 30,
+    x: 70,
+    y: 42,
     prompt: "Ride the freight spike?",
     choices: [
       {
@@ -422,8 +422,8 @@ const QUAY: TradeArea[] = [
     risk: "medium",
     capitalDeltaGain: 270,
     capitalDeltaLoss: -150,
-    x: 74,
-    y: 32,
+    x: 88,
+    y: 38,
     prompt: "Run the factor overlay swap?",
     choices: [
       {
@@ -446,8 +446,8 @@ const QUAY: TradeArea[] = [
     risk: "medium",
     capitalDeltaGain: 340,
     capitalDeltaLoss: -190,
-    x: 80,
-    y: 28,
+    x: 76,
+    y: 48,
     prompt: "Buy the correlation hedge sleeve?",
     choices: [
       {
@@ -475,8 +475,8 @@ const HIGHLANDS: TradeArea[] = [
     capitalDeltaGain: 230,
     capitalDeltaLoss: -260,
     goldReward: 1,
-    x: 24,
-    y: 26,
+    x: 18,
+    y: 24,
     prompt: "Approve the lot under the IPS?",
     choices: [
       {
@@ -499,8 +499,8 @@ const HIGHLANDS: TradeArea[] = [
     risk: "medium",
     capitalDeltaGain: 360,
     capitalDeltaLoss: -240,
-    x: 30,
-    y: 20,
+    x: 38,
+    y: 22,
     prompt: "Ticket the thesis with falsifiers?",
     choices: [
       {
@@ -523,8 +523,8 @@ const HIGHLANDS: TradeArea[] = [
     risk: "low",
     capitalDeltaGain: 200,
     capitalDeltaLoss: -300,
-    x: 20,
-    y: 30,
+    x: 24,
+    y: 42,
     prompt: "Take the conflicted principal swap?",
     choices: [
       {
@@ -547,8 +547,8 @@ const HIGHLANDS: TradeArea[] = [
     risk: "medium",
     capitalDeltaGain: 250,
     capitalDeltaLoss: -180,
-    x: 34,
-    y: 28,
+    x: 40,
+    y: 34,
     prompt: "Bid with a pre-committed ceiling?",
     choices: [
       {
@@ -571,8 +571,8 @@ const HIGHLANDS: TradeArea[] = [
     risk: "high",
     capitalDeltaGain: 500,
     capitalDeltaLoss: -350,
-    x: 26,
-    y: 34,
+    x: 32,
+    y: 46,
     prompt: "Defend the lot to the mock IC?",
     choices: [
       {
