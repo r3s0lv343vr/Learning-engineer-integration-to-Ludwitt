@@ -180,8 +180,8 @@ export const CITY_LIBRARIES: CityLibrary[] = [
     name: "Signal Quay Library",
     tagline: "Markets studio — portfolio, macro, and crisis media packs.",
     // Top-right glass district — centered on the Gherkin
-    x: 82,
-    y: 18,
+    x: 86,
+    y: 16,
     classes: [
       {
         id: "quay-class-1",
