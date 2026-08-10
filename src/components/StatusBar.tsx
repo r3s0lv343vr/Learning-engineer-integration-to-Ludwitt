@@ -45,9 +45,10 @@ export function StatusBar({ state }: { state: GameState }) {
           <Link className="btn btn-ghost px-3 py-1 text-xs" href="/portfolio">
             Portfolio
           </Link>
-          <Link className="btn btn-ghost px-3 py-1 text-xs" href="/auth/logout">
+          {/* Plain <a>: Next Link prefetch would GET /auth/logout and wipe the session */}
+          <a className="btn btn-ghost px-3 py-1 text-xs" href="/auth/logout">
             Exit
-          </Link>
+          </a>
         </nav>
       </div>
     </header>
