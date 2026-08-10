@@ -28,6 +28,7 @@ import {
   PortalArchIcon,
   TreasureChestIcon,
 } from "@/components/MapIcons";
+import type { CSSProperties } from "react";
 import type { GameState } from "@/lib/types";
 
 const RealBasemap = dynamic(
@@ -322,20 +323,31 @@ export function QuestMap({ state }: { state: GameState }) {
         })}
 
         {/* City libraries — one per area (online classes + downloads) */}
-        {CITY_LIBRARIES.map((lib) => (
-          <Link
-            key={lib.areaId}
-            href={`/library/${lib.areaId}`}
-            className="library-pin"
-            style={{ left: `${lib.x}%`, top: `${lib.y}%` }}
-            title={lib.name}
-            aria-label={lib.name}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/icons/library-icon.png" alt="" width={44} height={44} />
-            <span className="hybrid-pin-label below">Library</span>
-          </Link>
-        ))}
+        {CITY_LIBRARIES.map((lib) => {
+          const area = MAP_AREAS.find((a) => a.id === lib.areaId);
+          return (
+            <Link
+              key={lib.areaId}
+              href={`/library/${lib.areaId}`}
+              className="library-pin"
+              style={
+                {
+                  left: `${lib.x}%`,
+                  top: `${lib.y}%`,
+                  // City-tinted glow so each library reads on its district
+                  "--glow-b": area?.color ?? "#8ec8ff",
+                  "--glow-c": area?.color ?? "#5a96ff",
+                } as CSSProperties
+              }
+              title={lib.name}
+              aria-label={lib.name}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/icons/library-icon.png" alt="" width={50} height={50} />
+              <span className="hybrid-pin-label below">Library</span>
+            </Link>
+          );
+        })}
 
         {/* Treasure chests — positions unchanged */}
         {CHEST_MARKERS.map((c) => {

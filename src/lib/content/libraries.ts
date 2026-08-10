@@ -49,8 +49,8 @@ export const CITY_LIBRARIES: CityLibrary[] = [
     areaId: "coral-ledger-bay",
     name: "Coral Ledger Bay Library",
     tagline: "Foundations classroom — capital, behaviour, and first formulae.",
-    x: 16,
-    y: 76,
+    x: 8,
+    y: 88,
     classes: [
       {
         id: "bay-class-1",
@@ -114,8 +114,8 @@ export const CITY_LIBRARIES: CityLibrary[] = [
     areaId: "brick-exchange",
     name: "Brick Exchange Library",
     tagline: "Analysis stacks — statements, ratios, and valuation briefs.",
-    x: 88,
-    y: 78,
+    x: 94,
+    y: 86,
     classes: [
       {
         id: "ex-class-1",
@@ -179,8 +179,8 @@ export const CITY_LIBRARIES: CityLibrary[] = [
     areaId: "signal-quay",
     name: "Signal Quay Library",
     tagline: "Markets studio — portfolio, macro, and crisis media packs.",
-    x: 90,
-    y: 40,
+    x: 96,
+    y: 42,
     classes: [
       {
         id: "quay-class-1",
@@ -244,8 +244,8 @@ export const CITY_LIBRARIES: CityLibrary[] = [
     areaId: "mandate-highlands",
     name: "Mandate Highlands Library",
     tagline: "Mastery archive — thesis, ethics, and mandate defence packs.",
-    x: 20,
-    y: 26,
+    x: 10,
+    y: 18,
     classes: [
       {
         id: "high-class-1",
