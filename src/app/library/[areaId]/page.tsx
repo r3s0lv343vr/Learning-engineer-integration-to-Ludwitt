@@ -56,9 +56,19 @@ export default async function LibraryPage({
               <p className="mt-2 max-w-2xl text-[var(--muted)]">{library.tagline}</p>
             </div>
           </div>
-          <Link href="/map" className="btn btn-ghost text-sm">
-            Back to map
-          </Link>
+          <div className="flex flex-wrap gap-2">
+            {areaId === "coral-ledger-bay" && (
+              <Link
+                href={`/library/${areaId}/classroom`}
+                className="btn btn-gold text-sm"
+              >
+                Enter Library Classroom
+              </Link>
+            )}
+            <Link href="/map" className="btn btn-ghost text-sm">
+              Back to map
+            </Link>
+          </div>
         </div>
 
         <div className="mt-8">
@@ -79,6 +89,14 @@ export default async function LibraryPage({
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
+                {c.id === "bay-class-3" && (
+                  <Link
+                    href={`/library/${areaId}/classroom`}
+                    className="btn btn-forest mt-3 text-sm"
+                  >
+                    Open on teaching board
+                  </Link>
+                )}
               </article>
             ))}
           </div>
