@@ -288,7 +288,7 @@ export function LibraryClassroom({
 
       <footer className="classroom-footer">
         <Link href="/map" className="classroom-exit">
-          Exit Room
+          Return to Map
         </Link>
         <nav className="classroom-dock" aria-label="World navigation">
           <Link href="/map">Map</Link>
