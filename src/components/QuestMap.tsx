@@ -8,6 +8,7 @@ import { SIDEQUESTS } from "@/lib/content/sidequests";
 import { EXAMS } from "@/lib/content/exams";
 import { MAP_AREAS, areaForModuleNumber } from "@/lib/content/areas";
 import { CITY_LIBRARIES } from "@/lib/content/libraries";
+import { TRADE_AREAS } from "@/lib/content/trades";
 import {
   CHEST_MARKERS,
   MAP_HUD_ICONS,
@@ -349,6 +350,32 @@ export function QuestMap({ state }: { state: GameState }) {
           );
         })}
 
+        {/* City trade areas — 5–6 per district; gain/loss on book */}
+        {TRADE_AREAS.map((t) => {
+          const area = MAP_AREAS.find((a) => a.id === t.areaId);
+          const done = (state.completedTrades ?? []).includes(t.id);
+          return (
+            <Link
+              key={t.id}
+              href={`/trade/${t.id}`}
+              className={`trade-pin ${done ? "done" : ""}`}
+              style={
+                {
+                  left: `${t.x}%`,
+                  top: `${t.y}%`,
+                  "--glow-b": area?.color ?? "#c6a15b",
+                  "--glow-c": area?.color ?? "#c6a15b",
+                } as CSSProperties
+              }
+              title={`${t.title} · ${done ? "settled" : "open trade"}`}
+              aria-label={t.title}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/icons/trade-icon.png" alt="" width={34} height={34} />
+            </Link>
+          );
+        })}
+
         {/* Treasure chests — positions unchanged */}
         {CHEST_MARKERS.map((c) => {
           const done = state.completedSidequests.includes(c.sidequestId);
@@ -432,8 +459,8 @@ export function QuestMap({ state }: { state: GameState }) {
         </div>
       ) : (
         <p className="text-xs text-[var(--muted)]">
-          36 portals · 9 exams · 4 city libraries · chests stay put · glowing
-          icons · coin is you.
+          36 portals · 9 exams · 4 libraries · city trade desks · chests stay
+          put · glowing icons · coin is you.
         </p>
       )}
     </div>

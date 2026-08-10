@@ -36,6 +36,7 @@ export function createInitialState(input: {
     wrongQuestionIds: [],
     completedModules: [],
     completedSidequests: [],
+    completedTrades: [],
     unlockedModules: ["m1"],
     unlockedExams: [],
     completedExams: [],
@@ -153,7 +154,46 @@ export function normalizeState(state: GameState): GameState {
     ...state,
     unlockedExams: state.unlockedExams ?? [],
     completedExams: state.completedExams ?? [],
+    completedTrades: state.completedTrades ?? [],
   };
+}
+
+/** Resolve a city trade area — capital delta may raise or lower the book. */
+export function applyTradeAreaResult(
+  state: GameState,
+  opts: {
+    tradeId: string;
+    outcome: "gain" | "loss";
+    capitalDelta: number;
+    goldReward?: number;
+  },
+): GameState {
+  state = normalizeState(state);
+  if (state.completedTrades.includes(opts.tradeId)) return state;
+  const capital = Math.max(0, state.capital + opts.capitalDelta);
+  const cash = Math.max(0, state.cash + opts.capitalDelta);
+  const goldBars =
+    state.goldBars +
+    (opts.outcome === "gain" ? (opts.goldReward ?? 0) : 0);
+  let next: GameState = {
+    ...state,
+    capital,
+    cash,
+    goldBars,
+    completedTrades: Array.from(
+      new Set([...state.completedTrades, opts.tradeId]),
+    ),
+  };
+  next = pushEvent(next, "trade_area_started", {
+    tradeId: opts.tradeId,
+    outcome: opts.outcome,
+  });
+  next = pushEvent(next, "trade_area_completed", {
+    tradeId: opts.tradeId,
+    outcome: opts.outcome,
+    capitalDelta: opts.capitalDelta,
+  });
+  return next;
 }
 
 export function completeModule(state: GameState, moduleId: string): GameState {

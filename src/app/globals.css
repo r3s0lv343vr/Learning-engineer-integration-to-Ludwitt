@@ -619,6 +619,45 @@ a {
   transform: translate(-50%, -50%) scale(1.08);
 }
 
+.trade-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 18;
+  display: grid;
+  place-items: center;
+  text-decoration: none;
+  color: inherit;
+  --glow-a: rgba(255, 236, 179, 0.95);
+  --glow-b: rgba(198, 161, 91, 0.9);
+  --glow-c: rgba(198, 161, 91, 0.55);
+  animation: pin-glow-pulse 2.7s ease-in-out infinite;
+}
+
+.trade-pin img {
+  display: block;
+  width: 2.05rem;
+  height: 2.05rem;
+  border-radius: 999px;
+}
+
+.trade-pin.done {
+  opacity: 0.42;
+  animation: none;
+  filter: grayscale(0.35) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+}
+
+.trade-pin:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.trade-hero-icon {
+  --glow-a: rgba(255, 236, 179, 0.95);
+  --glow-b: rgba(198, 161, 91, 0.85);
+  --glow-c: rgba(198, 161, 91, 0.5);
+  border-radius: 999px;
+  animation: pin-glow-pulse 2.6s ease-in-out infinite;
+}
+
 .library-hero-icon {
   --glow-a: rgba(180, 220, 255, 0.95);
   --glow-b: rgba(120, 180, 255, 0.75);
@@ -679,7 +718,8 @@ a {
 .portal-pin,
 .exam-pin,
 .map-chest,
-.library-pin {
+.library-pin,
+.trade-pin {
   will-change: filter;
 }
 

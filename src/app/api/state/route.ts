@@ -3,6 +3,7 @@ import { loadState, saveState } from "@/lib/session";
 import {
   applyAnswer,
   applySidequestResult,
+  applyTradeAreaResult,
   completeExam,
   completeModule,
   leaveDetention,
@@ -43,6 +44,14 @@ export async function POST(req: NextRequest) {
         capitalDelta: Number(body.capitalDelta) || 0,
         goldReward: body.goldReward,
         chestGold: body.chestGold,
+      });
+      break;
+    case "trade_area":
+      next = applyTradeAreaResult(state, {
+        tradeId: body.tradeId,
+        outcome: body.outcome === "loss" ? "loss" : "gain",
+        capitalDelta: Number(body.capitalDelta) || 0,
+        goldReward: body.goldReward,
       });
       break;
     case "trade":

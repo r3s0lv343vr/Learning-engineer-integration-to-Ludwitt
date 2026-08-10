@@ -44,6 +44,8 @@ export interface LearningEvent {
     | "remediation_completed"
     | "sidequest_started"
     | "sidequest_completed"
+    | "trade_area_started"
+    | "trade_area_completed"
     | "lesson_started"
     | "lesson_completed"
     | "quiz_submitted"
@@ -74,6 +76,8 @@ export interface GameState {
   wrongQuestionIds: string[];
   completedModules: string[];
   completedSidequests: string[];
+  /** City trade areas resolved (gain or loss still marks complete) */
+  completedTrades: string[];
   unlockedModules: string[];
   unlockedExams: string[];
   completedExams: string[];
