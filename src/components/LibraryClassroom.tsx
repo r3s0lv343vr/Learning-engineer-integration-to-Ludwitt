@@ -24,11 +24,18 @@ export function LibraryClassroom({
   const slide = lesson.slides[slideIndex] ?? lesson.slides[0];
   const total = lesson.slides.length;
 
-  const filteredOutline = useMemo(() => {
+  const filteredSlides = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return lesson.outline;
-    return lesson.outline.filter((o) => o.label.toLowerCase().includes(q));
-  }, [lesson.outline, query]);
+    if (!q) return lesson.slides.map((s, index) => ({ s, index }));
+    return lesson.slides
+      .map((s, index) => ({ s, index }))
+      .filter(
+        ({ s }) =>
+          s.title.toLowerCase().includes(q) ||
+          s.thumbLabel.toLowerCase().includes(q) ||
+          s.bullets.some((b) => b.toLowerCase().includes(q)),
+      );
+  }, [lesson.slides, query]);
 
   const xpCurrent = state.completedModules.length * 140 + state.goldBars * 20;
   const xpNext = Math.max(2000, Math.ceil((xpCurrent + 1) / 500) * 500);
@@ -96,31 +103,10 @@ export function LibraryClassroom({
 
       <div className="classroom-body">
         <aside className="classroom-left">
-          <section className="classroom-panel">
-            <h2>Lesson Outline</h2>
-            <ul className="classroom-outline">
-              {filteredOutline.map((item) => {
-                const active = item.slideIndex === slideIndex;
-                return (
-                  <li key={item.id}>
-                    <button
-                      type="button"
-                      className={active ? "active" : ""}
-                      onClick={() => setSlideIndex(item.slideIndex)}
-                    >
-                      <span>{item.label}</span>
-                      {active && <span aria-hidden>›</span>}
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
-
           <section className="classroom-panel classroom-thumbs">
             <h2>Slides</h2>
             <div className="classroom-thumb-list">
-              {lesson.slides.map((s, i) => (
+              {filteredSlides.map(({ s, index: i }) => (
                 <button
                   key={s.id}
                   type="button"
