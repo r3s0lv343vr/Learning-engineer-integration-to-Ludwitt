@@ -12,6 +12,10 @@ import type { ClassroomLesson } from "@/lib/content/classroom";
 import type { GameState } from "@/lib/types";
 import { portfolioValue } from "@/lib/game-state";
 
+/**
+ * Shared Library Classroom shell for every city library.
+ * Layout, Slides vertical scroll, and tools are identical; only theme colour + lesson content change.
+ */
 export function LibraryClassroom({
   lesson,
   state,

@@ -627,8 +627,9 @@ export const PURPLE_CITY_CLASSROOM: ClassroomLesson = {
 };
 
 /**
- * Standard empty classroom shell for cities whose lesson content is not authored yet.
- * Same room / tools / options — different colour only. Content is intentionally blank-ready.
+ * Standard classroom shell for cities whose lesson deck is not authored yet.
+ * Same room, Slides panel (full-height vertical scroll), tools, and options as Coral Bay —
+ * city colour differs; curriculum content is placeholder-only (never copied from Purple City).
  */
 function stubClassroom(areaId: AreaId): ClassroomLesson {
   const area = MAP_AREAS.find((a) => a.id === areaId)!;
@@ -639,6 +640,69 @@ function stubClassroom(areaId: AreaId): ClassroomLesson {
     lib.resources[0];
   const deck =
     lib.resources.find((r) => r.kind === "powerpoint") ?? lib.resources[0];
+
+  const moduleCount = area.moduleEnd - area.moduleStart + 1;
+  const slides: ClassroomSlide[] = [
+    {
+      id: `${areaId}-s1`,
+      number: 1,
+      title: `${area.name} Library Classroom`,
+      subtitle: "Standard teaching board — city materials load here",
+      bullets: [
+        "This room uses the same classroom layout as every library on the island.",
+        "Use the vertical scrollbar in Slides to move through titles without shifting the teaching board.",
+        `Portals for this district: M${area.moduleStart}–M${area.moduleEnd}.`,
+      ],
+      footer: `${area.name} · Library Classroom`,
+      accent: theme.color,
+      thumbLabel: "Welcome",
+    },
+    {
+      id: `${areaId}-s2`,
+      number: 2,
+      title: `Your ${area.shortName} journey`,
+      subtitle: `${moduleCount} portals. One evolving portfolio.`,
+      bullets: [
+        `Work through portals M${area.moduleStart}–M${area.moduleEnd} in order.`,
+        "Teach from this board, then prove it in the matching map portal.",
+        "City-specific slides and notes will replace these placeholders as they are authored.",
+      ],
+      accent: theme.color,
+      thumbLabel: "Journey",
+    },
+  ];
+
+  for (let m = area.moduleStart; m <= area.moduleEnd; m++) {
+    const n = slides.length + 1;
+    slides.push({
+      id: `${areaId}-s${n}`,
+      number: n,
+      title: `Portal M${m} · Materials coming soon`,
+      subtitle: `${area.name} teaching slide for portal M${m}`,
+      bullets: [
+        `Placeholder slide for portal M${m}.`,
+        "Same Slides panel controls as every other library room.",
+        "Open the matching portal on the map when you are ready to practice.",
+      ],
+      accent: theme.color,
+      thumbLabel: `M${m}`,
+    });
+  }
+
+  slides.push({
+    id: `${areaId}-s${slides.length + 1}`,
+    number: slides.length + 1,
+    title: `${area.name} classroom ready`,
+    subtitle: "Same room standard across the island",
+    bullets: [
+      "Scroll the Slides panel to jump titles; the teaching board stays fixed.",
+      "Download Notes and Download PowerPoint use this city’s shelf files.",
+      "Return to Map when you are ready for the next portal.",
+    ],
+    footer: `${area.name} · Library Classroom`,
+    accent: "#c6a15b",
+    thumbLabel: "Ready",
+  });
 
   return {
     id: `${areaId}-classroom`,
@@ -652,22 +716,7 @@ function stubClassroom(areaId: AreaId): ClassroomLesson {
     moduleStart: area.moduleStart,
     moduleEnd: area.moduleEnd,
     outline: [],
-    slides: [
-      {
-        id: `${areaId}-s1`,
-        number: 1,
-        title: `${area.name} Library Classroom`,
-        subtitle: "Standard teaching board — city materials load here",
-        bullets: [
-          "This room uses the same classroom layout as every library on the island.",
-          "Slides, notes, and linked readings for this city will be added separately.",
-          `Portals for this district: M${area.moduleStart}–M${area.moduleEnd}.`,
-        ],
-        footer: `${area.name} · Library Classroom`,
-        accent: theme.color,
-        thumbLabel: "Welcome",
-      },
-    ],
+    slides,
     notesHref: `/library/${areaId}/${notes.file}`,
     notesDownloadName: notes.downloadName,
     deckHref: `/library/${areaId}/${deck.file}`,

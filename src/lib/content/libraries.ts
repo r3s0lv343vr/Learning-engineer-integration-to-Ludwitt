@@ -361,7 +361,10 @@ export function getLibrary(areaId: string) {
   return CITY_LIBRARIES.find((l) => l.areaId === areaId);
 }
 
-/** Every city library opens the standard Library Classroom room. */
+/**
+ * Every city library opens the same Library Classroom room shell
+ * (full-height Slides vertical scroll + fixed teaching board; city colour/content only).
+ */
 export function libraryHref(areaId: AreaId) {
   return `/library/${areaId}/classroom`;
 }
