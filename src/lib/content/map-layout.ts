@@ -65,7 +65,7 @@ export const MODULE_WORLD_POSITIONS: Point[] = [
   { x: 44, y: 32 },
   { x: 38, y: 44 },
   { x: 48, y: 40 },
-  { x: 55, y: 51 }, // 36 — central rotunda / round plaza
+  { x: 58, y: 45 }, // 36 — center of the central rotunda plaza
 ];
 
 /** FROZEN — do not reposition treasure chests. */
