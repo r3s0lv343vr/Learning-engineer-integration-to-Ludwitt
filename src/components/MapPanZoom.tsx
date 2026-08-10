@@ -71,17 +71,19 @@ export function MapPanZoom({
     [sizeOf],
   );
 
+  function isInteractiveTarget(target: EventTarget | null) {
+    if (!(target instanceof Element)) return false;
+    return Boolean(
+      target.closest(
+        "[data-map-chrome], [data-coin-token], [data-map-interactive], a[href], button, input, select, textarea, label",
+      ),
+    );
+  }
+
   function onPointerDown(e: ReactPointerEvent<HTMLDivElement>) {
     if (e.button !== 0) return;
-    const target = e.target as HTMLElement;
     // Never steal pointer capture from pins/links — that blocks navigation.
-    if (
-      target.closest(
-        "[data-map-chrome], [data-coin-token], [data-map-interactive], a, button, input, select, textarea, label",
-      )
-    ) {
-      return;
-    }
+    if (isInteractiveTarget(e.target)) return;
     dragRef.current = {
       id: e.pointerId,
       startX: e.clientX,

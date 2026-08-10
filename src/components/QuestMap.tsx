@@ -10,6 +10,7 @@ import {
   useState,
   type CSSProperties,
   type PointerEvent as ReactPointerEvent,
+  type ReactNode,
 } from "react";
 import { useRouter } from "next/navigation";
 import { MODULES } from "@/lib/content/modules";
@@ -52,6 +53,43 @@ const HUD_ICON = {
   compass: HudCompassIcon,
   flag: HudFlagIcon,
 } as const;
+
+/** Keep pin pointer events from starting map pan, and navigate reliably. */
+function MapPinLink({
+  href,
+  className,
+  style,
+  title,
+  "aria-label": ariaLabel,
+  children,
+}: {
+  href: string;
+  className: string;
+  style?: CSSProperties;
+  title?: string;
+  "aria-label"?: string;
+  children: ReactNode;
+}) {
+  const router = useRouter();
+  return (
+    <Link
+      href={href}
+      data-map-interactive
+      className={className}
+      style={style}
+      title={title}
+      aria-label={ariaLabel}
+      onPointerDown={(e) => e.stopPropagation()}
+      onClick={(e) => {
+        // Ensure navigation even if a parent capture layer interferes.
+        e.preventDefault();
+        router.push(href);
+      }}
+    >
+      {children}
+    </Link>
+  );
+}
 
 function clampPct(n: number) {
   return Math.min(96, Math.max(4, n));
@@ -344,6 +382,7 @@ export function QuestMap({ state }: { state: GameState }) {
               style={{ left: `${stone.x}%`, top: `${stone.y}%` }}
               title={open ? "Open pathway" : "Sealed pathway"}
               aria-label={`Pathway stone ${stone.id}`}
+              onPointerDown={(e) => e.stopPropagation()}
               onClick={() => onStoneClick(stone.segment)}
             />
           );
@@ -371,17 +410,16 @@ export function QuestMap({ state }: { state: GameState }) {
 
           if (unlocked) {
             return (
-              <Link
+              <MapPinLink
                 key={m.id}
                 href={`/quest/${m.id}`}
-                data-map-interactive
                 className={`${className} pulse`}
                 style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
                 title={`${m.number}. ${m.title} · ${area.name}`}
                 aria-label={`${m.number}. ${m.title}`}
               >
                 {body}
-              </Link>
+              </MapPinLink>
             );
           }
 
@@ -394,6 +432,7 @@ export function QuestMap({ state }: { state: GameState }) {
               style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
               title={`Locked — ${area.name}`}
               aria-label={`${m.number}. ${m.title} (locked)`}
+              onPointerDown={(e) => e.stopPropagation()}
               onClick={() =>
                 setToast(
                   `Portal “${m.mapLabel}” in ${area.name} is sealed. Clear prior modules/exams first.`,
@@ -420,17 +459,16 @@ export function QuestMap({ state }: { state: GameState }) {
           );
           if (unlocked) {
             return (
-              <Link
+              <MapPinLink
                 key={exam.id}
                 href={`/exam/${exam.id}`}
-                data-map-interactive
                 className={`${className} pulse`}
                 style={{ left: `${exam.x}%`, top: `${exam.y}%` }}
                 title={`${exam.title} (compulsory)`}
                 aria-label={`Exam ${exam.roman}: ${exam.title}`}
               >
                 {body}
-              </Link>
+              </MapPinLink>
             );
           }
           return (
@@ -442,6 +480,7 @@ export function QuestMap({ state }: { state: GameState }) {
               style={{ left: `${exam.x}%`, top: `${exam.y}%` }}
               title="Exam locked"
               aria-label={`Exam ${exam.roman} locked`}
+              onPointerDown={(e) => e.stopPropagation()}
               onClick={() =>
                 setToast(
                   `Exam ${exam.roman} (“${exam.title}”) unlocks after Module ${exam.afterModuleId.replace("m", "")}.`,
@@ -457,10 +496,9 @@ export function QuestMap({ state }: { state: GameState }) {
         {CITY_LIBRARIES.map((lib) => {
           const area = MAP_AREAS.find((a) => a.id === lib.areaId);
           return (
-            <Link
+            <MapPinLink
               key={lib.areaId}
               href={`/library/${lib.areaId}`}
-              data-map-interactive
               className="library-pin"
               style={
                 {
@@ -477,7 +515,7 @@ export function QuestMap({ state }: { state: GameState }) {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/icons/library-icon.png" alt="" width={38} height={38} />
               <span className="hybrid-pin-label below">Library</span>
-            </Link>
+            </MapPinLink>
           );
         })}
 
@@ -486,10 +524,9 @@ export function QuestMap({ state }: { state: GameState }) {
           const area = MAP_AREAS.find((a) => a.id === t.areaId);
           const done = (state.completedTrades ?? []).includes(t.id);
           return (
-            <Link
+            <MapPinLink
               key={t.id}
               href={`/trade/${t.id}`}
-              data-map-interactive
               className={`trade-pin ${done ? "done" : ""}`}
               style={
                 {
@@ -504,7 +541,7 @@ export function QuestMap({ state }: { state: GameState }) {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/icons/trade-sword-icon.png" alt="" width={26} height={26} />
-            </Link>
+            </MapPinLink>
           );
         })}
 
@@ -512,17 +549,16 @@ export function QuestMap({ state }: { state: GameState }) {
         {CHEST_MARKERS.map((c) => {
           const done = state.completedSidequests.includes(c.sidequestId);
           return (
-            <Link
+            <MapPinLink
               key={c.id}
               href={`/sidequest/${c.sidequestId}`}
-              data-map-interactive
               className={`map-chest ${done ? "done" : ""}`}
               style={{ left: `${c.x}%`, top: `${c.y}%` }}
               title="Wealth treasure chest"
               aria-label="Wealth treasure chest"
             >
               <TreasureChestIcon />
-            </Link>
+            </MapPinLink>
           );
         })}
 
@@ -530,17 +566,16 @@ export function QuestMap({ state }: { state: GameState }) {
           const pos = sidequestBoardPosition(i);
           const done = state.completedSidequests.includes(s.id);
           return (
-            <Link
+            <MapPinLink
               key={s.id}
               href={`/sidequest/${s.id}`}
-              data-map-interactive
               className={`map-deal z-10 ${done ? "done" : ""}`}
               style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
               title={s.title}
               aria-label={s.title}
             >
               ?
-            </Link>
+            </MapPinLink>
           );
         })}
 
@@ -555,7 +590,10 @@ export function QuestMap({ state }: { state: GameState }) {
           }}
           aria-label="Your coin token — drag to move"
           title="Drag your coin to the next portal"
-          onPointerDown={onCoinPointerDown}
+          onPointerDown={(e) => {
+            e.stopPropagation();
+            onCoinPointerDown(e);
+          }}
           onPointerMove={onCoinPointerMove}
           onPointerUp={onCoinPointerUp}
           onPointerCancel={onCoinPointerUp}
