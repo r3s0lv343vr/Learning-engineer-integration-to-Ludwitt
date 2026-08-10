@@ -17,7 +17,7 @@ import { MODULES } from "@/lib/content/modules";
 import { SIDEQUESTS } from "@/lib/content/sidequests";
 import { EXAMS } from "@/lib/content/exams";
 import { MAP_AREAS, areaForModuleNumber } from "@/lib/content/areas";
-import { CITY_LIBRARIES } from "@/lib/content/libraries";
+import { CITY_LIBRARIES, libraryHref } from "@/lib/content/libraries";
 import { TRADE_AREAS } from "@/lib/content/trades";
 import {
   CHEST_MARKERS,
@@ -495,7 +495,7 @@ export function QuestMap({ state }: { state: GameState }) {
           return (
             <MapPinLink
               key={lib.areaId}
-              href={`/library/${lib.areaId}`}
+              href={libraryHref(lib.areaId)}
               className="library-pin"
               style={
                 {

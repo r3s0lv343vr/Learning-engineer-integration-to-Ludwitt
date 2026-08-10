@@ -361,7 +361,11 @@ export function getLibrary(areaId: string) {
   return CITY_LIBRARIES.find((l) => l.areaId === areaId);
 }
 
+/** Prefer the Library Classroom when a city has one; otherwise the shelf. */
 export function libraryHref(areaId: AreaId) {
+  if (areaId === "coral-ledger-bay") {
+    return `/library/${areaId}/classroom`;
+  }
   return `/library/${areaId}`;
 }
 

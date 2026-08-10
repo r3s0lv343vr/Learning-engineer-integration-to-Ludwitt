@@ -301,7 +301,7 @@ export function LibraryClassroom({
       </div>
 
       <footer className="classroom-footer">
-        <Link href={`/library/${lesson.areaId}`} className="classroom-exit">
+        <Link href="/map" className="classroom-exit">
           Exit Room
         </Link>
         <nav className="classroom-dock" aria-label="World navigation">

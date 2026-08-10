@@ -32,7 +32,7 @@ export function StatusBar({ state }: { state: GameState }) {
         <nav className="flex gap-2">
           <Link
             className="btn btn-ghost px-3 py-1 text-xs"
-            href="/library/coral-ledger-bay"
+            href="/library/coral-ledger-bay/classroom"
           >
             Libraries
           </Link>
