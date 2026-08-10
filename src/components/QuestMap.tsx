@@ -29,6 +29,7 @@ import {
   PortalArchIcon,
   TreasureChestIcon,
 } from "@/components/MapIcons";
+import { MapPanZoom } from "@/components/MapPanZoom";
 import type { CSSProperties } from "react";
 import type { GameState } from "@/lib/types";
 
@@ -151,10 +152,42 @@ export function QuestMap({ state }: { state: GameState }) {
         </Link>
       </div>
 
+      <MapPanZoom
+        overlay={
+          <>
+            <nav className="map-hud" aria-label="Map tools" data-map-chrome>
+              {MAP_HUD_ICONS.map((icon) => {
+                const Icon = HUD_ICON[icon.id];
+                const href =
+                  icon.id === "book"
+                    ? nextModuleHref
+                    : icon.id === "scroll"
+                      ? `/sidequest/${sideDeals.find((s) => !state.completedSidequests.includes(s.id))?.id ?? sideDeals[0]?.id ?? "sq-bank-loan"}`
+                      : icon.href;
+                return (
+                  <Link
+                    key={icon.id}
+                    href={href}
+                    className={`map-hud-btn hue-${icon.hue}`}
+                    title={icon.title}
+                    aria-label={icon.label}
+                  >
+                    <Icon />
+                    <span>{icon.label}</span>
+                  </Link>
+                );
+              })}
+            </nav>
+            <div className="map-compass" aria-hidden data-map-chrome>
+              <CompassRose />
+            </div>
+          </>
+        }
+      >
       <div
         className="hybrid-map invest-map-2"
         role="img"
-        aria-label="Investment Map with 36 portals, 9 exams, treasure chests"
+        aria-label="Investment Map with 36 portals, 9 exams, treasure chests, trade desks"
       >
         <div
           className="hybrid-basemap"
@@ -417,35 +450,8 @@ export function QuestMap({ state }: { state: GameState }) {
         >
           <CoinIcon />
         </div>
-
-        <nav className="map-hud" aria-label="Map tools">
-          {MAP_HUD_ICONS.map((icon) => {
-            const Icon = HUD_ICON[icon.id];
-            const href =
-              icon.id === "book"
-                ? nextModuleHref
-                : icon.id === "scroll"
-                  ? `/sidequest/${sideDeals.find((s) => !state.completedSidequests.includes(s.id))?.id ?? sideDeals[0]?.id ?? "sq-bank-loan"}`
-                  : icon.href;
-            return (
-              <Link
-                key={icon.id}
-                href={href}
-                className={`map-hud-btn hue-${icon.hue}`}
-                title={icon.title}
-                aria-label={icon.label}
-              >
-                <Icon />
-                <span>{icon.label}</span>
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="map-compass" aria-hidden>
-          <CompassRose />
-        </div>
       </div>
+      </MapPanZoom>
 
       {toast ? (
         <div className="rounded-xl border border-[var(--path)]/40 bg-black/40 px-4 py-3 text-sm text-[var(--muted)]">
@@ -459,8 +465,8 @@ export function QuestMap({ state }: { state: GameState }) {
         </div>
       ) : (
         <p className="text-xs text-[var(--muted)]">
-          36 portals · 9 exams · 4 libraries · city trade desks · chests stay
-          put · glowing icons · coin is you.
+          Drag to pan · zoom +/− · icons shrink when zoomed out · chests stay
+          put · coin is you.
         </p>
       )}
     </div>

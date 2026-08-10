@@ -52,7 +52,7 @@ const CORAL: TradeArea[] = [
     capitalDeltaGain: 180,
     capitalDeltaLoss: -90,
     goldReward: 1,
-    x: 6,
+    x: 8,
     y: 80,
     prompt: "Take a small long into the bay starter sleeve?",
     choices: [
@@ -77,7 +77,7 @@ const CORAL: TradeArea[] = [
     capitalDeltaGain: 120,
     capitalDeltaLoss: -60,
     x: 12,
-    y: 94,
+    y: 92,
     prompt: "Park idle cash in the ferry note for a week?",
     choices: [
       {
@@ -124,7 +124,7 @@ const CORAL: TradeArea[] = [
     risk: "medium",
     capitalDeltaGain: 200,
     capitalDeltaLoss: -220,
-    x: 4,
+    x: 8,
     y: 68,
     prompt: "Draw the reef line for a tactical buy?",
     choices: [
@@ -172,7 +172,7 @@ const CORAL: TradeArea[] = [
     risk: "medium",
     capitalDeltaGain: 220,
     capitalDeltaLoss: -160,
-    x: 2,
+    x: 8,
     y: 90,
     prompt: "Hedge the remit or ride the spot?",
     choices: [
@@ -201,7 +201,7 @@ const BRICK: TradeArea[] = [
     capitalDeltaGain: 320,
     capitalDeltaLoss: -180,
     goldReward: 1,
-    x: 96,
+    x: 92,
     y: 74,
     prompt: "Put on the statements pair?",
     choices: [
@@ -249,7 +249,7 @@ const BRICK: TradeArea[] = [
     risk: "high",
     capitalDeltaGain: 450,
     capitalDeltaLoss: -320,
-    x: 98,
+    x: 92,
     y: 84,
     prompt: "Fund the crane expansion story?",
     choices: [
@@ -274,7 +274,7 @@ const BRICK: TradeArea[] = [
     capitalDeltaGain: 280,
     capitalDeltaLoss: -200,
     x: 88,
-    y: 94,
+    y: 92,
     prompt: "Flip the seasonal inventory?",
     choices: [
       {
@@ -297,7 +297,7 @@ const BRICK: TradeArea[] = [
     risk: "low",
     capitalDeltaGain: 210,
     capitalDeltaLoss: -110,
-    x: 96,
+    x: 92,
     y: 64,
     prompt: "Wait for the multiple to enter band?",
     choices: [
@@ -350,7 +350,7 @@ const QUAY: TradeArea[] = [
     capitalDeltaGain: 480,
     capitalDeltaLoss: -360,
     goldReward: 1,
-    x: 96,
+    x: 92,
     y: 24,
     prompt: "Position for the policy print?",
     choices: [
@@ -375,7 +375,7 @@ const QUAY: TradeArea[] = [
     capitalDeltaGain: 300,
     capitalDeltaLoss: -210,
     x: 92,
-    y: 6,
+    y: 8,
     prompt: "Add the glass tower REIT slice?",
     choices: [
       {
@@ -398,7 +398,7 @@ const QUAY: TradeArea[] = [
     risk: "high",
     capitalDeltaGain: 520,
     capitalDeltaLoss: -400,
-    x: 98,
+    x: 92,
     y: 34,
     prompt: "Ride the freight spike?",
     choices: [
@@ -423,7 +423,7 @@ const QUAY: TradeArea[] = [
     capitalDeltaGain: 270,
     capitalDeltaLoss: -150,
     x: 84,
-    y: 6,
+    y: 8,
     prompt: "Run the factor overlay swap?",
     choices: [
       {
@@ -446,7 +446,7 @@ const QUAY: TradeArea[] = [
     risk: "medium",
     capitalDeltaGain: 340,
     capitalDeltaLoss: -190,
-    x: 94,
+    x: 92,
     y: 42,
     prompt: "Buy the correlation hedge sleeve?",
     choices: [
@@ -475,7 +475,7 @@ const HIGHLANDS: TradeArea[] = [
     capitalDeltaGain: 230,
     capitalDeltaLoss: -260,
     goldReward: 1,
-    x: 4,
+    x: 8,
     y: 24,
     prompt: "Approve the lot under the IPS?",
     choices: [
@@ -500,7 +500,7 @@ const HIGHLANDS: TradeArea[] = [
     capitalDeltaGain: 360,
     capitalDeltaLoss: -240,
     x: 8,
-    y: 6,
+    y: 8,
     prompt: "Ticket the thesis with falsifiers?",
     choices: [
       {
@@ -547,7 +547,7 @@ const HIGHLANDS: TradeArea[] = [
     risk: "medium",
     capitalDeltaGain: 250,
     capitalDeltaLoss: -180,
-    x: 4,
+    x: 8,
     y: 36,
     prompt: "Bid with a pre-committed ceiling?",
     choices: [

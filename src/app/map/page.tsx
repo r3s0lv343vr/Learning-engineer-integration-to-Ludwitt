@@ -17,7 +17,7 @@ export default async function MapPage() {
           <div>
             <h1 className="display text-3xl text-[var(--gold)]">Investment Map</h1>
             <p className="mt-1 max-w-2xl text-[var(--muted)]">
-              Four areas · 36 portals · 9 exams · trade desks. Chests stay put.
+              Pan & zoom the map · trade desks · chests stay put.
               Your token is the gold coin.
             </p>
           </div>

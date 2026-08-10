@@ -116,19 +116,124 @@ a {
   background-size: 16.66% 33.33%, 16.66% 33.33%, auto;
 }
 
-/* Hybrid: real street basemap + painted poster + quest pins */
-.hybrid-map {
+/* Pan/zoom stage around the hybrid Investment Map */
+.map-stage {
   position: relative;
   width: 100%;
   max-width: min(100%, 920px);
   margin-inline: auto;
-  aspect-ratio: 1 / 1;
   border-radius: 0.5rem;
-  overflow: hidden;
   border: 3px solid #1a1408;
   box-shadow:
     0 0 0 6px #c6a15b,
     0 18px 40px rgba(0, 0, 0, 0.45);
+  background: #0d3a5c;
+  overflow: hidden;
+}
+
+.map-viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  background: #0d3a5c;
+}
+
+.map-viewport.dragging {
+  cursor: grabbing;
+}
+
+.map-world {
+  position: absolute;
+  inset: 0;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.map-chrome {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.map-chrome .map-hud,
+.map-chrome .map-compass,
+.map-chrome .map-zoom-controls {
+  pointer-events: auto;
+}
+
+.map-zoom-controls {
+  position: absolute;
+  right: 0.55rem;
+  top: 0.55rem;
+  z-index: 55;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: stretch;
+}
+
+.map-zoom-btn {
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 0.45rem;
+  border: 2px solid #c6a15b;
+  background: rgba(18, 28, 36, 0.92);
+  color: #f7f3e8;
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(198, 161, 91, 0.45);
+}
+
+.map-zoom-btn:hover {
+  background: rgba(40, 55, 70, 0.95);
+}
+
+.map-zoom-reset {
+  font-size: 0.95rem;
+}
+
+.map-zoom-readout {
+  text-align: center;
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #f7f3e8;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.map-pan-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 0.4rem;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(10, 18, 24, 0.55);
+  color: rgba(247, 243, 232, 0.85);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+/* Hybrid: real street basemap + painted poster + quest pins */
+.hybrid-map {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  overflow: visible;
+  border: none;
+  box-shadow: none;
   background: #1a3040;
 }
 
