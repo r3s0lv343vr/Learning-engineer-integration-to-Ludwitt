@@ -271,12 +271,14 @@ export function QuestMap({ state }: { state: GameState }) {
       <div
         ref={mapRef}
         className="hybrid-map invest-map-2"
-        role="img"
         aria-label="Investment Map with 36 portals, 9 exams, treasure chests, trade desks"
       >
         <div
           className="hybrid-basemap"
-          style={{ opacity: showStreets ? 1 : 0 }}
+          style={{
+            opacity: showStreets ? 1 : 0,
+            pointerEvents: showStreets ? "auto" : "none",
+          }}
           aria-hidden={!showStreets}
         >
           <RealBasemap />
@@ -337,6 +339,7 @@ export function QuestMap({ state }: { state: GameState }) {
             <button
               key={stone.id}
               type="button"
+              data-map-interactive
               className={`path-stone z-10 ${open ? "open" : "sealed"}`}
               style={{ left: `${stone.x}%`, top: `${stone.y}%` }}
               title={open ? "Open pathway" : "Sealed pathway"}
@@ -371,6 +374,7 @@ export function QuestMap({ state }: { state: GameState }) {
               <Link
                 key={m.id}
                 href={`/quest/${m.id}`}
+                data-map-interactive
                 className={`${className} pulse`}
                 style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
                 title={`${m.number}. ${m.title} · ${area.name}`}
@@ -385,6 +389,7 @@ export function QuestMap({ state }: { state: GameState }) {
             <button
               key={m.id}
               type="button"
+              data-map-interactive
               className={className}
               style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
               title={`Locked — ${area.name}`}
@@ -418,6 +423,7 @@ export function QuestMap({ state }: { state: GameState }) {
               <Link
                 key={exam.id}
                 href={`/exam/${exam.id}`}
+                data-map-interactive
                 className={`${className} pulse`}
                 style={{ left: `${exam.x}%`, top: `${exam.y}%` }}
                 title={`${exam.title} (compulsory)`}
@@ -431,6 +437,7 @@ export function QuestMap({ state }: { state: GameState }) {
             <button
               key={exam.id}
               type="button"
+              data-map-interactive
               className={className}
               style={{ left: `${exam.x}%`, top: `${exam.y}%` }}
               title="Exam locked"
@@ -453,6 +460,7 @@ export function QuestMap({ state }: { state: GameState }) {
             <Link
               key={lib.areaId}
               href={`/library/${lib.areaId}`}
+              data-map-interactive
               className="library-pin"
               style={
                 {
@@ -481,6 +489,7 @@ export function QuestMap({ state }: { state: GameState }) {
             <Link
               key={t.id}
               href={`/trade/${t.id}`}
+              data-map-interactive
               className={`trade-pin ${done ? "done" : ""}`}
               style={
                 {
@@ -506,6 +515,7 @@ export function QuestMap({ state }: { state: GameState }) {
             <Link
               key={c.id}
               href={`/sidequest/${c.sidequestId}`}
+              data-map-interactive
               className={`map-chest ${done ? "done" : ""}`}
               style={{ left: `${c.x}%`, top: `${c.y}%` }}
               title="Wealth treasure chest"
@@ -523,6 +533,7 @@ export function QuestMap({ state }: { state: GameState }) {
             <Link
               key={s.id}
               href={`/sidequest/${s.id}`}
+              data-map-interactive
               className={`map-deal z-10 ${done ? "done" : ""}`}
               style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
               title={s.title}
@@ -537,7 +548,11 @@ export function QuestMap({ state }: { state: GameState }) {
           type="button"
           data-coin-token
           className="hybrid-coin z-30 movable"
-          style={{ left: `${coinPos.x}%`, top: `calc(${coinPos.y}% - 3.5%)` }}
+          style={{
+            // Offset slightly so the coin does not cover the portal hit target
+            left: `calc(${coinPos.x}% + 2.2%)`,
+            top: `calc(${coinPos.y}% - 5.5%)`,
+          }}
           aria-label="Your coin token — drag to move"
           title="Drag your coin to the next portal"
           onPointerDown={onCoinPointerDown}

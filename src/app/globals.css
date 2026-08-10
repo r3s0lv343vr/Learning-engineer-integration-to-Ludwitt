@@ -246,6 +246,22 @@ a {
   height: 100%;
 }
 
+/* Leaflet must not sit above pins or steal clicks when streets are off */
+.hybrid-basemap {
+  z-index: 0;
+}
+
+.portal-pin,
+.exam-pin,
+.library-pin,
+.trade-pin,
+.map-chest,
+.map-deal,
+.path-stone {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
 .hybrid-leaflet-fallback {
   background:
     radial-gradient(circle at 40% 60%, #3a5a4a 0%, transparent 50%),

@@ -73,8 +73,15 @@ export function MapPanZoom({
 
   function onPointerDown(e: ReactPointerEvent<HTMLDivElement>) {
     if (e.button !== 0) return;
-    if ((e.target as HTMLElement).closest("[data-map-chrome]")) return;
-    if ((e.target as HTMLElement).closest("[data-coin-token]")) return;
+    const target = e.target as HTMLElement;
+    // Never steal pointer capture from pins/links — that blocks navigation.
+    if (
+      target.closest(
+        "[data-map-chrome], [data-coin-token], [data-map-interactive], a, button, input, select, textarea, label",
+      )
+    ) {
+      return;
+    }
     dragRef.current = {
       id: e.pointerId,
       startX: e.clientX,

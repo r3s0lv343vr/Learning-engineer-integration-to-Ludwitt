@@ -14,8 +14,10 @@ export function RealBasemap() {
       zoomControl={false}
       attributionControl={true}
       scrollWheelZoom={false}
-      dragging={true}
+      dragging={false}
       doubleClickZoom={false}
+      keyboard={false}
+      boxZoom={false}
     >
       <TileLayer
         attribution={REAL_BASEMAP.attribution}
