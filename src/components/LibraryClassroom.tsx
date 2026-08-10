@@ -1,7 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 import type { ClassroomLesson } from "@/lib/content/classroom";
 import type { GameState } from "@/lib/types";
 import { portfolioValue } from "@/lib/game-state";
@@ -20,6 +26,7 @@ export function LibraryClassroom({
   const [askText, setAskText] = useState("");
   const [askReply, setAskReply] = useState<string | null>(null);
   const [fullscreen, setFullscreen] = useState(false);
+  const thumbListRef = useRef<HTMLDivElement>(null);
 
   const slide = lesson.slides[slideIndex] ?? lesson.slides[0];
   const total = lesson.slides.length;
@@ -56,6 +63,13 @@ export function LibraryClassroom({
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [total]);
+
+  useEffect(() => {
+    const list = thumbListRef.current;
+    if (!list) return;
+    const active = list.querySelector<HTMLElement>(".classroom-thumb.active");
+    active?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }, [slideIndex, filteredSlides]);
 
   const portalNumber = Math.min(
     lesson.moduleEnd,
@@ -117,8 +131,29 @@ export function LibraryClassroom({
       <div className="classroom-body">
         <aside className="classroom-left">
           <section className="classroom-panel classroom-thumbs">
-            <h2>Slides</h2>
-            <div className="classroom-thumb-list">
+            <div className="classroom-thumbs-head">
+              <h2>Slides</h2>
+              <span className="classroom-thumbs-count">
+                {slideIndex + 1} / {total}
+              </span>
+            </div>
+            {total > 1 ? (
+              <label className="classroom-slide-scrub">
+                <span className="sr-only">
+                  Jump to slide {slideIndex + 1} of {total}
+                </span>
+                <input
+                  type="range"
+                  min={0}
+                  max={total - 1}
+                  step={1}
+                  value={slideIndex}
+                  onChange={(e) => setSlideIndex(Number(e.target.value))}
+                  aria-valuetext={`${slide.thumbLabel}: ${slide.title}`}
+                />
+              </label>
+            ) : null}
+            <div className="classroom-thumb-list" ref={thumbListRef}>
               {filteredSlides.map(({ s, index: i }) => (
                 <button
                   key={s.id}
