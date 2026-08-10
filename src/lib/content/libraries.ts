@@ -58,7 +58,7 @@ export const CITY_LIBRARIES: CityLibrary[] = [
     areaId: "coral-ledger-bay",
     name: "Coral Ledger Bay Library",
     tagline:
-      "Purple City foundations — syllabus, study notes, and layman slide decks for portals 1–9.",
+      "Purple City foundations — syllabus, study notes, and the Investment Foundations teaching deck for portals 1–9.",
     x: 14,
     y: 84,
     classes: [
@@ -81,7 +81,7 @@ export const CITY_LIBRARIES: CityLibrary[] = [
         title: "Purple City Notes Walkthrough",
         duration: "45 min",
         summary:
-          "Layman briefing of the Purple City Foundation notes aligned to portals 1–9.",
+          "Investment Foundations teaching deck walkthrough aligned to portals 1–9.",
         outline: [
           "Enter the market",
           "Know your investor",
@@ -101,13 +101,13 @@ export const CITY_LIBRARIES: CityLibrary[] = [
         downloadName: "purple-city-foundation-study-notes.pdf",
       },
       {
-        id: "bay-purple-layman-ppt",
-        title: "Purple City Notes — Layman PowerPoint",
+        id: "bay-purple-teaching-deck",
+        title: "Purple City Investment Foundations Teaching Deck",
         kind: "powerpoint",
         description:
-          "Plain-language slide deck explaining the foundation notes so they are easy to enhance and teach.",
-        file: "purple-city-notes-layman.pptx",
-        downloadName: "purple-city-notes-layman.pptx",
+          "42-slide teaching deck for Portals 1–9 (PDF). Powers the Coral Ledger Bay Library Classroom board.",
+        file: "purple-city-investment-foundations-teaching-deck.pdf",
+        downloadName: "purple-city-investment-foundations-teaching-deck.pdf",
       },
       {
         id: "bay-syllabus",
