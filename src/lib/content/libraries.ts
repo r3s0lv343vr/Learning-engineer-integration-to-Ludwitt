@@ -179,9 +179,9 @@ export const CITY_LIBRARIES: CityLibrary[] = [
     areaId: "signal-quay",
     name: "Signal Quay Library",
     tagline: "Markets studio — portfolio, macro, and crisis media packs.",
-    // Top-right glass towers just right of the Gherkin (keep Gherkin clear)
-    x: 90,
-    y: 15,
+    // Just right of the Gherkin on a neighboring glass tower (Gherkin stays clear)
+    x: 88,
+    y: 17,
     classes: [
       {
         id: "quay-class-1",
