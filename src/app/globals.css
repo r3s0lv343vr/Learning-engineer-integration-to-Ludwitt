@@ -1499,9 +1499,6 @@ a {
   align-items: end;
   flex: 0 0 auto;
 }
-.classroom-board-foot {
-  flex: 0 0 auto;
-}
 .classroom-lesson-label {
   margin: 0;
   font-family: var(--font-display), Georgia, serif;
@@ -1520,6 +1517,7 @@ a {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
+  flex: 0 0 auto;
 }
 
 .classroom-chip {
