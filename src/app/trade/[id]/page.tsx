@@ -31,7 +31,7 @@ export default async function TradePage({
           <div className="flex items-start gap-4">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/icons/trade-icon.png"
+              src="/icons/trade-sword-icon.png"
               alt=""
               width={72}
               height={72}

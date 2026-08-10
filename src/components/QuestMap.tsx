@@ -409,7 +409,7 @@ export function QuestMap({ state }: { state: GameState }) {
               aria-label={t.title}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/icons/trade-icon.png" alt="" width={26} height={26} />
+              <img src="/icons/trade-sword-icon.png" alt="" width={26} height={26} />
             </Link>
           );
         })}
