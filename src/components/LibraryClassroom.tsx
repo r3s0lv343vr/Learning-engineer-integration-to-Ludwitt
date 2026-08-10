@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import type { ClassroomLesson } from "@/lib/content/classroom";
 import type { GameState } from "@/lib/types";
 import { portfolioValue } from "@/lib/game-state";
@@ -57,15 +57,28 @@ export function LibraryClassroom({
     return () => window.removeEventListener("keydown", onKey);
   }, [total]);
 
+  const portalNumber = Math.min(
+    lesson.moduleEnd,
+    Math.max(lesson.moduleStart, lesson.moduleStart + slideIndex),
+  );
+
   function askLibrarian() {
     const q = askText.trim() || slide.title;
     setAskReply(
-      `Librarian: For “${q}”, start with the bullets on this board, then download the Foundation Notes PDF for worked examples. When ready, open map portal ${Math.min(9, slide.number)} and complete its five challenges.`,
+      `Librarian: For “${q}”, use this teaching board and Download Notes for this city’s materials. Linked sites and slides will expand as this library is authored.`,
     );
   }
 
   return (
-    <div className={`classroom-room ${fullscreen ? "is-fullscreen" : ""}`}>
+    <div
+      className={`classroom-room ${fullscreen ? "is-fullscreen" : ""}`}
+      style={
+        {
+          "--classroom-accent": lesson.themeColor,
+          "--classroom-accent-deep": lesson.themeColorDeep,
+        } as CSSProperties
+      }
+    >
       <header className="classroom-top">
         <div className="classroom-brand">
           <span className="classroom-brand-icon" aria-hidden />
@@ -83,7 +96,7 @@ export function LibraryClassroom({
           />
         </label>
         <nav className="classroom-top-icons" aria-label="Classroom tools">
-          <Link href={`/quest/m${Math.min(9, slideIndex + 1)}`} title="Quests">
+          <Link href={`/quest/m${portalNumber}`} title="Quests">
             Quests
             {state.unlockedModules.length > 0 && (
               <span className="classroom-badge">{state.unlockedModules.length}</span>
@@ -188,7 +201,7 @@ export function LibraryClassroom({
             <a className="classroom-chip" href={lesson.deckHref} download={lesson.deckDownloadName}>
               Download PowerPoint
             </a>
-            <Link className="classroom-chip primary" href={`/quest/m${Math.min(9, Math.max(1, slide.number))}`}>
+            <Link className="classroom-chip primary" href={`/quest/m${portalNumber}`}>
               Open matching portal
             </Link>
           </div>
@@ -290,13 +303,9 @@ export function LibraryClassroom({
         <Link href="/map" className="classroom-exit">
           Return to Map
         </Link>
-        <nav className="classroom-dock" aria-label="World navigation">
-          <Link href="/map">Map</Link>
+        <nav className="classroom-dock" aria-label="Classroom navigation">
           <Link href="/portfolio">Backpack</Link>
           <Link href="/formulae">Skills</Link>
-          <Link href={`/library/${lesson.areaId}/classroom`} className="active">
-            Library
-          </Link>
           <button type="button" onClick={() => setAskOpen(true)}>
             Messages
           </button>

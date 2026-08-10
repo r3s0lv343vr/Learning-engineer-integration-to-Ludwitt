@@ -22,10 +22,7 @@ export default async function LibraryClassroomPage({
   if (!AREA_IDS.includes(areaId as AreaId)) notFound();
 
   const lesson = getClassroomLesson(areaId);
-  if (!lesson) {
-    // Other cities keep the shelf until their classroom decks are authored.
-    redirect(`/library/${areaId}`);
-  }
+  if (!lesson) notFound();
 
   return <LibraryClassroom lesson={lesson} state={state} />;
 }

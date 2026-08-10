@@ -1134,13 +1134,15 @@ a {
   --cr-ink: #f4e8d4;
   --cr-muted: #cbb79a;
   --cr-gold: #d4b06a;
-  --cr-purple: #7c4dff;
-  --cr-purple-deep: #5b35c7;
+  --classroom-accent: #7c4dff;
+  --classroom-accent-deep: #5b35c7;
+  --cr-purple: var(--classroom-accent);
+  --cr-purple-deep: var(--classroom-accent-deep);
   min-height: 100vh;
   color: var(--cr-ink);
   background-color: #1a120d;
   background-image:
-    radial-gradient(1000px 560px at 12% -5%, rgba(124, 77, 255, 0.18), transparent 55%),
+    radial-gradient(1000px 560px at 12% -5%, color-mix(in srgb, var(--classroom-accent) 35%, transparent), transparent 55%),
     radial-gradient(800px 480px at 95% 105%, rgba(212, 176, 106, 0.14), transparent 52%),
     repeating-linear-gradient(
       90deg,
@@ -1189,7 +1191,7 @@ a {
   gap: 0.75rem;
   padding: 0.45rem 0.9rem;
   border-radius: 0.75rem;
-  background: linear-gradient(135deg, #7444e0, #4a27a8 60%, #3a1f86);
+  background: linear-gradient(135deg, var(--classroom-accent), var(--classroom-accent-deep) 60%, color-mix(in srgb, var(--classroom-accent-deep) 80%, #000));
   border: 1px solid rgba(255, 255, 255, 0.22);
   box-shadow:
     0 0 0 1px rgba(0, 0, 0, 0.35),
@@ -1211,7 +1213,7 @@ a {
   top: 18%;
   bottom: 18%;
   width: 2px;
-  background: #5b35c7;
+  background: var(--classroom-accent-deep);
 }
 .classroom-brand-icon::before { left: 32%; }
 .classroom-brand-icon::after { right: 32%; }
@@ -1343,7 +1345,7 @@ a {
   color: var(--cr-ink);
 }
 .classroom-outline button.active {
-  background: linear-gradient(90deg, rgba(124, 77, 255, 0.92), rgba(91, 53, 199, 0.95));
+  background: linear-gradient(90deg, color-mix(in srgb, var(--classroom-accent) 92%, white), var(--classroom-accent-deep));
   color: #fff;
   border-color: rgba(255, 255, 255, 0.18);
   box-shadow: 0 0 16px rgba(124, 77, 255, 0.4);
@@ -1464,7 +1466,7 @@ a {
   cursor: not-allowed;
 }
 .classroom-chip.primary {
-  background: linear-gradient(180deg, #9470ff, #5b35c7);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--classroom-accent) 75%, white), var(--classroom-accent-deep));
   border-color: rgba(255, 255, 255, 0.22);
   box-shadow: 0 0 16px rgba(124, 77, 255, 0.4);
 }
@@ -1527,7 +1529,7 @@ a.classroom-chip {
   position: absolute;
   inset: 0 auto 0 0;
   width: 0.7rem;
-  background: linear-gradient(180deg, var(--slide-accent, #7c4dff), #5b35c7);
+  background: linear-gradient(180deg, var(--slide-accent, var(--classroom-accent)), var(--classroom-accent-deep));
 }
 .classroom-board-seal {
   position: absolute;
@@ -1572,7 +1574,7 @@ a.classroom-chip {
   line-height: 1.5;
 }
 .classroom-board-inner li::marker {
-  color: var(--slide-accent, #7c4dff);
+  color: var(--slide-accent, var(--classroom-accent));
 }
 .classroom-board-footer {
   margin: 1.5rem 0 0;
@@ -1707,7 +1709,7 @@ a.classroom-chip {
   font-size: 0.72rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #b9a0ff;
+  color: color-mix(in srgb, var(--classroom-accent) 70%, white);
   font-weight: 800;
 }
 .classroom-current-topic {
@@ -1753,7 +1755,7 @@ a.classroom-chip {
   top: -0.55rem;
   width: 0.28rem;
   height: 1.5rem;
-  background: linear-gradient(180deg, #d4b06a, #7c4dff);
+  background: linear-gradient(180deg, #d4b06a, var(--classroom-accent));
   transform: rotate(28deg);
   border-radius: 999px;
 }
@@ -1819,7 +1821,7 @@ a.classroom-chip {
 }
 .classroom-dock a.active {
   color: #fff;
-  background: linear-gradient(180deg, #9470ff, #5b35c7);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--classroom-accent) 75%, white), var(--classroom-accent-deep));
   border-color: rgba(255, 255, 255, 0.22);
   box-shadow: 0 0 18px rgba(124, 77, 255, 0.45);
 }
@@ -1842,7 +1844,7 @@ a.classroom-chip {
 .classroom-xp-bar i {
   display: block;
   height: 100%;
-  background: linear-gradient(90deg, #7c4dff, #d4b06a);
+  background: linear-gradient(90deg, var(--classroom-accent), #d4b06a);
 }
 
 .sr-only {

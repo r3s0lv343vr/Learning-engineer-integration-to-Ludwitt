@@ -1,4 +1,5 @@
-import type { AreaId } from "@/lib/content/areas";
+import { MAP_AREAS, type AreaId } from "@/lib/content/areas";
+import { getLibrary } from "@/lib/content/libraries";
 
 export type ClassroomSlide = {
   id: string;
@@ -15,11 +16,15 @@ export type ClassroomSlide = {
 export type ClassroomLesson = {
   id: string;
   areaId: AreaId;
+  /** City accent — the only visual difference between rooms */
+  themeColor: string;
+  themeColorDeep: string;
   subject: string;
   topic: string;
   title: string;
-  /** Matches online class / walkthrough */
   classId: string;
+  moduleStart: number;
+  moduleEnd: number;
   outline: { id: string; label: string; slideIndex: number }[];
   slides: ClassroomSlide[];
   notesHref: string;
@@ -30,27 +35,26 @@ export type ClassroomLesson = {
   quote: { text: string; author: string };
 };
 
+const THEME: Record<AreaId, { color: string; deep: string }> = {
+  "coral-ledger-bay": { color: "#7c4dff", deep: "#5b35c7" },
+  "brick-exchange": { color: "#2196f3", deep: "#1565c0" },
+  "signal-quay": { color: "#43a047", deep: "#2e7d32" },
+  "mandate-highlands": { color: "#c6922e", deep: "#8a6a1a" },
+};
+
 /** Purple City layman PowerPoint — teaching-board content for Coral Ledger Bay. */
 export const PURPLE_CITY_CLASSROOM: ClassroomLesson = {
   id: "purple-city-foundations",
   areaId: "coral-ledger-bay",
+  themeColor: THEME["coral-ledger-bay"].color,
+  themeColorDeep: THEME["coral-ledger-bay"].deep,
   subject: "Investing",
   topic: "Purple City Foundations",
   title: "Lesson: Purple City Notes Walkthrough",
   classId: "bay-class-3",
-  outline: [
-    { id: "o1", label: "1. Welcome & cash", slideIndex: 0 },
-    { id: "o2", label: "2. Enter the Market", slideIndex: 1 },
-    { id: "o3", label: "3. Know Your Investor", slideIndex: 2 },
-    { id: "o4", label: "4. Asset Classes", slideIndex: 3 },
-    { id: "o5", label: "5. How Markets Work", slideIndex: 4 },
-    { id: "o6", label: "6. Reading the Market", slideIndex: 5 },
-    { id: "o7", label: "7. Research Fundamentals", slideIndex: 6 },
-    { id: "o8", label: "8. First Portfolio", slideIndex: 7 },
-    { id: "o9", label: "9. Investment Decisions", slideIndex: 8 },
-    { id: "o10", label: "10. Purple City Challenge", slideIndex: 9 },
-    { id: "o11", label: "11. How to use this deck", slideIndex: 10 },
-  ],
+  moduleStart: 1,
+  moduleEnd: 9,
+  outline: [],
   slides: [
     {
       id: "s1",
@@ -63,7 +67,7 @@ export const PURPLE_CITY_CLASSROOM: ClassroomLesson = {
         "This board mirrors the layman PowerPoint in the library shelf.",
       ],
       footer: "Coral Ledger Bay · Library Classroom",
-      accent: "#7c4dff",
+      accent: THEME["coral-ledger-bay"].color,
       thumbLabel: "Welcome",
     },
     {
@@ -76,7 +80,7 @@ export const PURPLE_CITY_CLASSROOM: ClassroomLesson = {
         "Trading = try to profit from short-term price moves.",
         "Compounding means returns can earn more returns over time.",
       ],
-      accent: "#7c4dff",
+      accent: THEME["coral-ledger-bay"].color,
       thumbLabel: "Enter Market",
     },
     {
@@ -90,7 +94,7 @@ export const PURPLE_CITY_CLASSROOM: ClassroomLesson = {
         "Time horizon — when do you need the money?",
         "Liquidity needs — how quickly might you need cash?",
       ],
-      accent: "#8e6cff",
+      accent: THEME["coral-ledger-bay"].color,
       thumbLabel: "Investor",
     },
     {
@@ -104,7 +108,7 @@ export const PURPLE_CITY_CLASSROOM: ClassroomLesson = {
         "ETFs = a basket of many investments in one share.",
         "Cash, real estate, and other assets each play a role.",
       ],
-      accent: "#6a5acd",
+      accent: THEME["coral-ledger-bay"].color,
       thumbLabel: "Assets",
     },
     {
@@ -118,7 +122,7 @@ export const PURPLE_CITY_CLASSROOM: ClassroomLesson = {
         "Limit order = only at your price (control).",
         "Costs matter: spread, commissions, and slippage.",
       ],
-      accent: "#7c4dff",
+      accent: THEME["coral-ledger-bay"].color,
       thumbLabel: "Markets",
     },
     {
@@ -131,7 +135,7 @@ export const PURPLE_CITY_CLASSROOM: ClassroomLesson = {
         "Indices (like the S&P 500) are scoreboards for groups of stocks.",
         "Watch volume, volatility, and news — then check your thesis.",
       ],
-      accent: "#9b7cff",
+      accent: THEME["coral-ledger-bay"].color,
       thumbLabel: "Reading",
     },
     {
@@ -144,7 +148,7 @@ export const PURPLE_CITY_CLASSROOM: ClassroomLesson = {
         "Credibility check: authority, evidence, timeliness, incentives.",
         "Keep a research log so decisions stay explainable.",
       ],
-      accent: "#7c4dff",
+      accent: THEME["coral-ledger-bay"].color,
       thumbLabel: "Research",
     },
     {
@@ -157,7 +161,7 @@ export const PURPLE_CITY_CLASSROOM: ClassroomLesson = {
         "Diversify across different risks — not just many tickers.",
         "Cash is a real choice: safety and optionality.",
       ],
-      accent: "#8e6cff",
+      accent: THEME["coral-ledger-bay"].color,
       thumbLabel: "Portfolio",
     },
     {
@@ -170,7 +174,7 @@ export const PURPLE_CITY_CLASSROOM: ClassroomLesson = {
         "Opportunity cost = what else that money could do.",
         "Good process beats lucky outcomes.",
       ],
-      accent: "#6a5acd",
+      accent: THEME["coral-ledger-bay"].color,
       thumbLabel: "Decisions",
     },
     {
@@ -183,7 +187,7 @@ export const PURPLE_CITY_CLASSROOM: ClassroomLesson = {
         "Defend what you own. Fix weak spots. Rebalance if needed.",
         "Then you’re ready for Blue City analysis.",
       ],
-      accent: "#7c4dff",
+      accent: THEME["coral-ledger-bay"].color,
       thumbLabel: "Challenge",
     },
     {
@@ -231,7 +235,67 @@ export const PURPLE_CITY_CLASSROOM: ClassroomLesson = {
   },
 };
 
+/**
+ * Standard empty classroom shell for cities whose lesson content is not authored yet.
+ * Same room / tools / options — different colour only. Content is intentionally blank-ready.
+ */
+function stubClassroom(areaId: AreaId): ClassroomLesson {
+  const area = MAP_AREAS.find((a) => a.id === areaId)!;
+  const lib = getLibrary(areaId)!;
+  const theme = THEME[areaId];
+  const notes =
+    lib.resources.find((r) => r.kind === "notes" || r.kind === "paper" || r.kind === "ebook") ??
+    lib.resources[0];
+  const deck =
+    lib.resources.find((r) => r.kind === "powerpoint") ?? lib.resources[0];
+
+  return {
+    id: `${areaId}-classroom`,
+    areaId,
+    themeColor: theme.color,
+    themeColorDeep: theme.deep,
+    subject: area.shortName,
+    topic: `${area.name} Classroom`,
+    title: `Lesson: ${area.name}`,
+    classId: lib.classes[0]?.id ?? `${areaId}-class`,
+    moduleStart: area.moduleStart,
+    moduleEnd: area.moduleEnd,
+    outline: [],
+    slides: [
+      {
+        id: `${areaId}-s1`,
+        number: 1,
+        title: `${area.name} Library Classroom`,
+        subtitle: "Standard teaching board — city materials load here",
+        bullets: [
+          "This room uses the same classroom layout as every library on the island.",
+          "Slides, notes, and linked readings for this city will be added separately.",
+          `Portals for this district: M${area.moduleStart}–M${area.moduleEnd}.`,
+        ],
+        footer: `${area.name} · Library Classroom`,
+        accent: theme.color,
+        thumbLabel: "Welcome",
+      },
+    ],
+    notesHref: `/library/${areaId}/${notes.file}`,
+    notesDownloadName: notes.downloadName,
+    deckHref: `/library/${areaId}/${deck.file}`,
+    deckDownloadName: deck.downloadName,
+    linkedSites: [],
+    quote: {
+      text: "An investment in knowledge pays the best interest.",
+      author: "Benjamin Franklin",
+    },
+  };
+}
+
+export const CLASSROOM_LESSONS: Record<AreaId, ClassroomLesson> = {
+  "coral-ledger-bay": PURPLE_CITY_CLASSROOM,
+  "brick-exchange": stubClassroom("brick-exchange"),
+  "signal-quay": stubClassroom("signal-quay"),
+  "mandate-highlands": stubClassroom("mandate-highlands"),
+};
+
 export function getClassroomLesson(areaId: string): ClassroomLesson | undefined {
-  if (areaId === PURPLE_CITY_CLASSROOM.areaId) return PURPLE_CITY_CLASSROOM;
-  return undefined;
+  return CLASSROOM_LESSONS[areaId as AreaId];
 }
