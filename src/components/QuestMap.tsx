@@ -54,7 +54,7 @@ const HUD_ICON = {
   flag: HudFlagIcon,
 } as const;
 
-/** Keep pin pointer events from starting map pan, and navigate reliably. */
+/** Plain anchors avoid Next Link + map gesture conflicts; always navigate. */
 function MapPinLink({
   href,
   className,
@@ -70,9 +70,8 @@ function MapPinLink({
   "aria-label"?: string;
   children: ReactNode;
 }) {
-  const router = useRouter();
   return (
-    <Link
+    <a
       href={href}
       data-map-interactive
       className={className}
@@ -82,17 +81,10 @@ function MapPinLink({
       onPointerDown={(e) => e.stopPropagation()}
       onClick={(e) => {
         e.stopPropagation();
-        // Hard-navigate if soft routing is blocked by map gesture handlers.
-        router.push(href);
-        window.setTimeout(() => {
-          if (!window.location.pathname.startsWith(href.split("?")[0]!)) {
-            window.location.assign(href);
-          }
-        }, 120);
       }}
     >
       {children}
-    </Link>
+    </a>
   );
 }
 

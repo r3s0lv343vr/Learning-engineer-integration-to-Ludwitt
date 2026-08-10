@@ -135,6 +135,9 @@ a {
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
+  /* Keep the full board (incl. SW Coral Bay) usable without page-scroll hunting */
+  max-height: min(78vh, 860px);
+  margin-inline: auto;
   overflow: hidden;
   cursor: grab;
   touch-action: none;
