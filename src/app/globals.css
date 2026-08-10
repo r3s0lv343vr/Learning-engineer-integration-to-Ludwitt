@@ -277,12 +277,12 @@ a {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
-  /* Prefer crisp resampling of the hi-res poster */
-  image-rendering: auto;
-  -ms-interpolation-mode: bicubic;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
   backface-visibility: hidden;
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
 }
 
 .hybrid-path {
