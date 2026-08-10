@@ -7,6 +7,7 @@ import { MODULES } from "@/lib/content/modules";
 import { SIDEQUESTS } from "@/lib/content/sidequests";
 import { EXAMS } from "@/lib/content/exams";
 import { MAP_AREAS, areaForModuleNumber } from "@/lib/content/areas";
+import { CITY_LIBRARIES } from "@/lib/content/libraries";
 import {
   CHEST_MARKERS,
   MAP_HUD_ICONS,
@@ -46,8 +47,14 @@ export function QuestMap({ state }: { state: GameState }) {
   const [showStreets, setShowStreets] = useState(false);
   const [posterStrength, setPosterStrength] = useState(1);
 
-  const unlockedExams = state.unlockedExams ?? [];
-  const completedExams = state.completedExams ?? [];
+  const unlockedExams = useMemo(
+    () => state.unlockedExams ?? [],
+    [state.unlockedExams],
+  );
+  const completedExams = useMemo(
+    () => state.completedExams ?? [],
+    [state.completedExams],
+  );
 
   const path = useMemo(() => modulePathPoints(), []);
   const pathD = path.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ");
@@ -314,6 +321,22 @@ export function QuestMap({ state }: { state: GameState }) {
           );
         })}
 
+        {/* City libraries — one per area (online classes + downloads) */}
+        {CITY_LIBRARIES.map((lib) => (
+          <Link
+            key={lib.areaId}
+            href={`/library/${lib.areaId}`}
+            className="library-pin"
+            style={{ left: `${lib.x}%`, top: `${lib.y}%` }}
+            title={lib.name}
+            aria-label={lib.name}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/icons/library-icon.png" alt="" width={44} height={44} />
+            <span className="hybrid-pin-label below">Library</span>
+          </Link>
+        ))}
+
         {/* Treasure chests — positions unchanged */}
         {CHEST_MARKERS.map((c) => {
           const done = state.completedSidequests.includes(c.sidequestId);
@@ -397,9 +420,8 @@ export function QuestMap({ state }: { state: GameState }) {
         </div>
       ) : (
         <p className="text-xs text-[var(--muted)]">
-          36 portals across four areas · 9 compulsory exams · chests stay put ·
-          coin is you · strength colours: purple bay, blue exchange, green quay,
-          gold highlands.
+          36 portals · 9 exams · 4 city libraries · chests stay put · glowing
+          icons · coin is you.
         </p>
       )}
     </div>

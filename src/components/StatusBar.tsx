@@ -30,6 +30,12 @@ export function StatusBar({ state }: { state: GameState }) {
           <strong>${portfolioValue(state).toLocaleString()}</strong>
         </div>
         <nav className="flex gap-2">
+          <Link
+            className="btn btn-ghost px-3 py-1 text-xs"
+            href="/library/coral-ledger-bay"
+          >
+            Libraries
+          </Link>
           <Link className="btn btn-ghost px-3 py-1 text-xs" href="/formulae">
             Formulae
           </Link>

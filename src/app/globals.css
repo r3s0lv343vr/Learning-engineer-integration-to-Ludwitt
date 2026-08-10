@@ -336,21 +336,43 @@ a {
   cursor: pointer;
   text-decoration: none;
   color: inherit;
-  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.35));
+  --glow-a: rgba(255, 255, 255, 0.9);
+  --glow-b: rgba(124, 77, 255, 0.85);
+  --glow-c: rgba(124, 77, 255, 0.5);
+  animation: pin-glow-pulse 2.4s ease-in-out infinite;
+}
+
+.portal-pin.strength-blue {
+  --glow-b: rgba(33, 150, 243, 0.9);
+  --glow-c: rgba(33, 150, 243, 0.55);
+}
+.portal-pin.strength-green {
+  --glow-b: rgba(67, 160, 71, 0.9);
+  --glow-c: rgba(67, 160, 71, 0.55);
+}
+.portal-pin.strength-gold {
+  --glow-b: rgba(226, 184, 74, 0.95);
+  --glow-c: rgba(226, 184, 74, 0.6);
 }
 
 .portal-pin .portal-svg {
   display: block;
-  filter: drop-shadow(0 0 6px currentColor);
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.7));
 }
 
 .portal-pin.locked {
-  opacity: 0.62;
-  filter: grayscale(0.35) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+  opacity: 0.7;
+  animation: none;
+  filter:
+    grayscale(0.25)
+    drop-shadow(0 0 6px rgba(255, 255, 255, 0.35))
+    drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45));
 }
 
 .portal-pin.done {
-  filter: drop-shadow(0 0 12px rgba(226, 184, 74, 0.85));
+  --glow-a: rgba(255, 255, 255, 1);
+  --glow-b: rgba(226, 184, 74, 1);
+  --glow-c: rgba(226, 184, 74, 0.75);
 }
 
 .portal-pin.unlocked:hover {
@@ -365,14 +387,19 @@ a {
   border-radius: 999px;
   border: 2px solid #1a1408;
   background: #f7f3e8;
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.55),
+    0 0 10px rgba(255, 255, 255, 0.55);
   padding: 0;
   cursor: pointer;
 }
 
 .path-stone.open {
   background: #e2b84a;
-  box-shadow: 0 0 8px rgba(226, 184, 74, 0.75);
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.7),
+    0 0 12px rgba(226, 184, 74, 0.95),
+    0 0 22px rgba(226, 184, 74, 0.55);
 }
 
 .path-stone.sealed {
@@ -388,14 +415,17 @@ a {
   transform: translate(-50%, -50%);
   display: grid;
   place-items: center;
-  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.4));
-  animation: bob 2.8s ease-in-out infinite;
+  --glow-a: rgba(255, 230, 150, 1);
+  --glow-b: rgba(255, 180, 60, 0.95);
+  --glow-c: rgba(255, 120, 30, 0.65);
+  animation: bob 2.8s ease-in-out infinite, pin-glow-pulse 2.2s ease-in-out infinite;
   z-index: 15;
 }
 
 .map-chest.done {
   opacity: 0.45;
-  filter: grayscale(0.4);
+  animation: bob 2.8s ease-in-out infinite;
+  filter: grayscale(0.4) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
 }
 
 .map-chest:hover {
@@ -416,7 +446,10 @@ a {
   font-size: 0.7rem;
   font-weight: 900;
   text-decoration: none;
-  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.35);
+  box-shadow:
+    0 0 8px rgba(255, 140, 66, 0.85),
+    0 0 16px rgba(255, 140, 66, 0.45),
+    1px 1px 0 rgba(0, 0, 0, 0.35);
 }
 
 .map-deal.done {
@@ -445,8 +478,14 @@ a {
   gap: 0.05rem;
   text-decoration: none;
   color: #f7f3e8;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
-  transition: transform 140ms ease;
+  --hud-glow: rgba(198, 161, 91, 0.75);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.2),
+    0 0 12px var(--hud-glow),
+    0 0 26px var(--hud-glow),
+    0 4px 10px rgba(0, 0, 0, 0.45);
+  transition: transform 140ms ease, box-shadow 140ms ease;
+  animation: hud-glow-pulse 2.8s ease-in-out infinite;
 }
 
 .map-hud-btn span {
@@ -462,16 +501,20 @@ a {
 }
 
 .map-hud-btn.hue-purple {
-  box-shadow: 0 0 0 2px rgba(124, 77, 255, 0.45), 0 4px 10px rgba(0, 0, 0, 0.45);
+  --hud-glow: rgba(124, 77, 255, 0.85);
+  border-color: #9b7cff;
 }
 .map-hud-btn.hue-blue {
-  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.45), 0 4px 10px rgba(0, 0, 0, 0.45);
+  --hud-glow: rgba(33, 150, 243, 0.85);
+  border-color: #64b5f6;
 }
 .map-hud-btn.hue-green {
-  box-shadow: 0 0 0 2px rgba(67, 160, 71, 0.45), 0 4px 10px rgba(0, 0, 0, 0.45);
+  --hud-glow: rgba(67, 160, 71, 0.85);
+  border-color: #81c784;
 }
 .map-hud-btn.hue-red {
-  box-shadow: 0 0 0 2px rgba(229, 57, 53, 0.45), 0 4px 10px rgba(0, 0, 0, 0.45);
+  --hud-glow: rgba(229, 57, 53, 0.85);
+  border-color: #ef5350;
 }
 
 .map-compass {
@@ -512,21 +555,106 @@ a {
   cursor: pointer;
   text-decoration: none;
   color: inherit;
-  filter: drop-shadow(0 0 10px rgba(226, 184, 74, 0.45));
+  --glow-a: rgba(255, 255, 255, 0.95);
+  --glow-b: rgba(226, 184, 74, 1);
+  --glow-c: rgba(226, 184, 74, 0.65);
+  animation: pin-glow-pulse 2.1s ease-in-out infinite;
   z-index: 25;
 }
 
 .exam-pin.locked {
-  opacity: 0.55;
-  filter: grayscale(0.4);
+  opacity: 0.6;
+  animation: none;
+  filter: grayscale(0.35) drop-shadow(0 0 6px rgba(255, 255, 255, 0.3));
 }
 
 .exam-pin.done {
-  filter: drop-shadow(0 0 14px rgba(226, 184, 74, 0.9));
+  --glow-a: rgba(255, 255, 255, 1);
+  --glow-b: rgba(226, 184, 74, 1);
+  --glow-c: rgba(226, 184, 74, 0.85);
 }
 
 .exam-pin.unlocked:hover {
   transform: translate(-50%, -50%) scale(1.08);
+}
+
+.library-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 22;
+  display: grid;
+  place-items: center;
+  text-decoration: none;
+  color: inherit;
+  --glow-a: rgba(220, 240, 255, 1);
+  --glow-b: rgba(140, 200, 255, 0.95);
+  --glow-c: rgba(90, 150, 255, 0.6);
+  animation: pin-glow-pulse 2.5s ease-in-out infinite;
+}
+
+.library-pin img {
+  display: block;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+}
+
+.library-pin:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.library-hero-icon {
+  --glow-a: rgba(180, 220, 255, 0.95);
+  --glow-b: rgba(120, 180, 255, 0.75);
+  --glow-c: rgba(90, 150, 255, 0.45);
+  border-radius: 999px;
+  animation: pin-glow-pulse 2.6s ease-in-out infinite;
+}
+
+/* Pulse glow radius via CSS vars — does not fight translate/bob transforms */
+@keyframes pin-glow-pulse {
+  0%,
+  100% {
+    filter:
+      drop-shadow(0 0 5px var(--glow-a))
+      drop-shadow(0 0 14px var(--glow-b))
+      drop-shadow(0 0 24px var(--glow-c));
+  }
+  50% {
+    filter:
+      drop-shadow(0 0 9px var(--glow-a))
+      drop-shadow(0 0 24px var(--glow-b))
+      drop-shadow(0 0 42px var(--glow-c));
+  }
+}
+
+@keyframes hud-glow-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.25),
+      0 0 10px var(--hud-glow),
+      0 0 22px var(--hud-glow),
+      0 4px 10px rgba(0, 0, 0, 0.45);
+  }
+  50% {
+    box-shadow:
+      0 0 0 2px rgba(255, 255, 255, 0.55),
+      0 0 18px var(--hud-glow),
+      0 0 36px var(--hud-glow),
+      0 4px 10px rgba(0, 0, 0, 0.45);
+  }
+}
+
+.portal-pin,
+.exam-pin,
+.map-chest,
+.library-pin {
+  will-change: filter;
+}
+
+.map-hud-btn {
+  will-change: box-shadow, transform;
 }
 
 @media (max-width: 640px) {
