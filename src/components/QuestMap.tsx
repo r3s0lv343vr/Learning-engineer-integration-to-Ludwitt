@@ -81,9 +81,14 @@ function MapPinLink({
       aria-label={ariaLabel}
       onPointerDown={(e) => e.stopPropagation()}
       onClick={(e) => {
-        // Ensure navigation even if a parent capture layer interferes.
-        e.preventDefault();
+        e.stopPropagation();
+        // Hard-navigate if soft routing is blocked by map gesture handlers.
         router.push(href);
+        window.setTimeout(() => {
+          if (!window.location.pathname.startsWith(href.split("?")[0]!)) {
+            window.location.assign(href);
+          }
+        }, 120);
       }}
     >
       {children}

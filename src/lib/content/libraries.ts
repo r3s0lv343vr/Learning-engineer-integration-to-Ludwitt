@@ -59,8 +59,9 @@ export const CITY_LIBRARIES: CityLibrary[] = [
     name: "Coral Ledger Bay Library",
     tagline:
       "Purple City foundations — syllabus, study notes, and layman slide decks for portals 1–9.",
-    x: 14,
-    y: 84,
+    // Inland of SW shore so HUD/chrome never covers the library hit target
+    x: 12,
+    y: 76,
     classes: [
       {
         id: "bay-class-1",

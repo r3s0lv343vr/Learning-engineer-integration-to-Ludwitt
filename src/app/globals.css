@@ -159,9 +159,13 @@ a {
   pointer-events: none;
 }
 
+/* Only chrome controls capture clicks — never the full overlay sheet */
 .map-chrome .map-hud,
-.map-chrome .map-compass,
 .map-chrome .map-zoom-controls {
+  pointer-events: none;
+}
+.map-chrome .map-hud-btn,
+.map-chrome .map-zoom-btn {
   pointer-events: auto;
 }
 
@@ -607,12 +611,16 @@ a {
 }
 
 .map-hud {
+  /* Top-left — keep clear of Coral Ledger Bay portals/library (SW) */
   position: absolute;
   left: 0.65rem;
-  bottom: 0.65rem;
+  top: 0.65rem;
   z-index: 40;
   display: flex;
+  flex-wrap: wrap;
+  max-width: 12rem;
   gap: 0.45rem;
+  pointer-events: none;
 }
 
 .map-hud-btn {
