@@ -114,8 +114,8 @@ export const CITY_LIBRARIES: CityLibrary[] = [
     areaId: "brick-exchange",
     name: "Brick Exchange Library",
     tagline: "Analysis stacks — statements, ratios, and valuation briefs.",
-    x: 94,
-    y: 86,
+    x: 88,
+    y: 82,
     classes: [
       {
         id: "ex-class-1",
