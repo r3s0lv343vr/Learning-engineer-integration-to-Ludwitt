@@ -12,8 +12,7 @@ import {
 /** 1 = full poster fit. Higher = expanded city scale (layout-sized, not CSS-blur scale). */
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 2.5;
-/** Fit full poster so SW Coral Bay portals/library stay on-screen by default */
-const DEFAULT_ZOOM = 1;
+const DEFAULT_ZOOM = 1.35;
 const ZOOM_STEP = 0.2;
 const DRAG_THRESHOLD = 7;
 
@@ -217,9 +216,7 @@ export function MapPanZoom({
               {Math.round(zoom * 100)}%
             </span>
           </div>
-          <p className="map-pan-hint">
-            Click portals &amp; libraries · drag empty map to pan · + − zoom
-          </p>
+          <p className="map-pan-hint">Drag to pan · scroll / + − to zoom</p>
         </div>
       </div>
     </div>
