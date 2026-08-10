@@ -148,9 +148,8 @@ a {
 
 .map-world {
   position: absolute;
-  inset: 0;
-  transform-origin: center center;
-  will-change: transform;
+  /* sized via inline width/height/left/top for sharp layout zoom */
+  will-change: left, top, width, height;
 }
 
 .map-chrome {
@@ -279,6 +278,11 @@ a {
   height: 100%;
   object-fit: cover;
   display: block;
+  /* Prefer crisp resampling of the hi-res poster */
+  image-rendering: auto;
+  -ms-interpolation-mode: bicubic;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 .hybrid-path {
@@ -356,7 +360,7 @@ a {
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
-  font-size: 0.5rem;
+  font-size: 0.45rem;
   font-weight: 800;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -433,8 +437,8 @@ a {
   transform: translate(-50%, -50%);
   display: grid;
   place-items: center;
-  width: 2.4rem;
-  height: 2.8rem;
+  width: 1.85rem;
+  height: 2.15rem;
   border: none;
   background: transparent;
   padding: 0;
@@ -462,7 +466,19 @@ a {
 
 .portal-pin .portal-svg {
   display: block;
+  width: 28px;
+  height: 32px;
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.7));
+}
+
+.exam-pin svg {
+  width: 30px;
+  height: 34px;
+}
+
+.map-chest svg {
+  width: 22px;
+  height: 22px;
 }
 
 .portal-pin.locked {
@@ -652,8 +668,8 @@ a {
   transform: translate(-50%, -50%);
   display: grid;
   place-items: center;
-  width: 2.5rem;
-  height: 2.9rem;
+  width: 1.95rem;
+  height: 2.25rem;
   border: none;
   background: transparent;
   padding: 0;
@@ -715,8 +731,8 @@ a {
 
 .library-pin img {
   display: block;
-  width: 3.15rem;
-  height: 3.15rem;
+  width: 2.35rem;
+  height: 2.35rem;
   border-radius: 999px;
 }
 
@@ -740,9 +756,11 @@ a {
 
 .trade-pin img {
   display: block;
-  width: 2.05rem;
-  height: 2.05rem;
+  width: 1.55rem;
+  height: 1.55rem;
   border-radius: 999px;
+  object-fit: contain;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.55) 40%, transparent 72%);
 }
 
 .trade-pin.done {
@@ -860,8 +878,8 @@ a {
     height: 52px;
   }
   .portal-pin .portal-svg {
-    width: 30px;
-    height: 35px;
+    width: 24px;
+    height: 28px;
   }
 }
 

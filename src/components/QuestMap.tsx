@@ -199,7 +199,12 @@ export function QuestMap({ state }: { state: GameState }) {
 
         <div className="hybrid-poster" style={{ opacity: posterStrength }} aria-hidden>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/maps/investment-map-2-poster.png" alt="" draggable={false} />
+          <img
+            src="/maps/investment-map-2-poster.jpg"
+            alt=""
+            draggable={false}
+            decoding="async"
+          />
         </div>
 
         <svg
@@ -377,7 +382,7 @@ export function QuestMap({ state }: { state: GameState }) {
               aria-label={lib.name}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/icons/library-icon.png" alt="" width={50} height={50} />
+              <img src="/icons/library-icon.png" alt="" width={38} height={38} />
               <span className="hybrid-pin-label below">Library</span>
             </Link>
           );
@@ -404,7 +409,7 @@ export function QuestMap({ state }: { state: GameState }) {
               aria-label={t.title}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/icons/trade-icon.png" alt="" width={34} height={34} />
+              <img src="/icons/trade-icon.png" alt="" width={26} height={26} />
             </Link>
           );
         })}

@@ -49,8 +49,8 @@ export const CITY_LIBRARIES: CityLibrary[] = [
     areaId: "coral-ledger-bay",
     name: "Coral Ledger Bay Library",
     tagline: "Foundations classroom — capital, behaviour, and first formulae.",
-    x: 8,
-    y: 88,
+    x: 14,
+    y: 84,
     classes: [
       {
         id: "bay-class-1",

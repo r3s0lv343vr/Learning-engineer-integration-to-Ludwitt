@@ -23,7 +23,7 @@ export function CoinIcon({ size = 46 }: { size?: number }) {
   );
 }
 
-export function TreasureChestIcon({ size = 28 }: { size?: number }) {
+export function TreasureChestIcon({ size = 22 }: { size?: number }) {
   return (
     <svg viewBox="0 0 64 64" width={size} height={size} aria-hidden>
       <rect x="8" y="28" width="48" height="28" rx="3" fill="#8b5a2b" stroke="#3e2410" strokeWidth="2" />
@@ -40,7 +40,7 @@ export function TreasureChestIcon({ size = 28 }: { size?: number }) {
 export function PortalArchIcon({ color, number }: { color: string; number: number }) {
   const gid = `portal-${number}`;
   return (
-    <svg viewBox="0 0 56 68" width="34" height="42" aria-hidden className="portal-svg">
+    <svg viewBox="0 0 56 68" width="28" height="34" aria-hidden className="portal-svg">
       <defs>
         <linearGradient id={gid} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor={color} />
@@ -84,7 +84,7 @@ export function ExamBadgeIcon({
   roman: string;
 }) {
   return (
-    <svg viewBox="0 0 56 64" width="38" height="44" aria-hidden className="exam-svg">
+    <svg viewBox="0 0 56 64" width="30" height="34" aria-hidden className="exam-svg">
       <ellipse cx="28" cy="58" rx="14" ry="3.5" fill="rgba(0,0,0,0.3)" />
       <path
         d="M10 12 h36 l4 10 v20 c0 10-8 18-22 22 C14 60 6 52 6 42 V22 Z"

@@ -5,12 +5,11 @@ import {
   useEffect,
   useRef,
   useState,
-  type CSSProperties,
   type PointerEvent as ReactPointerEvent,
   type ReactNode,
 } from "react";
 
-/** 1 = full poster fit (no letterbox). Higher = expanded city scale. */
+/** 1 = full poster fit. Higher = expanded city scale (layout-sized, not CSS-blur scale). */
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 2.5;
 const DEFAULT_ZOOM = 1.35;
@@ -24,8 +23,9 @@ function clamp(n: number, min: number, max: number) {
 }
 
 function clampPan(pan: Pan, zoom: number, size: number): Pan {
-  // Allow panning the expanded/zoomed world; keep some map always in view
-  const max = Math.max(0, ((zoom - MIN_ZOOM) * size) / 2 + (zoom > 1 ? (zoom - 1) * size * 0.45 : 0));
+  // Max travel so the oversized world can be explored without leaving empty void
+  const overflow = Math.max(0, (zoom - 1) * size);
+  const max = overflow * 0.5;
   return {
     x: clamp(pan.x, -max, max),
     y: clamp(pan.y, -max, max),
@@ -33,9 +33,8 @@ function clampPan(pan: Pan, zoom: number, size: number): Pan {
 }
 
 /**
- * Pan (drag) + zoom viewport around the Investment Map world.
- * Children (the map) scale with zoom — icons shrink when zoomed out.
- * Overlay chrome (HUD / controls) stays fixed on the viewport.
+ * Pan + zoom viewport. Zoom changes the world's layout size (width/height)
+ * so the poster stays sharp — avoids blurry CSS transform upscaling.
  */
 export function MapPanZoom({
   children,
@@ -74,7 +73,6 @@ export function MapPanZoom({
 
   function onPointerDown(e: ReactPointerEvent<HTMLDivElement>) {
     if (e.button !== 0) return;
-    // Don't start pan from overlay controls
     if ((e.target as HTMLElement).closest("[data-map-chrome]")) return;
     dragRef.current = {
       id: e.pointerId,
@@ -111,7 +109,6 @@ export function MapPanZoom({
       /* already released */
     }
     if (d.moved) {
-      // Clear suppress after the click event that follows pointerup
       window.setTimeout(() => {
         suppressClickRef.current = false;
       }, 0);
@@ -134,7 +131,6 @@ export function MapPanZoom({
     return () => window.removeEventListener("resize", onResize);
   }, [zoom, sizeOf]);
 
-  // Non-passive wheel so we can prevent page scroll while zooming the map
   useEffect(() => {
     const el = viewportRef.current;
     if (!el) return;
@@ -146,6 +142,8 @@ export function MapPanZoom({
     el.addEventListener("wheel", onWheel, { passive: false });
     return () => el.removeEventListener("wheel", onWheel);
   }, [zoom, setZoomClamped]);
+
+  const pct = zoom * 100;
 
   return (
     <div className="map-stage">
@@ -161,12 +159,12 @@ export function MapPanZoom({
       >
         <div
           className="map-world"
-          style={
-            {
-              transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
-              ["--map-zoom" as string]: String(zoom),
-            } as React.CSSProperties
-          }
+          style={{
+            width: `${pct}%`,
+            height: `${pct}%`,
+            left: `calc(50% - ${pct / 2}% + ${pan.x}px)`,
+            top: `calc(50% - ${pct / 2}% + ${pan.y}px)`,
+          }}
         >
           {children}
         </div>
