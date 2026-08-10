@@ -65,10 +65,36 @@ export function LibraryClassroom({
   }, [total]);
 
   useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1101px)");
+    const apply = () => {
+      document.body.style.overflow = mq.matches ? "hidden" : "";
+    };
+    apply();
+    mq.addEventListener("change", apply);
+    return () => {
+      mq.removeEventListener("change", apply);
+      document.body.style.overflow = "";
+    };
+  }, []);
+
+  useEffect(() => {
     const list = thumbListRef.current;
     if (!list) return;
     const active = list.querySelector<HTMLElement>(".classroom-thumb.active");
-    active?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    if (!active) return;
+    // Keep scrolling inside the Slides panel only — never move the page/board.
+    const listTop = list.scrollTop;
+    const listBottom = listTop + list.clientHeight;
+    const itemTop = active.offsetTop;
+    const itemBottom = itemTop + active.offsetHeight;
+    if (itemTop < listTop) {
+      list.scrollTo({ top: itemTop - 8, behavior: "smooth" });
+    } else if (itemBottom > listBottom) {
+      list.scrollTo({
+        top: itemBottom - list.clientHeight + 8,
+        behavior: "smooth",
+      });
+    }
   }, [slideIndex, filteredSlides]);
 
   const portalNumber = Math.min(
@@ -137,27 +163,19 @@ export function LibraryClassroom({
                 {slideIndex + 1} / {total}
               </span>
             </div>
-            {total > 1 ? (
-              <label className="classroom-slide-scrub">
-                <span className="sr-only">
-                  Jump to slide {slideIndex + 1} of {total}
-                </span>
-                <input
-                  type="range"
-                  min={0}
-                  max={total - 1}
-                  step={1}
-                  value={slideIndex}
-                  onChange={(e) => setSlideIndex(Number(e.target.value))}
-                  aria-valuetext={`${slide.thumbLabel}: ${slide.title}`}
-                />
-              </label>
-            ) : null}
-            <div className="classroom-thumb-list" ref={thumbListRef}>
+            <div
+              className="classroom-thumb-list"
+              ref={thumbListRef}
+              role="listbox"
+              aria-label="Slide titles"
+              tabIndex={0}
+            >
               {filteredSlides.map(({ s, index: i }) => (
                 <button
                   key={s.id}
                   type="button"
+                  role="option"
+                  aria-selected={i === slideIndex}
                   className={`classroom-thumb ${i === slideIndex ? "active" : ""}`}
                   onClick={() => setSlideIndex(i)}
                   title={s.title}

@@ -1138,7 +1138,11 @@ a {
   --classroom-accent-deep: #5b35c7;
   --cr-purple: var(--classroom-accent);
   --cr-purple-deep: var(--classroom-accent-deep);
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100vh;
+  max-height: 100dvh;
+  overflow: hidden;
   color: var(--cr-ink);
   background-color: #1a120d;
   background-image:
@@ -1176,6 +1180,7 @@ a {
   gap: 1rem;
   align-items: center;
   padding: 0.85rem 1.25rem;
+  flex: 0 0 auto;
   background:
     linear-gradient(180deg, rgba(90, 61, 42, 0.55), transparent 60%),
     linear-gradient(180deg, #3f2a1b, #24160f);
@@ -1287,6 +1292,7 @@ a {
   gap: 1rem;
   padding: 1rem 1.15rem 0.75rem;
   min-height: 0;
+  overflow: hidden;
 }
 
 .classroom-panel {
@@ -1315,6 +1321,16 @@ a {
   flex-direction: column;
   gap: 0.9rem;
   min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+.classroom-left {
+  align-self: stretch;
+}
+.classroom-right {
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
 }
 
 .classroom-outline {
@@ -1352,21 +1368,21 @@ a {
 }
 
 .classroom-thumbs {
-  flex: 1;
+  flex: 1 1 auto;
   min-height: 0;
   height: 100%;
+  max-height: 100%;
   display: flex;
   flex-direction: column;
-}
-.classroom-left .classroom-thumbs {
-  min-height: 28rem;
+  overflow: hidden;
 }
 .classroom-thumbs-head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 0.5rem;
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.55rem;
+  flex: 0 0 auto;
 }
 .classroom-thumbs-head h2 {
   margin: 0;
@@ -1379,67 +1395,29 @@ a {
   opacity: 0.9;
   white-space: nowrap;
 }
-.classroom-slide-scrub {
-  display: block;
-  margin: 0 0 0.7rem;
-  padding: 0.35rem 0.15rem 0.15rem;
-}
-.classroom-slide-scrub input[type="range"] {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 0.55rem;
-  border-radius: 999px;
-  background:
-    linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--classroom-accent) 85%, white),
-      var(--cr-gold)
-    );
-  border: 1px solid rgba(212, 176, 106, 0.45);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.45);
-  cursor: pointer;
-}
-.classroom-slide-scrub input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 1.05rem;
-  height: 1.05rem;
-  border-radius: 50%;
-  background: linear-gradient(180deg, #ffe7a8, #c6922e);
-  border: 2px solid rgba(40, 24, 10, 0.85);
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
-  cursor: grab;
-}
-.classroom-slide-scrub input[type="range"]::-moz-range-thumb {
-  width: 1.05rem;
-  height: 1.05rem;
-  border-radius: 50%;
-  background: linear-gradient(180deg, #ffe7a8, #c6922e);
-  border: 2px solid rgba(40, 24, 10, 0.85);
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
-  cursor: grab;
-}
 .classroom-thumb-list {
   display: grid;
+  align-content: start;
   gap: 0.55rem;
-  flex: 1;
+  flex: 1 1 auto;
   min-height: 0;
-  overflow-y: auto;
+  height: 100%;
+  overflow-y: scroll;
   overflow-x: hidden;
-  padding-right: 0.35rem;
+  overscroll-behavior: contain;
+  padding-right: 0.45rem;
   scrollbar-gutter: stable;
-  scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--classroom-accent) 75%, #d4b06a)
-    rgba(0, 0, 0, 0.35);
+  scrollbar-width: auto;
+  scrollbar-color: color-mix(in srgb, var(--classroom-accent) 80%, #d4b06a)
+    rgba(0, 0, 0, 0.42);
 }
 .classroom-thumb-list::-webkit-scrollbar {
-  width: 0.7rem;
+  width: 0.85rem;
 }
 .classroom-thumb-list::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.42);
   border-radius: 999px;
-  border: 1px solid rgba(212, 176, 106, 0.2);
+  border: 1px solid rgba(212, 176, 106, 0.28);
 }
 .classroom-thumb-list::-webkit-scrollbar-thumb {
   background: linear-gradient(
@@ -1449,6 +1427,7 @@ a {
   );
   border-radius: 999px;
   border: 2px solid rgba(24, 15, 10, 0.65);
+  min-height: 2.5rem;
 }
 .classroom-thumb-list::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #ffe7a8, var(--classroom-accent));
@@ -1507,6 +1486,9 @@ a {
   flex-direction: column;
   gap: 0.75rem;
   min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
 .classroom-board-chrome {
@@ -1515,6 +1497,10 @@ a {
   justify-content: space-between;
   gap: 0.7rem;
   align-items: end;
+  flex: 0 0 auto;
+}
+.classroom-board-foot {
+  flex: 0 0 auto;
 }
 .classroom-lesson-label {
   margin: 0;
@@ -1563,8 +1549,8 @@ a.classroom-chip {
 
 .classroom-board {
   position: relative;
-  flex: 1;
-  min-height: 460px;
+  flex: 1 1 auto;
+  min-height: 0;
   border-radius: 1rem;
   padding: 1rem;
   background:
@@ -1575,6 +1561,7 @@ a.classroom-chip {
     inset 0 0 40px rgba(0, 0, 0, 0.35),
     0 22px 48px rgba(0, 0, 0, 0.5),
     0 0 30px rgba(124, 77, 255, 0.12);
+  overflow: hidden;
 }
 
 .classroom-board-frame {
@@ -1598,7 +1585,8 @@ a.classroom-chip {
 .classroom-board-inner {
   position: relative;
   height: 100%;
-  min-height: 420px;
+  min-height: 0;
+  overflow: auto;
   border-radius: 0.45rem;
   background:
     radial-gradient(circle at 90% 10%, rgba(124, 77, 255, 0.08), transparent 30%),
@@ -1874,6 +1862,7 @@ a.classroom-chip {
   background: linear-gradient(180deg, #2c1d14, #170f0b);
   border: 2px solid rgba(212, 176, 106, 0.42);
   box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.25);
+  flex: 0 0 auto;
 }
 
 .classroom-exit {
@@ -1946,19 +1935,33 @@ a.classroom-chip {
 }
 
 @media (max-width: 1100px) {
+  .classroom-room {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
   .classroom-body {
     grid-template-columns: 1fr;
+    overflow: visible;
   }
   .classroom-left,
   .classroom-right {
     order: 2;
+    height: auto;
+    overflow: visible;
   }
   .classroom-stage {
     order: 1;
+    height: auto;
+    overflow: visible;
   }
-  .classroom-left .classroom-thumbs {
-    min-height: 0;
-    max-height: 22rem;
+  .classroom-thumbs {
+    height: auto;
+    max-height: none;
+  }
+  .classroom-thumb-list {
+    max-height: min(70vh, 36rem);
+    height: min(70vh, 36rem);
   }
   .classroom-footer {
     grid-template-columns: 1fr;
