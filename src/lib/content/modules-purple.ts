@@ -90,23 +90,27 @@ export const MODULES_PURPLE: ModuleQuest[] = [
     mapLabel: "Investor Profile",
     x: 28,
     y: 84,
-    summary: "Risk tolerance, capacity, horizon, liquidity needs and return objectives \u2014 write your mandate.",
+    summary:
+      "Risk tolerance vs capacity, horizon, liquidity and return objectives — write a personal investment mandate for the $14,800.",
     concepts: [
       "risk tolerance",
       "risk capacity",
       "investment horizon",
       "liquidity needs",
+      "return objectives",
       "investment mandate",
     ],
     outcome: "Create a personal investment mandate that constrains portfolio choices.",
-    lesson: "Risk tolerance is emotional comfort with ups and downs. Risk capacity is what you can afford to lose given finances and goals. Horizon is when you need the money. Liquidity needs are how quickly you may require cash. Return objectives should be realistic given those constraints. Together they form an investment mandate \u2014 rules that keep decisions consistent.",
-    scenario: "Draft a one-page mandate for your $14,800: what risks are acceptable, when might you need cash, and what return target is realistic?",
+    lesson:
+      "Risk tolerance is psychological: how much uncertainty and loss you can emotionally accept. Risk capacity is financial: how much loss you can afford without jeopardizing essential goals — you can have high tolerance but low capacity, or the reverse. Horizon is when you need the money; a short horizon usually raises the need for stability and liquidity (turning assets into cash quickly without a large discount). Return objectives must connect to purpose and constraints — “I want 20%” is incomplete. A mandate states objective, horizon, risk tolerance/capacity, minimum cash reserve, permitted asset classes, max single-position weight and review frequency before capital moves.",
+    scenario:
+      "Draft a one-page mandate for your $14,800 using the notes template: objective, horizon, risk limits, cash reserve, permitted asset classes and max position size. Answer: would a 10% decline make you sell immediately?",
     questions: [
       {
         id: "m2-q1",
         prompt: "Risk tolerance primarily measures:",
         choices: [
-          "How much market stress you can emotionally withstand",
+          "How much uncertainty and loss you can emotionally accept",
           "Exact future portfolio return",
           "The bid/ask spread",
           "Company market capitalization",
@@ -118,7 +122,7 @@ export const MODULES_PURPLE: ModuleQuest[] = [
         id: "m2-q2",
         prompt: "Risk capacity is best described as:",
         choices: [
-          "What losses you can afford given income, goals and obligations",
+          "How much loss you can afford without jeopardizing essential goals",
           "How exciting a stock tip feels",
           "The number of shares outstanding",
           "A type of market order",
@@ -128,27 +132,27 @@ export const MODULES_PURPLE: ModuleQuest[] = [
       },
       {
         id: "m2-q3",
-        prompt: "A short investment horizon usually implies:",
+        prompt: "Liquidity in this portal means:",
         choices: [
-          "Higher need for liquidity and often less aggressive risk taking",
-          "You must use maximum leverage",
-          "Cash is forbidden",
-          "Only forex trading is allowed",
+          "Converting an asset to usable cash quickly without a large discount",
+          "Owning only the most popular stocks",
+          "Never holding cash",
+          "Guaranteed overnight profit",
         ],
         correctIndex: 0,
-        explanation: "Near-term needs favor liquidity and caution.",
+        explanation: "Liquidity is about access to cash without painful price concessions.",
       },
       {
         id: "m2-q4",
-        prompt: "An investment mandate should:",
+        prompt: "Which statement is a complete-enough mandate ingredient set?",
         choices: [
-          "State objectives, constraints, horizon and risk limits before allocating capital",
-          "Guarantee profits",
-          "Replace research entirely",
-          "Ignore inflation",
+          "Objective, horizon, risk limits, cash reserve, permitted assets and max position weight",
+          "A single target return with no constraints",
+          "Copying another player’s holdings",
+          "Ignoring when the money might be needed",
         ],
         correctIndex: 0,
-        explanation: "Mandates turn personal constraints into portfolio rules.",
+        explanation: "Mandates turn purpose and constraints into portfolio rules.",
       },
       {
         id: "m2-q5",
@@ -157,7 +161,7 @@ export const MODULES_PURPLE: ModuleQuest[] = [
           "Create a personal investment mandate",
           "Execute 20 day trades",
           "Ignore risk capacity",
-          "Copy a stranger\u2019s portfolio blindly",
+          "Copy a stranger’s portfolio blindly",
         ],
         correctIndex: 0,
         explanation: "Write the rules that will govern the $14,800.",
@@ -171,8 +175,10 @@ export const MODULES_PURPLE: ModuleQuest[] = [
     mapLabel: "Asset Classes",
     x: 36,
     y: 78,
-    summary: "Stocks, bonds, ETFs, real estate, businesses, forex, commodities and cash \u2014 build a watchlist.",
+    summary:
+      "Stocks, bonds, ETFs, real estate, businesses, forex, commodities and cash — build a multi-class watchlist.",
     concepts: [
+      "asset classes",
       "stocks",
       "bonds",
       "ETFs",
@@ -182,8 +188,10 @@ export const MODULES_PURPLE: ModuleQuest[] = [
       "cash",
     ],
     outcome: "Build an initial asset-class watchlist aligned to your mandate.",
-    lesson: "Stocks are ownership claims on companies. Bonds are loans that pay interest. ETFs package many holdings into one exchange-traded share. Real estate and private businesses can produce income and appreciation but may be less liquid. Forex is currency exposure. Commodities are real goods like oil or gold. Cash is liquidity and optionality. Diversification starts by understanding how these risks differ.",
-    scenario: "Build a watchlist with at least one idea from several asset classes that fit your mandate \u2014 not a single all-in bet.",
+    lesson:
+      "An asset class groups investments that share economic characteristics and respond differently to growth, inflation, rates and sentiment — that difference is the foundation of diversification. Stocks are ownership (earnings, dividends, valuation risk). Bonds are debt claims (interest/principal; rates, inflation and credit move prices — when market rates rise, existing fixed-rate bond prices generally fall). ETFs are exchange-traded baskets — check holdings, fees, liquidity and concentration. Real estate can earn rent and appreciation but may be illiquid (REITs trade on exchanges). Cash offers liquidity with inflation drag. Commodities and forex add other macro exposures. Private businesses can be hard to value or sell.",
+    scenario:
+      "Build a watchlist with at least one idea from six asset classes that fit your Portal 2 mandate. For each, note what it is, main risk, what would move its value, and whether it is invest or observe-only.",
     questions: [
       {
         id: "m3-q1",
@@ -199,15 +207,15 @@ export const MODULES_PURPLE: ModuleQuest[] = [
       },
       {
         id: "m3-q2",
-        prompt: "A bond is best thought of as:",
+        prompt: "When market interest rates rise, existing fixed-rate bond prices generally:",
         choices: [
-          "A loan to an issuer that typically pays interest",
-          "Owning the company\u2019s brand only",
-          "A type of candlestick chart",
-          "Unlimited leverage",
+          "Fall",
+          "Always rise",
+          "Become risk-free",
+          "Stop paying interest automatically",
         ],
         correctIndex: 0,
-        explanation: "Bonds are debt claims with credit and rate risks.",
+        explanation: "New higher yields make older lower-coupon bonds less attractive.",
       },
       {
         id: "m3-q3",
@@ -219,23 +227,23 @@ export const MODULES_PURPLE: ModuleQuest[] = [
           "Is identical to holding only cash",
         ],
         correctIndex: 0,
-        explanation: "ETFs bundle exposures; risk remains.",
+        explanation: "ETFs bundle exposures; risk remains inside the holdings.",
       },
       {
         id: "m3-q4",
         prompt: "Cash in a portfolio mainly provides:",
         choices: [
-          "Liquidity and optionality, with possible inflation drag",
+          "Liquidity and stability, with possible inflation and opportunity cost",
           "Guaranteed outperformance of stocks",
           "Infinite compounding with no trade-offs",
-          "Freedom from opportunity cost",
+          "Freedom from any mandate rules",
         ],
         correctIndex: 0,
         explanation: "Cash is a deliberate position with benefits and costs.",
       },
       {
         id: "m3-q5",
-        prompt: "Portal 3\u2019s Portfolio Lab mission is to:",
+        prompt: "Portal 3’s Portfolio Lab mission is to:",
         choices: [
           "Build an initial asset-class watchlist",
           "Sell every bond forever",
@@ -254,18 +262,23 @@ export const MODULES_PURPLE: ModuleQuest[] = [
     mapLabel: "How Markets Work",
     x: 24,
     y: 72,
-    summary: "Exchanges, brokers, bid/ask, liquidity, market vs limit orders, and transaction costs.",
+    summary:
+      "Exchanges, brokers, bid/ask, liquidity, market vs limit orders, spreads, slippage and first-trade checklist.",
     concepts: [
       "exchanges",
+      "brokers",
       "bid/ask",
+      "liquidity",
       "market order",
       "limit order",
       "spread",
       "slippage",
     ],
     outcome: "Execute the first simulated transaction with cost awareness.",
-    lesson: "Exchanges match buyers and sellers; brokers route orders. The bid is what buyers offer; the ask is what sellers want. The spread is a trading cost. Market orders prioritize speed of fill; limit orders prioritize price control and may not fill. Slippage and commissions also reduce net results. Liquidity is how easily you can trade without moving the price much.",
-    scenario: "Place your first simulated order. Choose market vs limit carefully and estimate spread cost before clicking.",
+    lesson:
+      "An investor normally sends an order through a broker to an exchange or other venue that matches buyers and sellers. The bid is the best current buying price; the ask is the best current selling price; the spread is trading friction. Liquidity means trading quickly with limited price impact — narrow spreads and depth help; shocks can erase liquidity. Market orders prioritize execution at available prices; limit orders set your worst acceptable price and may not fill. Costs include commissions plus spreads, slippage and market impact. Before the first trade, answer: what, why now, size, order type, estimated cost, exit plan and % of the $14,800.",
+    scenario:
+      "Place your first simulated order using the first-trade checklist. Choose market vs limit carefully and estimate spread cost (e.g. buy at ask, sell at bid) before clicking.",
     questions: [
       {
         id: "m4-q1",
@@ -305,19 +318,14 @@ export const MODULES_PURPLE: ModuleQuest[] = [
       },
       {
         id: "m4-q4",
-        prompt: "If you buy at $20.10 ask and could sell at $20.00 bid for 100 shares, spread cost is:",
-        choices: [
-          "$10",
-          "$0",
-          "$2,010",
-          "$100",
-        ],
+        prompt: "If you buy 100 shares at a $20.10 ask and could sell at a $20.00 bid, spread cost is:",
+        choices: ["$10", "$0", "$2,010", "$100"],
         correctIndex: 0,
-        explanation: "100 \u00d7 $0.10 = $10 of spread cost.",
+        explanation: "100 × $0.10 = $10 of spread cost.",
       },
       {
         id: "m4-q5",
-        prompt: "Portal 4\u2019s mission is to:",
+        prompt: "Portal 4’s mission is to:",
         choices: [
           "Execute the first simulated transaction",
           "Delete your mandate",
@@ -325,7 +333,7 @@ export const MODULES_PURPLE: ModuleQuest[] = [
           "Only use leverage",
         ],
         correctIndex: 0,
-        explanation: "Practice a careful first fill.",
+        explanation: "Practice a careful first fill with cost awareness.",
       },
     ],
   },
@@ -336,7 +344,8 @@ export const MODULES_PURPLE: ModuleQuest[] = [
     mapLabel: "Reading Markets",
     x: 32,
     y: 68,
-    summary: "Charts, market cap, indices, volume, volatility and sentiment before deciding.",
+    summary:
+      "Charts, market-cap math, indices, volume, volatility and sentiment — read before you decide.",
     concepts: [
       "price charts",
       "market capitalization",
@@ -344,34 +353,37 @@ export const MODULES_PURPLE: ModuleQuest[] = [
       "volume",
       "volatility",
       "sentiment",
+      "expectations",
     ],
     outcome: "Interpret basic market information before making a decision.",
-    lesson: "Charts summarize historical prices \u2014 they do not prove fundamental value. Market capitalization \u2248 share price \u00d7 shares outstanding (equity value, not full enterprise value). Indices are benchmarks/barometers for groups of securities. Volume measures activity; volatility measures how large moves have been; sentiment reflects optimism/pessimism. Always separate market reaction from fundamental evidence.",
-    scenario: "Before acting on a price move, complete a market-reading worksheet: price range, market cap, benchmark, volume, volatility, and one fundamental vs sentiment explanation.",
+    lesson:
+      "Charts summarize historical prices (direction, range, pullbacks, variability) — they do not establish fundamental value. Market capitalization ≈ share price × shares outstanding (equity value, not full enterprise value including debt); a higher share price does not always mean a larger company. Indices (S&P 500, DJIA, Nasdaq Composite, etc.) are barometers/benchmarks — pick one that matches the risk you take. Volume shows participation; volatility shows move size; sentiment can move price without changing fundamentals. Prices respond to information relative to expectations — separate facts from the crowd’s reaction.",
+    scenario:
+      "Complete a market-reading worksheet on one watchlist name: price range, market cap, benchmark, volume vs normal, volatility, plus one fundamental and one sentiment explanation — then decide whether to act.",
     questions: [
       {
         id: "m5-q1",
         prompt: "Market capitalization is approximately:",
         choices: [
-          "Share price \u00d7 shares outstanding",
-          "Revenue \u00d7 P/E",
-          "Assets \u2212 cash only",
-          "Bid \u2212 ask",
+          "Share price × shares outstanding",
+          "Revenue × P/E",
+          "Assets − cash only",
+          "Bid − ask",
         ],
         correctIndex: 0,
         explanation: "Market cap values equity shares, not necessarily the whole enterprise.",
       },
       {
         id: "m5-q2",
-        prompt: "A price chart alone:",
+        prompt: "Company A at $200 with 1M shares vs Company B at $20 with 50M shares:",
         choices: [
-          "Shows historical behavior but does not establish fundamental value",
-          "Guarantees future returns",
-          "Removes volatility",
-          "Replaces financial statements",
+          "B has the larger market cap ($1B vs $200M)",
+          "A is always the larger company",
+          "Share price alone decides company size",
+          "Neither has a market cap",
         ],
         correctIndex: 0,
-        explanation: "Charts are evidence of price history, not intrinsic value.",
+        explanation: "Market cap = price × shares; higher price ≠ larger equity value.",
       },
       {
         id: "m5-q3",
@@ -389,7 +401,7 @@ export const MODULES_PURPLE: ModuleQuest[] = [
         id: "m5-q4",
         prompt: "High trading volume during a price jump mainly signals:",
         choices: [
-          "Unusually strong participation \u2014 not automatic fundamental value",
+          "Unusually strong participation — not automatic fundamental value",
           "That the stock is risk-free",
           "That inflation is zero",
           "That you should always use market orders",
@@ -399,7 +411,7 @@ export const MODULES_PURPLE: ModuleQuest[] = [
       },
       {
         id: "m5-q5",
-        prompt: "Portal 5\u2019s mission is to:",
+        prompt: "Portal 5’s mission is to:",
         choices: [
           "Interpret basic market information before deciding",
           "Ignore benchmarks",
@@ -407,10 +419,11 @@ export const MODULES_PURPLE: ModuleQuest[] = [
           "Avoid looking at prices",
         ],
         correctIndex: 0,
-        explanation: "Read the tape thoughtfully, then decide.",
+        explanation: "Read the market thoughtfully, then decide.",
       },
     ],
   },
+
   {
     id: "m6",
     number: 6,
