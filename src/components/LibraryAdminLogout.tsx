@@ -16,6 +16,8 @@ export function LibraryAdminLogout({ className = "" }: { className?: string }) {
       body: JSON.stringify({ action: "logout" }),
     });
     setPending(false);
+    // Leave the admin console entirely — it must not remain visible when logged out.
+    router.replace("/map");
     router.refresh();
   }
 

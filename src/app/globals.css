@@ -1983,6 +1983,31 @@ a.classroom-chip {
   }
 }
 
+/* —— Admin unlock (no console chrome) —— */
+.admin-unlock-gate {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem;
+}
+
+.admin-unlock-gate__card {
+  width: 100%;
+  max-width: 28rem;
+}
+
+.admin-unlock-gate .admin-stage__title {
+  font-size: 1.85rem;
+}
+
+.admin-unlock-gate form {
+  margin-top: 1.25rem;
+  margin-left: 0;
+  margin-right: 0;
+  max-width: none;
+}
+
 /* —— Admin console: left capacities / right workspace —— */
 .admin-shell {
   display: grid;

@@ -1,14 +1,8 @@
 import Link from "next/link";
-import { readSession } from "@/lib/session";
-import { isLibraryAdmin } from "@/lib/admin";
 import { CITY_LIBRARIES } from "@/lib/content/libraries";
 import { listAdminLibraryItems } from "@/lib/library-catalog";
-import { LibraryAdminUnlock } from "@/components/LibraryAdminUnlock";
 
 export default async function AdminLibraryHubPage() {
-  const session = await readSession();
-  const admin = session ? await isLibraryAdmin(session) : false;
-
   const counts = await Promise.all(
     CITY_LIBRARIES.map(async (lib) => ({
       areaId: lib.areaId,
@@ -30,25 +24,21 @@ export default async function AdminLibraryHubPage() {
         </p>
       </header>
 
-      {!admin ? (
-        <LibraryAdminUnlock />
-      ) : (
-        <div className="admin-capacity-grid">
-          {counts.map((lib) => (
-            <Link
-              key={lib.areaId}
-              href={`/admin/library/${lib.areaId}`}
-              className="admin-capacity-card"
-            >
-              <h2 className="display text-xl text-[var(--gold)]">{lib.name}</h2>
-              <p className="mt-1 text-sm text-[var(--muted)]">{lib.tagline}</p>
-              <p className="mt-3 text-xs uppercase tracking-wide text-[var(--accent)]">
-                {lib.customCount} admin item{lib.customCount === 1 ? "" : "s"}
-              </p>
-            </Link>
-          ))}
-        </div>
-      )}
+      <div className="admin-capacity-grid">
+        {counts.map((lib) => (
+          <Link
+            key={lib.areaId}
+            href={`/admin/library/${lib.areaId}`}
+            className="admin-capacity-card"
+          >
+            <h2 className="display text-xl text-[var(--gold)]">{lib.name}</h2>
+            <p className="mt-1 text-sm text-[var(--muted)]">{lib.tagline}</p>
+            <p className="mt-3 text-xs uppercase tracking-wide text-[var(--accent)]">
+              {lib.customCount} admin item{lib.customCount === 1 ? "" : "s"}
+            </p>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

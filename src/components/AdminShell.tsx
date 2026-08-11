@@ -5,12 +5,12 @@ import { usePathname } from "next/navigation";
 import { ADMIN_NAV, activeAdminNavId } from "@/lib/admin-nav";
 import { LibraryAdminLogout } from "@/components/LibraryAdminLogout";
 
+/** Admin console chrome — only mounted after administrator unlock. */
 export function AdminShell({
-  isAdmin,
   sessionLabel,
   children,
 }: {
-  isAdmin: boolean;
+  isAdmin?: boolean;
   sessionLabel: string;
   children: React.ReactNode;
 }) {
@@ -48,15 +48,12 @@ export function AdminShell({
         </nav>
 
         <div className="admin-shell__footer">
-          <p className="admin-shell__session">
-            {sessionLabel}
-            {isAdmin ? " · administrator" : " · unlock required"}
-          </p>
+          <p className="admin-shell__session">{sessionLabel} · administrator</p>
           <div className="admin-shell__footer-actions">
             <Link className="btn btn-ghost text-sm" href="/map">
               Map
             </Link>
-            {isAdmin ? <LibraryAdminLogout /> : null}
+            <LibraryAdminLogout />
           </div>
         </div>
       </aside>

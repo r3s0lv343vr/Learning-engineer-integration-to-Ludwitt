@@ -1,10 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { readSession } from "@/lib/session";
-import { isLibraryAdmin } from "@/lib/admin";
 import { areaById, type AreaId, MAP_AREAS } from "@/lib/content/areas";
 import { getPortalCatalog, modulesForArea } from "@/lib/portal-catalog";
-import { LibraryAdminUnlock } from "@/components/LibraryAdminUnlock";
 
 export default async function AdminPortalsCityPage({
   params,
@@ -13,19 +10,6 @@ export default async function AdminPortalsCityPage({
 }) {
   const { areaId } = await params;
   if (!MAP_AREAS.some((a) => a.id === areaId)) notFound();
-
-  const session = await readSession();
-  const admin = session ? await isLibraryAdmin(session) : false;
-  if (!admin) {
-    return (
-      <div className="admin-stage">
-        <Link className="text-sm text-[var(--accent)]" href="/admin/portals">
-          ← Portal admin
-        </Link>
-        <LibraryAdminUnlock />
-      </div>
-    );
-  }
 
   const area = areaById(areaId as AreaId);
   const modules = modulesForArea(areaId as AreaId);
