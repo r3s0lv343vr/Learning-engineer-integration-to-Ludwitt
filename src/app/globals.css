@@ -1983,6 +1983,212 @@ a.classroom-chip {
   }
 }
 
+/* —— Classroom teaching figures (diagrams / calcs on the board) —— */
+.classroom-figure {
+  margin: 0.85rem 0 0.25rem;
+  padding: 0.7rem 0.8rem;
+  border-radius: 0.65rem;
+  border: 1px solid rgba(198, 161, 91, 0.28);
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.classroom-figure figcaption {
+  margin: 0 0 0.55rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--slide-accent, var(--gold));
+  font-weight: 700;
+}
+
+.classroom-figure-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.classroom-figure-bar-row {
+  display: grid;
+  grid-template-columns: minmax(5.5rem, 7.5rem) 1fr auto;
+  gap: 0.45rem;
+  align-items: center;
+  font-size: 0.78rem;
+}
+
+.classroom-figure-bar-label {
+  color: var(--muted);
+}
+
+.classroom-figure-bar-track {
+  height: 0.55rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.classroom-figure-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  min-width: 2px;
+}
+
+.classroom-figure-bar-value {
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.classroom-figure-stack {
+  display: flex;
+  width: 100%;
+  min-height: 2.6rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.classroom-figure-stack-seg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 0.25rem;
+  color: #0b1f17;
+  font-size: 0.65rem;
+  font-weight: 800;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.classroom-figure-legend {
+  list-style: none;
+  margin: 0.55rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.classroom-figure-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.classroom-figure-legend i {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 2px;
+  flex: 0 0 auto;
+}
+
+.classroom-figure-hierarchy {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.classroom-figure-hierarchy li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: 0.45rem;
+  border-left: 3px solid var(--slide-accent, var(--gold));
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 0.8rem;
+}
+
+.classroom-figure-hierarchy strong {
+  color: var(--gold);
+}
+
+.classroom-figure-hierarchy span {
+  color: var(--muted);
+}
+
+.classroom-figure-flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: stretch;
+}
+
+.classroom-figure-flow-step {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: 0.45rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(198, 161, 91, 0.2);
+  font-size: 0.75rem;
+  max-width: 11rem;
+}
+
+.classroom-figure-flow-num {
+  display: inline-flex;
+  width: 1.15rem;
+  height: 1.15rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--slide-accent, var(--gold));
+  color: #0b1f17;
+  font-size: 0.68rem;
+  font-weight: 800;
+  flex: 0 0 auto;
+}
+
+.classroom-figure-flow-arrow {
+  color: var(--gold);
+  font-weight: 700;
+  margin-left: 0.1rem;
+}
+
+.classroom-figure-table-wrap {
+  overflow-x: auto;
+}
+
+.classroom-figure-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.72rem;
+}
+
+.classroom-figure-table th,
+.classroom-figure-table td {
+  border: 1px solid rgba(198, 161, 91, 0.25);
+  padding: 0.35rem 0.45rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.classroom-figure-table th {
+  color: var(--gold);
+  background: rgba(226, 184, 74, 0.08);
+}
+
+.classroom-figure-calc {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-family: ui-monospace, "Cascadia Code", "Segoe UI Mono", monospace;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--ink);
+  white-space: pre-wrap;
+}
+
+.classroom-figure-calc code {
+  display: block;
+}
+
 /* —— Admin unlock (no console chrome) —— */
 .admin-unlock-gate {
   min-height: 100dvh;

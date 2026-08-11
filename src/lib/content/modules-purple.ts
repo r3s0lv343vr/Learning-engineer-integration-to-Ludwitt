@@ -431,17 +431,21 @@ export const MODULES_PURPLE: ModuleQuest[] = [
     mapLabel: "Research Desk",
     x: 40,
     y: 72,
-    summary: "Company reports, economic data, news, source credibility and research logs.",
+    summary:
+      "Evidence hierarchy, source credibility tests, research logs and ranking opportunities before capital moves.",
     concepts: [
       "evidence hierarchy",
+      "primary sources",
       "source credibility",
       "research log",
       "confirmation bias",
-      "primary sources",
+      "disconfirming evidence",
     ],
     outcome: "Research several opportunities and rank the quality of the evidence.",
-    lesson: "Start with \u201cWhat would I need to know?\u201d not \u201cWhy should I buy?\u201d Prefer primary evidence (filings, audited reports, official data) over unverified commentary. Test sources for authority, evidence, timeliness, incentives, consistency and specificity. Keep a research log: date, asset, question, source, finding, decision impact. Seek disconfirming evidence to fight confirmation bias.",
-    scenario: "Research two watchlist ideas. Rank which has stronger primary evidence and record both in your research log.",
+    lesson:
+      "Good research separates primary evidence (filings, audited reports, official releases, regulatory disclosures) from interpretation (analyst notes, journalism) and from leads/sentiment (tips, social posts) that must be verified. Start with “What would I need to know to decide whether this deserves capital?” — not “Why should I buy this tip?” — to reduce confirmation bias. Score sources on authority, evidence, timeliness, incentives, consistency and specificity. Keep a research log with date, asset, question, source, finding and decision impact. When two ideas compete for the same dollars, rank which has stronger primary evidence before sizing a position.",
+    scenario:
+      "Research two watchlist ideas. Complete one research-log row for each, note the strongest primary source, score credibility, and rank which idea deserves capital first — and which is observe-only.",
     questions: [
       {
         id: "m6-q1",
@@ -457,7 +461,7 @@ export const MODULES_PURPLE: ModuleQuest[] = [
       },
       {
         id: "m6-q2",
-        prompt: "Which source is generally closer to primary evidence?",
+        prompt: "Which source is generally closest to primary evidence?",
         choices: [
           "Audited company filings / official economic releases",
           "Anonymous social media claims",
@@ -472,28 +476,29 @@ export const MODULES_PURPLE: ModuleQuest[] = [
         prompt: "A credibility test should include:",
         choices: [
           "Authority, evidence, timeliness, incentives, consistency, specificity",
-          "Only the stock\u2019s ticker length",
+          "Only the stock’s ticker length",
           "Whether the logo looks premium",
           "Ignoring conflicts of interest",
         ],
         correctIndex: 0,
-        explanation: "Incentives and evidence quality matter.",
+        explanation: "Incentives and evidence quality matter as much as confidence.",
       },
       {
         id: "m6-q4",
-        prompt: "A research log\u2019s purpose is to:",
+        prompt:
+          "You have Idea A backed by a current 10-K and Idea B backed only by an anonymous tip. For a $2,220 slot, the disciplined ranking is:",
         choices: [
-          "Record questions, sources, findings and decision impact",
-          "Hide mistakes",
-          "Replace diversification",
-          "Guarantee profits",
+          "Prefer Idea A unless Idea B can produce verifiable primary evidence",
+          "Always buy the tip because it sounds urgent",
+          "Ignore filings if the tip has more likes",
+          "Split 50/50 with no research log",
         ],
         correctIndex: 0,
-        explanation: "Logs make reasoning reviewable.",
+        explanation: "Rank evidence quality before allocating scarce capital.",
       },
       {
         id: "m6-q5",
-        prompt: "Portal 6\u2019s mission is to:",
+        prompt: "Portal 6’s Portfolio Lab mission is to:",
         choices: [
           "Research opportunities and rank evidence quality",
           "Buy first, research later",
@@ -512,32 +517,62 @@ export const MODULES_PURPLE: ModuleQuest[] = [
     mapLabel: "First Portfolio",
     x: 22,
     y: 62,
-    summary: "Position sizing, portfolio weights, diversification and cash allocation.",
+    summary:
+      "Position size, portfolio weights, diversification checks and cash allocation for the $14,800 book.",
     concepts: [
       "position size",
       "portfolio weight",
       "diversification",
+      "concentration",
       "cash allocation",
       "$14,800 deployment",
     ],
     outcome: "Deploy part or all of the $14,800 into a defensible starting portfolio.",
-    lesson: "Position size is dollars committed; portfolio weight is that position as a percent of the whole. Even a great idea can hurt you if sized too large. Diversification spreads exposure across risks that are not identical \u2014 many names in one industry can still be concentrated. Cash provides liquidity and optionality but can lose purchasing power to inflation. Re-read your mandate, set target weights, then select researched candidates.",
-    scenario: "Propose target weights across asset classes for $14,800 and justify position sizes using your mandate.",
+    lesson:
+      "Position size is the dollars committed; portfolio weight = position value ÷ total portfolio value × 100%. Example: $5,180 of stocks in a $14,800 book is 35%; a $2,220 single name is 15% — too large if your mandate caps one position at 12%. Diversification spreads non-identical risks; ten names in one industry can still be one bet. Cash (e.g. 15% = $2,220) buys liquidity and optionality but can lose purchasing power to inflation. Construction sequence: re-read the mandate → target asset-class weights → select Portal 6 researched candidates → set max single-position size → decide cash → check concentration by class/sector/geography/currency → execute and record each thesis. An illustrative mix for practice: stocks $5,180 (35%), bonds $2,960 (20%), ETF $2,220 (15%), real-estate $1,480 (10%), commodity $740 (5%), cash $2,220 (15%).",
+    scenario:
+      "Propose target weights for $14,800 that respect your cash reserve and max single-position rule. Calculate each sleeve in dollars and percent, then justify sizes with Portal 6 evidence — not conviction alone.",
     questions: [
       {
         id: "m7-q1",
         prompt: "Portfolio weight equals:",
         choices: [
-          "Position value / total portfolio value \u00d7 100%",
-          "Share price \u00d7 P/E",
+          "Position value / total portfolio value × 100%",
+          "Share price × P/E",
           "Bid + ask",
           "Only the cash balance",
         ],
         correctIndex: 0,
-        explanation: "Weights show concentration risk.",
+        explanation: "Weights reveal concentration risk across the whole book.",
       },
       {
         id: "m7-q2",
+        prompt:
+          "In a $14,800 portfolio, a $2,960 bond sleeve is approximately what weight?",
+        choices: [
+          "20%",
+          "2%",
+          "50%",
+          "100%",
+        ],
+        correctIndex: 0,
+        explanation: "$2,960 ÷ $14,800 × 100% = 20%.",
+      },
+      {
+        id: "m7-q3",
+        prompt:
+          "Mandate max single-position weight is 12%. A proposed buy of $2,220 in a $14,800 book is:",
+        choices: [
+          "About 15% — above the cap, so size down or do not buy full size",
+          "Exactly 12% — perfect fill",
+          "Under 5% — always safe",
+          "Impossible to calculate without P/E",
+        ],
+        correctIndex: 0,
+        explanation: "$2,220 ÷ $14,800 ≈ 15% > 12% mandate limit.",
+      },
+      {
+        id: "m7-q4",
         prompt: "Diversification fails when:",
         choices: [
           "Many holdings still share the same economic bet",
@@ -546,35 +581,11 @@ export const MODULES_PURPLE: ModuleQuest[] = [
           "You use a research log",
         ],
         correctIndex: 0,
-        explanation: "Correlation and shared drivers matter more than name count.",
-      },
-      {
-        id: "m7-q3",
-        prompt: "Position sizing is primarily a:",
-        choices: [
-          "Risk decision about how much capital an idea deserves",
-          "Way to avoid reading statements",
-          "Guarantee of higher returns",
-          "Substitute for a mandate",
-        ],
-        correctIndex: 0,
-        explanation: "Size controls damage if you are wrong.",
-      },
-      {
-        id: "m7-q4",
-        prompt: "A reason to hold some cash is:",
-        choices: [
-          "Liquidity and optionality for future opportunities",
-          "Cash always beats equities",
-          "Cash has no opportunity cost",
-          "Mandates forbid cash",
-        ],
-        correctIndex: 0,
-        explanation: "Cash is intentional dry powder with trade-offs.",
+        explanation: "Shared drivers matter more than ticker count.",
       },
       {
         id: "m7-q5",
-        prompt: "Portal 7\u2019s mission is to:",
+        prompt: "Portal 7’s mission is to:",
         choices: [
           "Deploy part or all of $14,800 into a defensible starting portfolio",
           "Keep 100% in one meme tip",
@@ -582,7 +593,7 @@ export const MODULES_PURPLE: ModuleQuest[] = [
           "Skip diversification forever",
         ],
         correctIndex: 0,
-        explanation: "Build an allocation you can defend.",
+        explanation: "Build an allocation you can defend with weights and evidence.",
       },
     ],
   },
@@ -593,7 +604,8 @@ export const MODULES_PURPLE: ModuleQuest[] = [
     mapLabel: "Decide & Act",
     x: 30,
     y: 58,
-    summary: "Buy, add, hold, trim and exit \u2014 opportunity cost and documented rationale.",
+    summary:
+      "BUY, ADD, HOLD, TRIM and EXIT — opportunity cost, position-weight math and decision journals.",
     concepts: [
       "buy",
       "add",
@@ -602,10 +614,13 @@ export const MODULES_PURPLE: ModuleQuest[] = [
       "exit",
       "opportunity cost",
       "decision journal",
+      "falsifiers",
     ],
     outcome: "Make and document active portfolio decisions with clear rationale.",
-    lesson: "Active management uses a decision language: BUY to open, ADD when evidence/valuation improves, HOLD when the thesis remains intact, TRIM to reduce risk/concentration or fund better ideas, EXIT when the thesis breaks or capital has a better use. Opportunity cost is the next-best alternative you give up. Write the reason before you trade.",
-    scenario: "For each holding (or watchlist candidate), choose BUY/ADD/HOLD/TRIM/EXIT and record why \u2014 including what would change your mind.",
+    lesson:
+      "Active portfolio language: BUY opens a position when expected reward justifies risk; ADD increases when evidence strengthens or valuation improves; HOLD keeps exposure when the thesis and size remain appropriate; TRIM reduces exposure for valuation, concentration, risk or a better use of capital; EXIT closes when the thesis breaks or capital has a superior alternative. Opportunity cost is the next-best alternative forgone — a $2,220 slot held in ABC cannot also fund DEF or sit as cash optionality. Example: HOLD at 15% weight vs mandate 12% → TRIM $444 to restore the cap ($14,800 × 3% ≈ $444). A strong rationale states action, evidence, what changed, expected reward, main risk, new portfolio weight, falsifiers and a review date. “The price is going up” is an observation, not a thesis.",
+    scenario:
+      "For each holding or watchlist candidate, choose BUY/ADD/HOLD/TRIM/EXIT. Calculate the new portfolio weight after the action and record evidence, opportunity cost and what would prove the decision wrong.",
     questions: [
       {
         id: "m8-q1",
@@ -617,7 +632,7 @@ export const MODULES_PURPLE: ModuleQuest[] = [
           "Ignore opportunity cost",
         ],
         correctIndex: 0,
-        explanation: "Trimming is controlled risk/capital rotation.",
+        explanation: "Trimming is controlled risk or capital rotation — not panic.",
       },
       {
         id: "m8-q2",
@@ -629,10 +644,23 @@ export const MODULES_PURPLE: ModuleQuest[] = [
           "An index exists",
         ],
         correctIndex: 0,
-        explanation: "Exit when the reason to own is gone.",
+        explanation: "Exit when the reason to own is gone or capital is better deployed.",
       },
       {
         id: "m8-q3",
+        prompt:
+          "A name is 15% of a $14,800 book; mandate max is 12%. Approximate TRIM dollars to restore the cap:",
+        choices: [
+          "About $444 (3% × $14,800)",
+          "$14,800",
+          "$0 — weights never matter",
+          "$2,220 exactly every time",
+        ],
+        correctIndex: 0,
+        explanation: "15% − 12% = 3%; 0.03 × 14,800 = 444.",
+      },
+      {
+        id: "m8-q4",
         prompt: "Opportunity cost is:",
         choices: [
           "The value of the next-best alternative you forgo",
@@ -644,20 +672,8 @@ export const MODULES_PURPLE: ModuleQuest[] = [
         explanation: "Every allocation displaces another use of capital.",
       },
       {
-        id: "m8-q4",
-        prompt: "Before executing a trade you should:",
-        choices: [
-          "Document the rationale and falsifiers",
-          "Hide the reason from your journal",
-          "Maximize leverage first",
-          "Skip research if sentiment is hot",
-        ],
-        correctIndex: 0,
-        explanation: "Process quality is part of assessment.",
-      },
-      {
         id: "m8-q5",
-        prompt: "Portal 8\u2019s mission is to:",
+        prompt: "Portal 8’s mission is to:",
         choices: [
           "Make and document active portfolio decisions",
           "Never update holdings",
@@ -665,7 +681,7 @@ export const MODULES_PURPLE: ModuleQuest[] = [
           "Only use market orders",
         ],
         correctIndex: 0,
-        explanation: "Decision discipline is the skill.",
+        explanation: "Decision discipline — with a journal — is the skill.",
       },
     ],
   },
@@ -676,17 +692,21 @@ export const MODULES_PURPLE: ModuleQuest[] = [
     mapLabel: "Purple Challenge",
     x: 38,
     y: 62,
-    summary: "Review foundations, holdings, allocation, evidence and weaknesses \u2014 then rebalance.",
+    summary:
+      "Defend mandate, allocation, evidence and risk; score the rubric; calculate rebalance trades before Blue City.",
     concepts: [
       "portfolio review",
+      "defense structure",
       "evidence quality",
       "rebalancing",
+      "rubric weights",
       "mandate check",
-      "defend decisions",
     ],
     outcome: "Defend the initial portfolio and rebalance before entering Blue City.",
-    lesson: "Purple City ends with an integrated review: Does the portfolio match the mandate? Are weights intentional? Is evidence quality strong enough for each position? Where are concentrations or weak theses? Rebalance when exposures drift from targets or when evidence changes. You are judged on process and risk \u2014 not luck alone \u2014 before advancing to Blue City analysis.",
-    scenario: "Present a short defence of your Purple City portfolio: objective, allocation, top holdings, risks, and one rebalance action.",
+    lesson:
+      "The Purple City Challenge is a defense of process, not a race for the highest short-term return. Structure the defense: mandate (objective, horizon, risk, liquidity) → allocation and cash reserve → thesis for every holding → strongest evidence and uncertainties → concentrations and downside scenarios → at least one BUY/ADD/HOLD/TRIM/EXIT with rationale → weaknesses → rebalance actions. Rubric weights: mandate 15%, research 20%, construction 20%, decision rationale 20%, risk awareness 15%, reflection 10%. Rebalance math example: target stocks 35% ($5,180) but current stocks $6,290 (42.5%) → overweight 7.5% ≈ $1,110 to TRIM; if cash is 8% vs 15% target, raise cash toward $2,220. You are ready for Blue City when the $14,800 book is defensible even if near-term performance disappoints.",
+    scenario:
+      "Present a short defense of your Purple City portfolio: mandate, allocation weights (with dollar amounts), top holdings and evidence, main risks, one scored rubric gap, and one calculated rebalance (TRIM/ADD/cash) before Blue City.",
     questions: [
       {
         id: "m9-q1",
@@ -698,22 +718,35 @@ export const MODULES_PURPLE: ModuleQuest[] = [
           "Ignore your mandate",
         ],
         correctIndex: 0,
-        explanation: "Portal 9 is an integrated defence and cleanup.",
+        explanation: "Portal 9 is an integrated defense and cleanup.",
       },
       {
         id: "m9-q2",
-        prompt: "A portfolio review should check:",
+        prompt:
+          "Target stocks 35% of $14,800 but current stocks are $6,290. Approximate overweight to TRIM:",
         choices: [
-          "Mandate fit, weights, evidence quality and concentrations",
-          "Only whether prices went up yesterday",
-          "If the logo looks good",
-          "Whether you used enough leverage",
+          "About $1,110 (42.5% − 35% of the book)",
+          "$6,290 — sell the entire sleeve",
+          "$0 — never rebalance",
+          "$14,800 — restart cash",
         ],
         correctIndex: 0,
-        explanation: "Process and risk matter as much as P&L.",
+        explanation: "$6,290 / $14,800 ≈ 42.5%; 7.5% × $14,800 ≈ $1,110.",
       },
       {
         id: "m9-q3",
+        prompt: "Which rubric area carries 20% weight alongside research and construction?",
+        choices: [
+          "Decision rationale (actions linked to evidence and opportunity cost)",
+          "Logo design quality",
+          "Number of day trades",
+          "Ignoring downside scenarios",
+        ],
+        correctIndex: 0,
+        explanation: "Decision rationale is 20% of the Purple City rubric.",
+      },
+      {
+        id: "m9-q4",
         prompt: "Rebalancing is useful when:",
         choices: [
           "Exposures drift from targets or evidence changes your plan",
@@ -722,19 +755,7 @@ export const MODULES_PURPLE: ModuleQuest[] = [
           "Research logs are banned",
         ],
         correctIndex: 0,
-        explanation: "Rebalancing restores intentional risk.",
-      },
-      {
-        id: "m9-q4",
-        prompt: "Assessment in the simulator emphasizes:",
-        choices: [
-          "Research, risk management and decision quality \u2014 not luck alone",
-          "Only raw returns",
-          "Ignoring drawdowns",
-          "Copying tips without evidence",
-        ],
-        correctIndex: 0,
-        explanation: "Discipline beats lucky outcomes.",
+        explanation: "Rebalancing restores intentional risk after drift or new evidence.",
       },
       {
         id: "m9-q5",
@@ -746,7 +767,7 @@ export const MODULES_PURPLE: ModuleQuest[] = [
           "Never update theses",
         ],
         correctIndex: 0,
-        explanation: "Purple builds foundations for Blue\u2019s deeper work.",
+        explanation: "Purple builds process foundations for Blue’s deeper valuation work.",
       },
     ],
   },

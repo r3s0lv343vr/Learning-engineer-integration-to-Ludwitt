@@ -11,6 +11,7 @@ import {
 import type { ClassroomLesson } from "@/lib/content/classroom";
 import type { GameState } from "@/lib/types";
 import { portfolioValue } from "@/lib/game-state";
+import { ClassroomFigureView } from "@/components/ClassroomFigure";
 
 /**
  * Shared Library Classroom shell for every city library.
@@ -40,12 +41,21 @@ export function LibraryClassroom({
     if (!q) return lesson.slides.map((s, index) => ({ s, index }));
     return lesson.slides
       .map((s, index) => ({ s, index }))
-      .filter(
-        ({ s }) =>
+      .filter(({ s }) => {
+        const inFigure =
+          s.figure &&
+          (s.figure.caption.toLowerCase().includes(q) ||
+            ("lines" in s.figure &&
+              s.figure.lines.some((line) => line.toLowerCase().includes(q))) ||
+            ("headers" in s.figure &&
+              s.figure.headers.some((h) => h.toLowerCase().includes(q))));
+        return (
           s.title.toLowerCase().includes(q) ||
           s.thumbLabel.toLowerCase().includes(q) ||
-          s.bullets.some((b) => b.toLowerCase().includes(q)),
-      );
+          s.bullets.some((b) => b.toLowerCase().includes(q)) ||
+          Boolean(inFigure)
+        );
+      });
   }, [lesson.slides, query]);
 
   const xpCurrent = state.completedModules.length * 140 + state.goldBars * 20;
@@ -250,6 +260,7 @@ export function LibraryClassroom({
                   <li key={b}>{b}</li>
                 ))}
               </ul>
+              {slide.figure ? <ClassroomFigureView figure={slide.figure} /> : null}
               {slide.footer && <p className="classroom-board-footer">{slide.footer}</p>}
             </div>
           </article>

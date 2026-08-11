@@ -1,6 +1,47 @@
 import { MAP_AREAS, type AreaId } from "@/lib/content/areas";
 import { getLibrary } from "@/lib/content/libraries";
 
+/** Optional teaching-board diagram / calculation block (Portals 6–9 and later). */
+export type ClassroomFigure =
+  | {
+      kind: "bars";
+      caption: string;
+      unit?: "%" | "$" | "";
+      items: { label: string; value: number; color?: string }[];
+    }
+  | {
+      kind: "stack";
+      caption: string;
+      showValues?: boolean;
+      items: {
+        label: string;
+        shortLabel?: string;
+        value: number;
+        color?: string;
+      }[];
+    }
+  | {
+      kind: "hierarchy";
+      caption: string;
+      levels: { label: string; detail: string }[];
+    }
+  | {
+      kind: "flow";
+      caption: string;
+      steps: string[];
+    }
+  | {
+      kind: "table";
+      caption: string;
+      headers: string[];
+      rows: string[][];
+    }
+  | {
+      kind: "calc";
+      caption: string;
+      lines: string[];
+    };
+
 export type ClassroomSlide = {
   id: string;
   number: number;
@@ -11,6 +52,8 @@ export type ClassroomSlide = {
   accent: string;
   /** Short label for thumbnail strip */
   thumbLabel: string;
+  /** Diagram, chart, table or worked calculation on the board */
+  figure?: ClassroomFigure;
 };
 
 export type ClassroomLesson = {
@@ -588,10 +631,11 @@ export const PURPLE_CITY_CLASSROOM: ClassroomLesson = {
       id: "s41",
       number: 41,
       title: "Portal 6 · Research Fundamentals",
-      subtitle: "Separate evidence from commentary; challenge your own beliefs",
+      subtitle: "Company reports, economic data, news, credibility and research logs",
       bullets: [
-        "Learn to separate evidence from commentary and build a research process that can challenge",
-        "your own beliefs.",
+        "Learning objective: use reports, data and news — and judge source credibility.",
+        "Portfolio Lab mission: research several opportunities and rank evidence quality.",
+        "Start with “What would I need to know?” — not “Why should I buy?”",
       ],
       accent: THEME["coral-ledger-bay"].color,
       thumbLabel: "P6 Intro",
@@ -599,15 +643,34 @@ export const PURPLE_CITY_CLASSROOM: ClassroomLesson = {
     {
       id: "s42",
       number: 42,
-      title: "Build an evidence hierarchy",
+      title: "Evidence hierarchy diagram",
       subtitle: "Start close to the underlying facts, then add interpretation.",
       bullets: [
-        "Primary: filings, audited reports, official releases, regulatory disclosures.",
-        "Interpretation: analyst research, journalism, expert commentary.",
-        "Leads/sentiment: useful clues — verify before you bet the portfolio.",
+        "Primary evidence is closest to the facts — filings, audits, official releases.",
+        "Interpretation adds useful context — still one step removed.",
+        "Leads and sentiment are clues only until verified.",
       ],
+      figure: {
+        kind: "hierarchy",
+        caption: "Figure · Evidence hierarchy (strongest → weakest for capital decisions)",
+        levels: [
+          {
+            label: "Primary evidence",
+            detail:
+              "Company filings, audited reports, official economic releases, regulatory disclosures",
+          },
+          {
+            label: "Interpretation",
+            detail: "Analyst research, journalism, expert commentary",
+          },
+          {
+            label: "Leads / sentiment",
+            detail: "Social media, tips, rumor — verify before capital moves",
+          },
+        ],
+      },
       accent: THEME["coral-ledger-bay"].color,
-      thumbLabel: "Evidence",
+      thumbLabel: "Hierarchy",
     },
     {
       id: "s43",
@@ -615,136 +678,380 @@ export const PURPLE_CITY_CLASSROOM: ClassroomLesson = {
       title: "Six questions for source credibility",
       subtitle: "A source can be useful without being equally reliable for every claim.",
       bullets: [
-        "1 Authority — who produced it?",
-        "2 Evidence — is the claim supported?",
-        "3 Timeliness — is it still current?",
-        "A source can be useful without being equally reliable for every claim.",
+        "Score each claim — not only the brand of the website.",
+        "Incentives matter: who benefits if you believe this?",
+        "Vague claims fail the specificity test.",
       ],
+      figure: {
+        kind: "table",
+        caption: "Figure · Credibility checklist",
+        headers: ["Test", "Ask"],
+        rows: [
+          ["Authority", "Who produced it — and what expertise do they have?"],
+          ["Evidence", "Are claims supported by data or primary documents?"],
+          ["Timeliness", "Is the information current enough for this decision?"],
+          ["Incentives", "Does the source benefit if you believe the claim?"],
+          ["Consistency", "Does it agree with independent credible evidence?"],
+          ["Specificity", "Can the claim be tested — or is it vague?"],
+        ],
+      },
       accent: THEME["coral-ledger-bay"].color,
       thumbLabel: "Credibility",
     },
     {
       id: "s44",
       number: 44,
-      title: "Portal 7 · Build Your First Portfolio",
-      subtitle: "Position sizes, weights, diversification and cash allocation",
+      title: "Research log template",
+      subtitle: "Make reasoning reviewable — including disconfirming evidence.",
       bullets: [
-        "Turn research into position sizes, portfolio weights, diversification and a deliberate cash",
-        "allocation.",
+        "Log date, asset, question, source, finding and decision impact.",
+        "Seek what would prove you wrong — that fights confirmation bias.",
+        "Rank two watchlist ideas: which has stronger primary evidence?",
+      ],
+      figure: {
+        kind: "table",
+        caption: "Figure · Research log columns",
+        headers: ["Date", "Asset", "Question", "Source", "Finding", "Decision impact"],
+        rows: [
+          [
+            "2026-08-11",
+            "ABC",
+            "Is revenue durable?",
+            "10-K / annual report",
+            "Recurring revenue 72%",
+            "Keep on watchlist",
+          ],
+          [
+            "2026-08-11",
+            "XYZ tip",
+            "Any primary proof?",
+            "Anonymous post",
+            "No filing cited",
+            "Do not size a buy",
+          ],
+        ],
+      },
+      accent: THEME["coral-ledger-bay"].color,
+      thumbLabel: "Research log",
+    },
+    {
+      id: "s45",
+      number: 45,
+      title: "Portfolio Lab · Portal 6",
+      subtitle: "Research opportunities and rank the quality of the evidence",
+      bullets: [
+        "Pick at least two ideas from your Portal 3 watchlist.",
+        "Complete one research-log row per idea using primary sources first.",
+        "Open map portal M6 to prove the skill with five challenges.",
+      ],
+      accent: THEME["coral-ledger-bay"].color,
+      thumbLabel: "P6 Lab",
+    },
+    {
+      id: "s46",
+      number: 46,
+      title: "Portal 7 · Build Your First Portfolio",
+      subtitle: "Position sizing, weights, diversification and cash allocation",
+      bullets: [
+        "Learning objective: turn research into defensible position sizes and weights.",
+        "Portfolio Lab mission: deploy part or all of the $14,800 into a starting portfolio.",
+        "Re-read the Portal 2 mandate before any order.",
       ],
       accent: THEME["coral-ledger-bay"].color,
       thumbLabel: "P7 Intro",
     },
     {
-      id: "s45",
-      number: 45,
-      title: "Position size is a risk decision",
-      subtitle: "Even a good idea can damage a portfolio if the exposure is too large.",
-      bullets: [
-        "Portfolio weight = position value / total portfolio value × 100%.",
-        "Even a good idea can damage a portfolio if the exposure is too large.",
-        "Size the position to the risk — not only to conviction.",
-      ],
-      accent: THEME["coral-ledger-bay"].color,
-      thumbLabel: "Position size",
-    },
-    {
-      id: "s46",
-      number: 46,
-      title: "Diversification is about different risks",
-      subtitle: "Ten investments can still be one concentrated bet.",
-      bullets: [
-        "Ten investments can still be one concentrated bet.",
-        "Check concentration by asset class, sector/industry, and geography.",
-        "Diversify across different risks — not just more tickers.",
-      ],
-      accent: THEME["coral-ledger-bay"].color,
-      thumbLabel: "Diversify",
-    },
-    {
       id: "s47",
       number: 47,
-      title: "Portal 8 · Investment Decisions",
-      subtitle: "BUY, ADD, HOLD, TRIM and EXIT — and document why",
+      title: "Position size and portfolio weight — calculations",
+      subtitle: "Weight shows concentration risk; size is the dollars at stake.",
       bullets: [
-        "Practice BUY , ADD, HOLD, TRIM and EXIT — and document why capital should stay or move.",
+        "Position size = dollars committed to one investment.",
+        "Portfolio weight = position value ÷ total portfolio value × 100%.",
+        "Even an excellent idea can damage you if sized too large.",
+      ],
+      figure: {
+        kind: "calc",
+        caption: "Worked example · $14,800 portfolio",
+        lines: [
+          "Position size (stocks sleeve) = $5,180",
+          "Weight = $5,180 / $14,800 × 100% = 35%",
+          "If one stock is $2,220 of that sleeve:",
+          "  Single-name weight = $2,220 / $14,800 × 100% = 15%",
+          "If mandate max single-position = 12% → TRIM or do not buy full size",
+        ],
+      },
+      accent: THEME["coral-ledger-bay"].color,
+      thumbLabel: "Weight calc",
+    },
+    {
+      id: "s48",
+      number: 48,
+      title: "Illustrative $14,800 allocation graph",
+      subtitle: "Practice allocation — this is not a prescribed “correct” portfolio.",
+      bullets: [
+        "Stocks 35% · Bonds 20% · ETF 15% · Real-estate 10% · Commodity 5% · Cash 15%.",
+        "Check concentration by asset class, sector, geography and currency.",
+        "Cash buys liquidity and optionality — with inflation/opportunity cost.",
+      ],
+      figure: {
+        kind: "stack",
+        caption: "Figure · Example allocation of $14,800 (illustrative)",
+        showValues: true,
+        items: [
+          { label: "Stocks", shortLabel: "Eq", value: 5180, color: "#7c4dff" },
+          { label: "Bonds", shortLabel: "Bd", value: 2960, color: "#5c6bc0" },
+          { label: "ETF", shortLabel: "ETF", value: 2220, color: "#26a69a" },
+          { label: "Real estate", shortLabel: "RE", value: 1480, color: "#ffa726" },
+          { label: "Commodity", shortLabel: "Cmd", value: 740, color: "#ef5350" },
+          { label: "Cash", shortLabel: "Cash", value: 2220, color: "#c6a15b" },
+        ],
+      },
+      accent: THEME["coral-ledger-bay"].color,
+      thumbLabel: "Allocation",
+    },
+    {
+      id: "s49",
+      number: 49,
+      title: "Portfolio construction steps",
+      subtitle: "From mandate → weights → researched names → orders.",
+      bullets: [
+        "Set target asset-class weights and a maximum single-position size.",
+        "Select candidates supported by Portal 6 research.",
+        "Execute simulated orders and record the thesis for each.",
+      ],
+      figure: {
+        kind: "flow",
+        caption: "Figure · Construction sequence",
+        steps: [
+          "Re-read mandate",
+          "Target weights",
+          "Research picks",
+          "Cap position size",
+          "Set cash",
+          "Check concentration",
+          "Execute & log",
+        ],
+      },
+      accent: THEME["coral-ledger-bay"].color,
+      thumbLabel: "Build steps",
+    },
+    {
+      id: "s50",
+      number: 50,
+      title: "Portfolio Lab · Portal 7",
+      subtitle: "Deploy part or all of $14,800 into a defensible starting portfolio",
+      bullets: [
+        "Propose target weights that fit your mandate cash reserve.",
+        "Calculate each position weight before you click buy.",
+        "Open map portal M7 to prove the skill with five challenges.",
+      ],
+      accent: THEME["coral-ledger-bay"].color,
+      thumbLabel: "P7 Lab",
+    },
+    {
+      id: "s51",
+      number: 51,
+      title: "Portal 8 · Investment Decisions",
+      subtitle: "BUY, ADD, HOLD, TRIM, EXIT — opportunity cost and rationale",
+      bullets: [
+        "Learning objective: practice the five active decisions with documented why.",
+        "Portfolio Lab mission: make and document active portfolio decisions.",
+        "“The price is going up” is an observation — not a complete thesis.",
       ],
       accent: THEME["coral-ledger-bay"].color,
       thumbLabel: "P8 Intro",
     },
     {
-      id: "s48",
-      number: 48,
-      title: "Five active portfolio decisions",
-      subtitle: "“Do nothing” can still be a deliberate investment decision.",
+      id: "s52",
+      number: 52,
+      title: "Five active decisions — decision table",
+      subtitle: "“Do nothing” (HOLD) can still be a deliberate investment decision.",
       bullets: [
-        "BUY — open a new position when reward justifies risk.",
-        "ADD / HOLD / TRIM / EXIT — each needs a reason.",
-        "“Do nothing” can still be a deliberate investment decision.",
+        "BUY opens; ADD increases; HOLD keeps; TRIM reduces; EXIT closes.",
+        "TRIM often funds a better opportunity or cuts concentration risk.",
+        "EXIT when the thesis breaks — or capital has a superior use.",
       ],
+      figure: {
+        kind: "table",
+        caption: "Figure · Decision language",
+        headers: ["Decision", "Meaning", "Typical justification"],
+        rows: [
+          ["BUY", "Open a new position", "Expected reward justifies risk"],
+          ["ADD", "Increase an existing position", "Evidence strengthens / valuation improves"],
+          ["HOLD", "Keep exposure unchanged", "Thesis intact; size still appropriate"],
+          ["TRIM", "Reduce exposure", "Valuation, concentration or risk has risen"],
+          ["EXIT", "Close the position", "Thesis breaks or capital has a better use"],
+        ],
+      },
       accent: THEME["coral-ledger-bay"].color,
       thumbLabel: "5 decisions",
     },
     {
-      id: "s49",
-      number: 49,
-      title: "The decision journal turns action into learning",
+      id: "s53",
+      number: 53,
+      title: "Opportunity cost — calculation lens",
+      subtitle: "Capital committed here cannot simultaneously work elsewhere.",
+      bullets: [
+        "A holding must compete against cash and the best similar-risk alternative.",
+        "Compare expected reward and risk — not only past price moves.",
+        "Document what you are forgoing when you HOLD or ADD.",
+      ],
+      figure: {
+        kind: "calc",
+        caption: "Worked comparison · $2,220 slot in the portfolio",
+        lines: [
+          "Option A (HOLD ABC): expected reward ~8%, main risk: earnings miss",
+          "Option B (BUY DEF ETF): expected reward ~7%, broader diversification",
+          "Option C (CASH): expected reward ~0% nominal; keeps optionality",
+          "Opportunity cost of HOLD ABC ≈ value of best forgone option (B or C)",
+          "If ABC thesis weakens → TRIM/EXIT frees capital for B",
+        ],
+      },
+      accent: THEME["coral-ledger-bay"].color,
+      thumbLabel: "Opp. cost",
+    },
+    {
+      id: "s54",
+      number: 54,
+      title: "Decision journal prompt",
       subtitle: "A good rationale can be reviewed later — even when the outcome is bad.",
       bullets: [
-        "Record ACTION: BUY / ADD / HOLD / TRIM / EXIT.",
-        "Record EVIDENCE: what changed? What supports the action?",
-        "A good rationale can be reviewed later — even when the outcome is bad.",
+        "Write the reason before you trade.",
+        "Name falsifiers: what would prove this decision wrong?",
+        "Set a review date or review event.",
       ],
+      figure: {
+        kind: "flow",
+        caption: "Figure · Journal sequence",
+        steps: [
+          "Action",
+          "Evidence",
+          "What changed",
+          "Expected reward",
+          "Main risk",
+          "New weight",
+          "Falsifier",
+          "Review date",
+        ],
+      },
       accent: THEME["coral-ledger-bay"].color,
       thumbLabel: "Journal",
     },
     {
-      id: "s50",
-      number: 50,
-      title: "Portal 9 · Purple City Challenge",
-      subtitle: "Defend the process, fix weaknesses, rebalance before Blue City",
+      id: "s55",
+      number: 55,
+      title: "Portfolio Lab · Portal 8",
+      subtitle: "Make and document active portfolio decisions",
       bullets: [
-        "Defend the process behind the portfolio, identify weaknesses, and rebalance before Blue City.",
+        "For each holding or candidate: choose BUY / ADD / HOLD / TRIM / EXIT.",
+        "Record evidence, new weight and what would change your mind.",
+        "Open map portal M8 to prove the skill with five challenges.",
+      ],
+      accent: THEME["coral-ledger-bay"].color,
+      thumbLabel: "P8 Lab",
+    },
+    {
+      id: "s56",
+      number: 56,
+      title: "Portal 9 · Purple City Challenge",
+      subtitle: "Defend process, fix weaknesses, rebalance before Blue City",
+      bullets: [
+        "Learning objective: integrate holdings, allocation, evidence, risk and weaknesses.",
+        "Portfolio Lab mission: defend the portfolio and rebalance before Blue City.",
+        "This is a defense of process — not a contest for highest short-term return.",
       ],
       accent: THEME["coral-ledger-bay"].color,
       thumbLabel: "P9 Intro",
     },
     {
-      id: "s51",
-      number: 51,
-      title: "How to defend your first portfolio",
-      subtitle: "The challenge rewards disciplined reasoning — not lucky short-term returns.",
+      id: "s57",
+      number: 57,
+      title: "Portfolio defense structure",
+      subtitle: "Explain why each holding exists and what would change it.",
       bullets: [
-        "Defend mandate: objective, horizon, risk, liquidity.",
-        "Defend allocation: asset weights and cash reserve.",
-        "The challenge rewards disciplined reasoning — not lucky short-term returns.",
+        "Cover mandate, allocation, holdings, evidence, risk, decisions and weaknesses.",
+        "End with the rebalance actions required before Blue City.",
+        "Disappointing short-term P&L can still be a strong defense if process is sound.",
       ],
+      figure: {
+        kind: "flow",
+        caption: "Figure · Defense sequence",
+        steps: [
+          "Mandate",
+          "Allocation",
+          "Holdings",
+          "Evidence",
+          "Risk",
+          "Decision quality",
+          "Weaknesses",
+          "Rebalance",
+        ],
+      },
       accent: THEME["coral-ledger-bay"].color,
-      thumbLabel: "Defend",
+      thumbLabel: "Defense",
     },
     {
-      id: "s52",
-      number: 52,
-      title: "Purple City scoring rubric",
-      subtitle: "What strong work should demonstrate.",
+      id: "s58",
+      number: 58,
+      title: "Purple City scoring rubric graph",
+      subtitle: "What strong work should demonstrate — and how it is weighted.",
       bullets: [
-        "Research quality · Portfolio construction · Decision rationale.",
-        "Strong work shows process, evidence, and clear trade-offs.",
-        "Use the rubric to find weak spots before Blue City.",
+        "Research, construction and decision rationale carry the largest weights.",
+        "Risk awareness and reflection close the gaps before Blue City.",
+        "Use the bars to find weak spots in your own defense.",
       ],
+      figure: {
+        kind: "bars",
+        caption: "Figure · Rubric weights (sum = 100%)",
+        unit: "%",
+        items: [
+          { label: "Mandate", value: 15, color: "#7c4dff" },
+          { label: "Research", value: 20, color: "#5c6bc0" },
+          { label: "Construction", value: 20, color: "#26a69a" },
+          { label: "Decisions", value: 20, color: "#42a5f5" },
+          { label: "Risk", value: 15, color: "#ef5350" },
+          { label: "Reflection", value: 10, color: "#c6a15b" },
+        ],
+      },
       accent: THEME["coral-ledger-bay"].color,
       thumbLabel: "Rubric",
     },
     {
-      id: "s53",
-      number: 53,
+      id: "s59",
+      number: 59,
+      title: "Rebalance before Blue City — calculation",
+      subtitle: "Restore intentional risk when weights drift or evidence changes.",
+      bullets: [
+        "Compare current weights to target weights from Portal 7.",
+        "Trim overweight names; fund underweights or raise cash to mandate floor.",
+        "Every rebalance action needs a journal line from Portal 8.",
+      ],
+      figure: {
+        kind: "calc",
+        caption: "Worked rebalance · $14,800 book",
+        lines: [
+          "Target stocks 35% → $5,180 | Current stocks $6,290 → 42.5%",
+          "Overweight = 42.5% − 35% = 7.5% of book = $1,110",
+          "TRIM $1,110 of equity → new stocks ≈ $5,180 (35%)",
+          "If cash fell to $1,184 (8%) vs 15% target ($2,220):",
+          "  Raise cash by $1,036 from trims / bond sleeve",
+          "Record EXIT/TRIM rationale + new weights in the journal",
+        ],
+      },
+      accent: THEME["coral-ledger-bay"].color,
+      thumbLabel: "Rebalance",
+    },
+    {
+      id: "s60",
+      number: 60,
       title: "Purple City Complete",
       subtitle: "Before you unlock Blue City…",
       bullets: [
-        "Explain saving vs investing vs trading.",
-        "Calculate PV, FV, nominal and real returns.",
-        "Describe major asset classes and what moves them.",
-        "Explain bid/ask, liquidity, market and limit orders — then unlock Blue City.",
+        "Explain saving vs investing vs trading; state your mandate and constraints.",
+        "Calculate PV/FV ideas, nominal/real returns, market cap and portfolio weights.",
+        "Rank sources, keep a research log, and use BUY/ADD/HOLD/TRIM/EXIT with rationale.",
+        "Defend and rebalance the $14,800 portfolio on evidence — then unlock Blue City.",
       ],
       footer: "Coral Ledger Bay · Purple City Investment Foundations Teaching Deck",
       accent: "#c6a15b",
