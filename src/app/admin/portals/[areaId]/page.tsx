@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { readSession } from "@/lib/session";
 import { isLibraryAdmin } from "@/lib/admin";
 import { areaById, type AreaId, MAP_AREAS } from "@/lib/content/areas";
 import { getPortalCatalog, modulesForArea } from "@/lib/portal-catalog";
 import { LibraryAdminUnlock } from "@/components/LibraryAdminUnlock";
-import { LibraryAdminLogout } from "@/components/LibraryAdminLogout";
 
 export default async function AdminPortalsCityPage({
   params,
@@ -16,17 +15,15 @@ export default async function AdminPortalsCityPage({
   if (!MAP_AREAS.some((a) => a.id === areaId)) notFound();
 
   const session = await readSession();
-  if (!session) redirect(`/api/demo-launch?next=/admin/portals/${areaId}`);
-
-  const admin = await isLibraryAdmin(session);
+  const admin = session ? await isLibraryAdmin(session) : false;
   if (!admin) {
     return (
-      <main className="mx-auto w-full max-w-5xl px-4 py-8">
+      <div className="admin-stage">
         <Link className="text-sm text-[var(--accent)]" href="/admin/portals">
-          ← Portal admin hub
+          ← Portal admin
         </Link>
         <LibraryAdminUnlock />
-      </main>
+      </div>
     );
   }
 
@@ -44,23 +41,16 @@ export default async function AdminPortalsCityPage({
   );
 
   return (
-    <main className="mx-auto w-full max-w-5xl px-4 py-8 space-y-6">
-      <header className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <p className="text-xs uppercase tracking-[0.14em] text-[var(--accent)]">
-            Portal administrator
-          </p>
-          <h1 className="display mt-1 text-3xl text-[var(--gold)]">{area.name}</h1>
-          <p className="mt-2 text-sm text-[var(--muted)]">
-            Portals M{area.moduleStart}–M{area.moduleEnd} belong only to this city.
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Link className="btn btn-ghost text-sm" href="/admin/portals">
-            All cities
-          </Link>
-          <LibraryAdminLogout />
-        </div>
+    <div className="admin-stage space-y-6">
+      <header className="admin-stage__header">
+        <p className="admin-stage__eyebrow">Portal administrator</p>
+        <h1 className="display admin-stage__title">{area.name}</h1>
+        <p className="admin-stage__lede">
+          Portals M{area.moduleStart}–M{area.moduleEnd} belong only to this city.
+        </p>
+        <Link className="btn btn-ghost text-sm mt-3 inline-flex" href="/admin/portals">
+          All cities
+        </Link>
       </header>
 
       <div className="space-y-3">
@@ -83,6 +73,6 @@ export default async function AdminPortalsCityPage({
           </Link>
         ))}
       </div>
-    </main>
+    </div>
   );
 }

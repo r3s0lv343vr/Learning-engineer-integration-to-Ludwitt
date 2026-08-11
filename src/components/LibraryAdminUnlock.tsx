@@ -38,11 +38,11 @@ export function LibraryAdminUnlock() {
     >
       <h2 className="display text-xl text-[var(--gold)]">Administrator unlock</h2>
       <p className="mt-2 text-sm text-[var(--muted)]">
-        Library uploads are administrator-only. Enter the library admin key, or
-        sign in with an allow-listed admin email.
+        Library and portal admin tools are administrator-only. Enter the admin
+        key, or sign in with an allow-listed admin email.
       </p>
       <label className="mt-4 block text-sm">
-        Library admin key
+        Admin key
         <input
           className="mt-1 w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2"
           type="password"
@@ -54,7 +54,7 @@ export function LibraryAdminUnlock() {
       </label>
       {error && <p className="mt-3 text-sm text-red-300">{error}</p>}
       <button type="submit" className="btn btn-forest mt-4" disabled={pending}>
-        Unlock library admin
+        Unlock admin console
       </button>
     </form>
   );

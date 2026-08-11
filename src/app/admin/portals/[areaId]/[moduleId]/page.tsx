@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { readSession } from "@/lib/session";
 import { isLibraryAdmin } from "@/lib/admin";
 import { areaById, type AreaId, MAP_AREAS } from "@/lib/content/areas";
@@ -25,14 +25,10 @@ export default async function AdminPortalModulePage({
   if (ownedArea !== areaId) notFound();
 
   const session = await readSession();
-  if (!session) {
-    redirect(`/api/demo-launch?next=/admin/portals/${areaId}/${moduleId}`);
-  }
-
-  const admin = await isLibraryAdmin(session);
+  const admin = session ? await isLibraryAdmin(session) : false;
   if (!admin) {
     return (
-      <main className="mx-auto w-full max-w-5xl px-4 py-8">
+      <div className="admin-stage">
         <Link
           className="text-sm text-[var(--accent)]"
           href={`/admin/portals/${areaId}`}
@@ -40,7 +36,7 @@ export default async function AdminPortalModulePage({
           ← {areaById(areaId as AreaId).name} portals
         </Link>
         <LibraryAdminUnlock />
-      </main>
+      </div>
     );
   }
 
@@ -48,7 +44,7 @@ export default async function AdminPortalModulePage({
   const area = areaById(areaId as AreaId);
 
   return (
-    <main className="mx-auto w-full max-w-5xl px-4 py-8">
+    <div className="admin-stage">
       <PortalAdminPanel
         areaId={areaId as AreaId}
         areaName={area.name}
@@ -61,6 +57,6 @@ export default async function AdminPortalModulePage({
         baseOutcome={mod.outcome}
         initialDoc={doc}
       />
-    </main>
+    </div>
   );
 }

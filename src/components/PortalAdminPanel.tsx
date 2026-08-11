@@ -9,8 +9,6 @@ import {
   type PortalCatalogDoc,
   type PortalMaterialKind,
 } from "@/lib/portal-types";
-import { LibraryAdminLogout } from "@/components/LibraryAdminLogout";
-
 const FILE_KINDS: { id: PortalMaterialKind; label: string }[] = [
   { id: "pdf", label: "PDF / reading" },
   { id: "document", label: "Document" },
@@ -209,7 +207,6 @@ export function PortalAdminPanel({
           <Link className="btn btn-ghost text-sm" href={`/quest/${moduleId}`}>
             Preview portal
           </Link>
-          <LibraryAdminLogout />
         </div>
       </div>
 
