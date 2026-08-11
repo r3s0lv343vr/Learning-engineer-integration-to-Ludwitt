@@ -26,6 +26,8 @@
 
 # Per-city library admin catalogs (uploads live under public/library/*/uploads)
 /data/library/*.json
+# Per-portal admin catalogs
+/data/portals/*.json
 
 # debug
 npm-debug.log*

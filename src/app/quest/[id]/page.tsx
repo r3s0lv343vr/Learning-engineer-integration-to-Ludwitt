@@ -1,11 +1,13 @@
 import { redirect, notFound } from "next/navigation";
 import { loadState } from "@/lib/session";
-import { getModule, getNextModuleId } from "@/lib/content/modules";
+import { getNextModuleId } from "@/lib/content/modules";
+import { resolvePortalModule } from "@/lib/content/resolve-portal";
 import { StatusBar } from "@/components/StatusBar";
 import { CandleChart } from "@/components/CandleChart";
 import { FOREX_CANDLES, STOCK_CANDLES } from "@/lib/content/markets";
 import { QuestClient } from "./QuestClient";
 import { AiMentor } from "@/components/AiMentor";
+import { PortalResources } from "@/components/PortalResources";
 
 export default async function QuestPage({
   params,
@@ -16,7 +18,9 @@ export default async function QuestPage({
   const state = await loadState();
   if (!state) redirect("/api/demo-launch");
   if (state.inDetention) redirect("/detention");
-  const mod = getModule(id);
+
+  // Overlay admin text/materials only — portal shell geometry & quiz stay standard.
+  const mod = await resolvePortalModule(id);
   if (!mod) notFound();
   const unlocked =
     state.unlockedModules.includes(mod.id) ||
@@ -51,6 +55,7 @@ export default async function QuestPage({
             <CandleChart title="EURUSD tape" candles={FOREX_CANDLES.EURUSD} />
           </div>
         </div>
+        <PortalResources materials={mod.materials} />
         <QuestClient
           moduleId={mod.id}
           questions={mod.questions}
