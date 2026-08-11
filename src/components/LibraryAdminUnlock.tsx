@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export function LibraryAdminUnlock() {
+export function LibraryAdminUnlock({ nextPath = "/admin" }: { nextPath?: string }) {
   const router = useRouter();
   const [key, setKey] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -28,6 +28,11 @@ export function LibraryAdminUnlock() {
       );
       return;
     }
+    const dest =
+      nextPath.startsWith("/") && !nextPath.startsWith("//")
+        ? nextPath
+        : "/admin";
+    router.replace(dest);
     router.refresh();
   }
 

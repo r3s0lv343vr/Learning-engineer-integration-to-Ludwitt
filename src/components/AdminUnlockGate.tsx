@@ -2,7 +2,7 @@ import Link from "next/link";
 import { LibraryAdminUnlock } from "@/components/LibraryAdminUnlock";
 
 /** Standalone unlock screen — no admin console chrome until authenticated. */
-export function AdminUnlockGate() {
+export function AdminUnlockGate({ nextPath = "/admin" }: { nextPath?: string }) {
   return (
     <main className="admin-unlock-gate">
       <div className="admin-unlock-gate__card">
@@ -12,7 +12,7 @@ export function AdminUnlockGate() {
           Unlock with an administrator key to open the console. The admin
           capacities stay hidden until you are signed in as admin.
         </p>
-        <LibraryAdminUnlock />
+        <LibraryAdminUnlock nextPath={nextPath} />
         <p className="mt-6 text-center">
           <Link className="text-sm text-[var(--accent)]" href="/map">
             ← Back to map
