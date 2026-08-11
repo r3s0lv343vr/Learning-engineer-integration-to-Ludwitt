@@ -5,6 +5,7 @@ import { isLibraryAdmin } from "@/lib/admin";
 import { CITY_LIBRARIES } from "@/lib/content/libraries";
 import { listAdminLibraryItems } from "@/lib/library-catalog";
 import { LibraryAdminUnlock } from "@/components/LibraryAdminUnlock";
+import { LibraryAdminLogout } from "@/components/LibraryAdminLogout";
 
 export default async function AdminLibraryHubPage() {
   const session = await readSession();
@@ -23,18 +24,21 @@ export default async function AdminLibraryHubPage() {
 
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-8">
-      <header>
-        <p className="text-xs uppercase tracking-[0.14em] text-[var(--accent)]">
-          Backend · Library administrator
-        </p>
-        <h1 className="display mt-1 text-3xl text-[var(--gold)]">
-          City libraries
-        </h1>
-        <p className="mt-2 max-w-2xl text-sm text-[var(--muted)]">
-          Manage PowerPoints, PDF notes, and links per city. This console is
-          separate from the learner Library Classroom — the room shell learners
-          use is not modified here.
-        </p>
+      <header className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p className="text-xs uppercase tracking-[0.14em] text-[var(--accent)]">
+            Backend · Library administrator
+          </p>
+          <h1 className="display mt-1 text-3xl text-[var(--gold)]">
+            City libraries
+          </h1>
+          <p className="mt-2 max-w-2xl text-sm text-[var(--muted)]">
+            Manage PowerPoints, PDF notes, and links per city. This console is
+            separate from the learner Library Classroom — the room shell learners
+            use is not modified here.
+          </p>
+        </div>
+        {admin ? <LibraryAdminLogout /> : null}
       </header>
 
       {!admin ? (

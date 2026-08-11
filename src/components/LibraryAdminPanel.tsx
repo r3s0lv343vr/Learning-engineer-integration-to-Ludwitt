@@ -8,6 +8,7 @@ import {
   libraryItemKindLabel,
   type LibraryCatalogItem,
 } from "@/lib/library-types";
+import { LibraryAdminLogout } from "@/components/LibraryAdminLogout";
 
 const PLATFORMS = [
   { id: "youtube", label: "YouTube" },
@@ -157,6 +158,7 @@ export function LibraryAdminPanel({
           >
             Preview classroom
           </Link>
+          <LibraryAdminLogout />
         </div>
       </div>
 
