@@ -1172,6 +1172,12 @@ a {
   max-width: 1120px;
   margin: 0 auto;
   width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+.classroom-room.is-fullscreen .classroom-board {
+  min-height: 0;
+  flex: 1 1 auto;
 }
 
 .classroom-top {
@@ -1549,6 +1555,8 @@ a.classroom-chip {
   position: relative;
   flex: 1 1 auto;
   min-height: 0;
+  display: flex;
+  flex-direction: column;
   border-radius: 1rem;
   padding: 1rem;
   background:
@@ -1568,6 +1576,7 @@ a.classroom-chip {
   inset: 0.35rem;
   border: 1px solid rgba(244, 232, 212, 0.12);
   border-radius: 0.75rem;
+  z-index: 2;
 }
 .classroom-board-frame .corner {
   position: absolute;
@@ -1580,29 +1589,85 @@ a.classroom-chip {
 .classroom-board-frame .corner.bl { bottom: 0.2rem; left: 0.2rem; border-right: 0; border-top: 0; }
 .classroom-board-frame .corner.br { bottom: 0.2rem; right: 0.2rem; border-left: 0; border-top: 0; }
 
+/*
+ * Compulsory for every PowerPoint slide: the parchment viewport scrolls
+ * vertically and horizontally whenever content exceeds the visible board
+ * (including fullscreen). Do not use overflow:hidden here.
+ */
 .classroom-board-inner {
   position: relative;
-  height: 100%;
+  flex: 1 1 auto;
   min-height: 0;
-  overflow: auto;
+  min-width: 0;
+  height: 100%;
   border-radius: 0.45rem;
   background:
     radial-gradient(circle at 90% 10%, rgba(124, 77, 255, 0.08), transparent 30%),
     linear-gradient(180deg, #fffdf8 0%, #f6eee3 72%, #efe4d5 100%);
   color: #2a1c14;
-  padding: 1.65rem 1.85rem 1.5rem 2rem;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
   box-shadow:
     inset 0 0 0 1px rgba(90, 61, 42, 0.18),
     0 8px 18px rgba(0, 0, 0, 0.2);
 }
-.classroom-board-inner::before {
+
+.classroom-board-inner:focus-visible {
+  outline: 2px solid rgba(90, 61, 42, 0.45);
+  outline-offset: -2px;
+}
+
+.classroom-board-inner::-webkit-scrollbar {
+  width: 0.7rem;
+  height: 0.7rem;
+}
+.classroom-board-inner::-webkit-scrollbar-track {
+  background: rgba(90, 61, 42, 0.1);
+  border-radius: 999px;
+}
+.classroom-board-inner::-webkit-scrollbar-thumb {
+  background: rgba(58, 36, 16, 0.55);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.classroom-board-inner::-webkit-scrollbar-thumb:hover {
+  background: rgba(42, 28, 20, 0.75);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.classroom-board-inner::-webkit-scrollbar-corner {
+  background: rgba(90, 61, 42, 0.08);
+}
+
+.classroom-board-content {
+  position: relative;
+  box-sizing: border-box;
+  min-width: 100%;
+  width: max-content;
+  max-width: none;
+  min-height: 100%;
+  padding: 1.65rem 1.85rem 1.5rem 2rem;
+}
+
+.classroom-board-content::before {
   content: "";
   position: absolute;
-  inset: 0 auto 0 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
   width: 0.7rem;
-  background: linear-gradient(180deg, var(--slide-accent, var(--classroom-accent)), var(--classroom-accent-deep));
+  background: linear-gradient(
+    180deg,
+    var(--slide-accent, var(--classroom-accent)),
+    var(--classroom-accent-deep)
+  );
+  pointer-events: none;
 }
+
 .classroom-board-seal {
   position: absolute;
   right: 1.1rem;
@@ -1615,6 +1680,7 @@ a.classroom-chip {
     radial-gradient(circle at 40% 35%, rgba(255, 255, 255, 0.7), transparent 45%),
     radial-gradient(circle at 50% 50%, rgba(124, 77, 255, 0.18), transparent 65%);
   opacity: 0.85;
+  pointer-events: none;
 }
 .classroom-board-kicker {
   margin: 0 0 0.6rem;
@@ -1624,9 +1690,9 @@ a.classroom-chip {
   color: #4a3828;
   font-weight: 800;
 }
-.classroom-board-inner h1 {
+.classroom-board-content h1 {
   margin: 0;
-  max-width: 92%;
+  max-width: 42rem;
   font-family: var(--font-display), Georgia, serif;
   font-size: clamp(1.55rem, 2.6vw, 2.2rem);
   color: #140c08;
@@ -1634,10 +1700,11 @@ a.classroom-chip {
 }
 .classroom-board-sub {
   margin: 0.55rem 0 0;
+  max-width: 42rem;
   color: #2f2118;
   font-size: 1.05rem;
 }
-.classroom-board-inner ul {
+.classroom-board-content ul {
   margin: 1.25rem 0 0;
   padding-left: 1.25rem;
   display: grid;
@@ -1645,8 +1712,9 @@ a.classroom-chip {
   font-size: 1.06rem;
   line-height: 1.5;
   color: #1a120c;
+  max-width: 42rem;
 }
-.classroom-board-inner li::marker {
+.classroom-board-content li::marker {
   color: #3d2a12;
 }
 .classroom-board-footer {
@@ -1655,6 +1723,7 @@ a.classroom-chip {
   border-top: 1px dashed rgba(90, 61, 42, 0.35);
   color: #3a2a1c;
   font-size: 0.88rem;
+  max-width: 42rem;
 }
 
 .classroom-tools {
@@ -1954,6 +2023,22 @@ a.classroom-chip {
     height: auto;
     overflow: visible;
   }
+  .classroom-board {
+    min-height: min(62vh, 34rem);
+    height: min(68vh, 38rem);
+    max-height: min(72vh, 40rem);
+  }
+  .classroom-room.is-fullscreen .classroom-board {
+    height: calc(100dvh - 5.5rem);
+    max-height: calc(100dvh - 5.5rem);
+    min-height: calc(100dvh - 5.5rem);
+  }
+  .classroom-board-inner {
+    min-height: 0;
+  }
+  .classroom-board-content {
+    padding: 1.15rem 1.15rem 1.15rem 1.4rem;
+  }
   .classroom-thumbs {
     height: auto;
     max-height: none;
@@ -1976,10 +2061,14 @@ a.classroom-chip {
     grid-template-columns: 1fr;
   }
   .classroom-board {
-    min-height: 380px;
+    min-height: min(58vh, 28rem);
+    height: min(64vh, 32rem);
+    max-height: min(70vh, 36rem);
   }
   .classroom-board-inner {
-    min-height: 320px;
+    min-height: 0;
+  }
+  .classroom-board-content {
     padding: 1.15rem 1.15rem 1.15rem 1.4rem;
   }
 }
@@ -1992,6 +2081,10 @@ a.classroom-chip {
   border: 1px solid rgba(90, 61, 42, 0.28);
   background: rgba(255, 252, 246, 0.92);
   color: #1a120c;
+  /* Wide diagrams grow the slide content so the board can scroll horizontally */
+  width: max(100%, min-content);
+  max-width: none;
+  box-sizing: border-box;
 }
 
 .classroom-figure figcaption {
@@ -2044,9 +2137,10 @@ a.classroom-chip {
 .classroom-figure-stack {
   display: flex;
   width: 100%;
-  min-height: 2.6rem;
+  min-width: 36rem;
+  min-height: 3.1rem;
   border-radius: 0.5rem;
-  overflow: hidden;
+  overflow: visible;
   border: 1px solid rgba(42, 28, 20, 0.2);
 }
 
@@ -2054,8 +2148,9 @@ a.classroom-chip {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 0;
-  padding: 0.25rem;
+  min-width: 3.25rem;
+  flex: 1 1 0;
+  padding: 0.35rem 0.25rem;
   color: #140c08;
   font-size: 0.65rem;
   font-weight: 800;
@@ -2117,9 +2212,10 @@ a.classroom-chip {
 
 .classroom-figure-flow {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0.35rem;
   align-items: stretch;
+  min-width: min-content;
 }
 
 .classroom-figure-flow-step {
@@ -2157,11 +2253,12 @@ a.classroom-chip {
 }
 
 .classroom-figure-table-wrap {
-  overflow-x: auto;
+  overflow: visible;
 }
 
 .classroom-figure-table {
   width: 100%;
+  min-width: 32rem;
   border-collapse: collapse;
   font-size: 0.72rem;
   color: #1a120c;

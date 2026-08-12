@@ -32,6 +32,7 @@ export function LibraryClassroom({
   const [askReply, setAskReply] = useState<string | null>(null);
   const [fullscreen, setFullscreen] = useState(false);
   const thumbListRef = useRef<HTMLDivElement>(null);
+  const boardScrollRef = useRef<HTMLDivElement>(null);
 
   const slide = lesson.slides[slideIndex] ?? lesson.slides[0];
   const total = lesson.slides.length;
@@ -110,6 +111,13 @@ export function LibraryClassroom({
       });
     }
   }, [slideIndex, filteredSlides]);
+
+  // Every slide uses the same scroll viewport — reset when the slide changes.
+  useEffect(() => {
+    const board = boardScrollRef.current;
+    if (!board) return;
+    board.scrollTo({ top: 0, left: 0 });
+  }, [slideIndex]);
 
   const portalNumber = Math.min(
     lesson.moduleEnd,
@@ -250,18 +258,33 @@ export function LibraryClassroom({
               <span className="corner bl" />
               <span className="corner br" />
             </div>
-            <div className="classroom-board-inner">
-              <div className="classroom-board-seal" aria-hidden />
-              <p className="classroom-board-kicker">Teaching board · PowerPoint lesson</p>
-              <h1>{slide.title}</h1>
-              {slide.subtitle && <p className="classroom-board-sub">{slide.subtitle}</p>}
-              <ul>
-                {slide.bullets.map((b) => (
-                  <li key={b}>{b}</li>
-                ))}
-              </ul>
-              {slide.figure ? <ClassroomFigureView figure={slide.figure} /> : null}
-              {slide.footer && <p className="classroom-board-footer">{slide.footer}</p>}
+            <div
+              ref={boardScrollRef}
+              className="classroom-board-inner"
+              tabIndex={0}
+              aria-label={`Slide ${slide.number} content. Scroll vertically or horizontally when the slide is larger than the board.`}
+            >
+              <div className="classroom-board-content">
+                <div className="classroom-board-seal" aria-hidden />
+                <p className="classroom-board-kicker">
+                  Teaching board · PowerPoint lesson
+                </p>
+                <h1>{slide.title}</h1>
+                {slide.subtitle && (
+                  <p className="classroom-board-sub">{slide.subtitle}</p>
+                )}
+                <ul>
+                  {slide.bullets.map((b) => (
+                    <li key={b}>{b}</li>
+                  ))}
+                </ul>
+                {slide.figure ? (
+                  <ClassroomFigureView figure={slide.figure} />
+                ) : null}
+                {slide.footer && (
+                  <p className="classroom-board-footer">{slide.footer}</p>
+                )}
+              </div>
             </div>
           </article>
 
