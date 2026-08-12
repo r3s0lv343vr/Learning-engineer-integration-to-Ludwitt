@@ -1,196 +1,29 @@
 import type { AreaId } from "@/lib/content/areas";
+import { CORAL_TRADES } from "@/lib/content/trades-coral";
 
-/**
- * City trade areas — handshake/globe markers on the Investment Map.
- * Completing a trade can raise or lower portfolio cash/book value.
- * Scenario bodies are stubs ready for richer trade narratives later.
- */
+export type {
+  TradeRisk,
+  TradeOutcome,
+  TradeChoice,
+  TradeDataBlock,
+  TradeStep,
+  TradeArea,
+} from "@/lib/content/trades-coral";
 
-export type TradeRisk = "low" | "medium" | "high";
-export type TradeOutcome = "gain" | "loss";
+export { CORAL_TRADES } from "@/lib/content/trades-coral";
 
-export interface TradeChoice {
-  label: string;
-  outcome: TradeOutcome;
-  feedback: string;
-}
+import type {
+  TradeArea,
+  TradeChoice,
+  TradeOutcome,
+  TradeStep,
+} from "@/lib/content/trades-coral";
 
-export interface TradeArea {
-  id: string;
-  areaId: AreaId;
-  title: string;
-  summary: string;
-  risk: TradeRisk;
-  /** Applied when the player picks a gain outcome — may be + or rare − for trap deals */
-  capitalDeltaGain: number;
-  /** Applied when the player picks a loss / walk-away-badly outcome */
-  capitalDeltaLoss: number;
-  goldReward?: number;
-  /** Map % coords — keep clear of frozen chests & libraries */
-  x: number;
-  y: number;
-  /** Reserved for future multi-step trade scenarios */
-  scenarioReady: true;
-  prompt: string;
-  choices: TradeChoice[];
-}
-
-function trade(
-  partial: Omit<TradeArea, "scenarioReady">,
-): TradeArea {
+function trade(partial: Omit<TradeArea, "scenarioReady">): TradeArea {
   return { ...partial, scenarioReady: true };
 }
 
-/** Coral Ledger Bay — foundations trades (6) */
-const CORAL: TradeArea[] = [
-  trade({
-    id: "tr-bay-seed",
-    areaId: "coral-ledger-bay",
-    title: "Seed Parcel Desk",
-    summary: "First micro-allocation into a starter equity sleeve.",
-    risk: "low",
-    capitalDeltaGain: 180,
-    capitalDeltaLoss: -90,
-    goldReward: 1,
-    x: 20,
-    y: 76,
-    prompt: "Take a small long into the bay starter sleeve?",
-    choices: [
-      {
-        label: "Allocate the micro sleeve",
-        outcome: "gain",
-        feedback: "Discipline paid — book value ticks up.",
-      },
-      {
-        label: "Chase a hot tip instead",
-        outcome: "loss",
-        feedback: "Tip fades. Portfolio slips.",
-      },
-    ],
-  }),
-  trade({
-    id: "tr-bay-ferry",
-    areaId: "coral-ledger-bay",
-    title: "Ferry Ticket Swap",
-    summary: "Liquidity trade between cash and a short-term note.",
-    risk: "low",
-    capitalDeltaGain: 120,
-    capitalDeltaLoss: -60,
-    x: 28,
-    y: 80,
-    prompt: "Park idle cash in the ferry note for a week?",
-    choices: [
-      {
-        label: "Park the cash",
-        outcome: "gain",
-        feedback: "Carry collected. Book rises.",
-      },
-      {
-        label: "Leave it in a zero-yield wallet",
-        outcome: "loss",
-        feedback: "Opportunity cost hits the book.",
-      },
-    ],
-  }),
-  trade({
-    id: "tr-bay-palm",
-    areaId: "coral-ledger-bay",
-    title: "Palm Stand Option",
-    summary: "Covered call practice on a tourist-name stock.",
-    risk: "medium",
-    capitalDeltaGain: 260,
-    capitalDeltaLoss: -140,
-    x: 16,
-    y: 70,
-    prompt: "Write the covered call into earnings?",
-    choices: [
-      {
-        label: "Write the call with a collar",
-        outcome: "gain",
-        feedback: "Premium sticks. Portfolio gains.",
-      },
-      {
-        label: "Naked short the name",
-        outcome: "loss",
-        feedback: "Squeeze. Book value drops.",
-      },
-    ],
-  }),
-  trade({
-    id: "tr-bay-reef",
-    areaId: "coral-ledger-bay",
-    title: "Reef Credit Line",
-    summary: "Small revolving facility — cheap if you repay.",
-    risk: "medium",
-    capitalDeltaGain: 200,
-    capitalDeltaLoss: -220,
-    x: 32,
-    y: 74,
-    prompt: "Draw the reef line for a tactical buy?",
-    choices: [
-      {
-        label: "Draw, buy, repay on schedule",
-        outcome: "gain",
-        feedback: "Spread captured. Book climbs.",
-      },
-      {
-        label: "Roll the debt twice",
-        outcome: "loss",
-        feedback: "Interest compounds against you.",
-      },
-    ],
-  }),
-  trade({
-    id: "tr-bay-tide",
-    areaId: "coral-ledger-bay",
-    title: "Tide Basket ETF",
-    summary: "Diversified bay basket vs single-name gamble.",
-    risk: "low",
-    capitalDeltaGain: 150,
-    capitalDeltaLoss: -80,
-    x: 24,
-    y: 66,
-    prompt: "Buy the tide basket or one volatile name?",
-    choices: [
-      {
-        label: "Buy the basket",
-        outcome: "gain",
-        feedback: "Smooth ride. Book up.",
-      },
-      {
-        label: "All-in on one name",
-        outcome: "loss",
-        feedback: "Gap down. Portfolio shrinks.",
-      },
-    ],
-  }),
-  trade({
-    id: "tr-bay-lagoon",
-    areaId: "coral-ledger-bay",
-    title: "Lagoon FX Remit",
-    summary: "Small FX conversion for an inbound remit.",
-    risk: "medium",
-    capitalDeltaGain: 220,
-    capitalDeltaLoss: -160,
-    x: 36,
-    y: 72,
-    prompt: "Hedge the remit or ride the spot?",
-    choices: [
-      {
-        label: "Forward-hedge half",
-        outcome: "gain",
-        feedback: "FX noise muted. Book rises.",
-      },
-      {
-        label: "Go 100% unhedged for upside",
-        outcome: "loss",
-        feedback: "Spot whipsaws against you.",
-      },
-    ],
-  }),
-];
-
-/** Brick Exchange — analysis trades (6) */
+/** Brick Exchange — analysis trades (6) — single-step stubs */
 const BRICK: TradeArea[] = [
   trade({
     id: "tr-ex-ledger",
@@ -339,7 +172,7 @@ const BRICK: TradeArea[] = [
   }),
 ];
 
-/** Signal Quay — markets trades (5, keep NE uncrowded) */
+/** Signal Quay — markets trades (5) */
 const QUAY: TradeArea[] = [
   trade({
     id: "tr-quay-wire",
@@ -590,7 +423,7 @@ const HIGHLANDS: TradeArea[] = [
 ];
 
 export const TRADE_AREAS: TradeArea[] = [
-  ...CORAL,
+  ...CORAL_TRADES,
   ...BRICK,
   ...QUAY,
   ...HIGHLANDS,
@@ -604,6 +437,103 @@ export function tradesForArea(areaId: AreaId) {
   return TRADE_AREAS.filter((t) => t.areaId === areaId);
 }
 
+export function tradeHasSteps(trade: TradeArea): trade is TradeArea & {
+  steps: TradeStep[];
+} {
+  return Array.isArray(trade.steps) && trade.steps.length > 0;
+}
+
 export function tradeCapitalDelta(trade: TradeArea, outcome: TradeOutcome) {
   return outcome === "gain" ? trade.capitalDeltaGain : trade.capitalDeltaLoss;
+}
+
+export type TradePathResult = {
+  ok: true;
+  outcome: TradeOutcome;
+  capitalDelta: number;
+  goldReward?: number;
+  feedback: string[];
+  stepCount: number;
+  pctTotal: number;
+};
+
+export type TradePathError = {
+  ok: false;
+  error: string;
+};
+
+/**
+ * Resolve a multi-step sword path server-side.
+ * Capital compounds by each choice's capitalPct against startingCapital.
+ */
+export function resolveTradePath(
+  trade: TradeArea,
+  choiceIds: string[],
+  startingCapital: number,
+): TradePathResult | TradePathError {
+  if (!tradeHasSteps(trade)) {
+    return { ok: false, error: "not_multi_step" };
+  }
+  const steps = trade.steps;
+  if (choiceIds.length !== steps.length) {
+    return { ok: false, error: "incomplete_path" };
+  }
+
+  let capital = Math.max(0, startingCapital);
+  const start = capital;
+  const feedback: string[] = [];
+  let gainSteps = 0;
+  let lossSteps = 0;
+
+  for (let i = 0; i < steps.length; i++) {
+    const step = steps[i]!;
+    const choiceId = choiceIds[i]!;
+    const chosen = step.choices.find((c) => (c.id ?? c.label) === choiceId);
+    if (!chosen) return { ok: false, error: "invalid_choice" };
+    const pct = Number(chosen.capitalPct ?? 0);
+    if (!Number.isFinite(pct) || Math.abs(pct) > 0.08) {
+      return { ok: false, error: "invalid_pct" };
+    }
+    capital = Math.max(0, capital * (1 + pct));
+    feedback.push(chosen.feedback);
+    if (chosen.outcome === "gain") gainSteps += 1;
+    else lossSteps += 1;
+  }
+
+  let capitalDelta = Math.round(capital - start);
+  // Clamp extreme swings (±18% of start) as a safety rail.
+  const maxAbs = Math.round(start * 0.18);
+  if (capitalDelta > maxAbs) capitalDelta = maxAbs;
+  if (capitalDelta < -maxAbs) capitalDelta = -maxAbs;
+
+  const outcome: TradeOutcome = capitalDelta >= 0 ? "gain" : "loss";
+  const goldReward =
+    outcome === "gain" && gainSteps >= lossSteps ? trade.goldReward : undefined;
+
+  return {
+    ok: true,
+    outcome,
+    capitalDelta,
+    goldReward,
+    feedback,
+    stepCount: steps.length,
+    pctTotal: start > 0 ? capitalDelta / start : 0,
+  };
+}
+
+export function resolveLegacyTradeChoice(
+  trade: TradeArea,
+  choice: TradeChoice,
+): TradePathResult {
+  const outcome = choice.outcome;
+  const capitalDelta = tradeCapitalDelta(trade, outcome);
+  return {
+    ok: true,
+    outcome,
+    capitalDelta,
+    goldReward: outcome === "gain" ? trade.goldReward : undefined,
+    feedback: [choice.feedback],
+    stepCount: 1,
+    pctTotal: 0,
+  };
 }
