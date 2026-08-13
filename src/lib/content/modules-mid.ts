@@ -283,49 +283,93 @@ export const MODULES_MID: ModuleQuest[] = [
     mapLabel: "Crash Corridor",
     x: 20,
     y: 40,
-    summary: "Liquidity, contagion, and disciplined responses.",
-    concepts: ["drawdowns", "liquidity", "panic", "defensive assets"],
-    outcome: "Log decisions that separate risk management from panic.",
+    summary:
+      "Estimate value with P/E, PEG, P/B, EV/EBITDA, FCF yield, DCF and margin of safety — then set a defensible purchase price.",
+    concepts: [
+      "price vs value",
+      "P/E and PEG",
+      "price-to-book",
+      "EV/EBITDA",
+      "FCF yield",
+      "DCF and terminal value",
+      "margin of safety",
+    ],
+    outcome:
+      "Estimate value and a defensible maximum purchase price before committing the $14,800 book.",
     lesson:
-      "Crashes compress liquidity and correlations. Panic selling crystallizes losses; disciplined rebalancing or thesis checks can be appropriate — if sizing and horizon allow.",
-    scenario: "Weekly losses escalate. Manage exposure without abandoning process.",
+      "Blue City Portal 13: price is what the market asks; value is an estimate from expected economics. Valuation does not produce certainty — it makes the assumptions in the price explicit. P/E = Price / EPS; $48 / $3.20 = 15.0× means investors pay $15 per $1 of current annual EPS, not that they automatically earn 1/15. Derive EPS first when needed: $60m / 20m shares = $3.00, then $42 / $3.00 = 14.0×. PEG = P/E / expected EPS growth as a whole percent (12% entered as 12, not 0.12); 24 / 12 = 2.0 — a screen, not a model. P/B uses BVPS = Equity / Shares; $500m / 100m = $5.00, $7.50 / $5.00 = 1.50× book — more useful for asset-heavy firms. Simplified EV = Market cap + Debt − Cash; $900m + $300m − $100m = $1.10bn; EV/EBITDA = $1.10bn / $125m = 8.8×. EBITDA is not cash and can understate capex. FCF yield = FCF / Market cap; $72m / $900m = 8.0%. DCF: PV = CFₜ / (1+r)ᵗ. $110 next year at 10% is $100 today. Three explicit FCFs at 9% ($10m, $12m, $14m) sum to about $30.085m without a terminal value. Gordon TV: FCF₆ = $20m × 1.03 = $20.6m; TV₅ = $20.6m / (0.09 − 0.03) = $343.33m — r must exceed g. MOS = (Value − Price) / Value; ($60 − $45) / $60 = 25%. Maximum price = Value × (1 − required MOS); $80 × 0.80 = $64. Never compare multiples mechanically across unrelated companies.",
+    scenario:
+      "The company you diagnosed as financially healthy now has a market price. Build P/E, PEG, P/B, EV/EBITDA and FCF yield, then a simple DCF with a terminal-value check. For the $14,800 book: what is a defensible maximum purchase price after a required margin of safety — and which assumptions would make that margin fake?",
     questions: [
       {
         id: "m13-q1",
-        prompt: "In crashes, correlations across risk assets often:",
+        prompt:
+          "Portal 13 starts by separating price from value. Which statement matches the notes?",
         choices: [
-          "Fall to zero",
-          "Rise as many assets sell off together",
-          "Become exactly −1 always",
-          "Stop existing",
+          "Price is what the market currently asks; value is an estimate from expected economics — valuation frames the assumptions in the price, it does not produce certainty",
+          "Price and value are the same number, so multiples are unnecessary",
+          "Value is whatever last traded, and price is an accounting residual",
+          "A 15× P/E guarantees you will earn 1/15 as a cash return",
         ],
-        correctIndex: 1,
-        explanation: "Diversification can fail temporarily when everyone needs cash.",
-        chartHint: "stock",
+        correctIndex: 0,
+        explanation:
+          "Financial health asked whether the company is sound. Valuation asks what price is justified. The output is only as good as the assumptions.",
       },
       {
         id: "m13-q2",
-        prompt: "Liquidity risk is the danger that:",
+        prompt:
+          "Share price $48 and EPS $3.20. Separately, P/E is 24× and expected EPS growth is 12%. What are P/E and PEG under the notes’ convention?",
         choices: [
-          "You cannot exit without large price impact when you need to",
-          "Dividends are too high",
-          "ETFs never trade",
-          "Cash earns interest",
+          "P/E 15.0× (pay $15 per $1 of current EPS) and PEG 2.0 — enter 12, not 0.12; PEG is a shortcut, not a valuation model",
+          "P/E 15.0× and PEG 2.0 using 0.12 in the denominator (24 / 0.12)",
+          "P/E 3.20× and PEG 12, so growth is already a complete valuation",
+          "P/E 15.0× means you automatically earn 6.67% with no further work",
         ],
         correctIndex: 0,
-        explanation: "Stressed markets widen spreads and deepen impact costs.",
+        explanation:
+          "$48 / $3.20 = 15.0×. PEG = 24 / 12 = 2.0. Growth forecasts can be wrong and PEG ignores balance-sheet risk and cash-flow quality.",
       },
       {
         id: "m13-q3",
-        prompt: "A pre-committed risk rule helps because:",
+        prompt:
+          "Equity $500m, 100m shares, price $7.50. Market cap $900m, debt $300m, cash $100m, EBITDA $125m. FCF $72m. Which reading is correct?",
         choices: [
-          "It removes all uncertainty",
-          "It reduces improvisation under fear",
-          "It guarantees market timing",
-          "It bans all equities",
+          "P/B 1.50×; EV $1.10bn and EV/EBITDA 8.8×; FCF yield 8.0% — EBITDA is not cash, and yield still needs sustainability",
+          "P/B 1.50× equals EV/EBITDA, so financing structure can be ignored",
+          "EV is $900m because cash and debt cancel, and FCF yield is 72%",
+          "P/B 1.50× is automatic mispricing for an intangible-heavy business",
         ],
-        correctIndex: 1,
-        explanation: "Rules beat adrenaline when drawdowns hit.",
+        correctIndex: 0,
+        explanation:
+          "BVPS = $5.00; $7.50 / $5.00 = 1.50×. EV = $900m + $300m − $100m = $1.10bn; $1.10bn / $125m = 8.8×. $72m / $900m = 8.0%. Investigate a P/B premium; do not assume it is a bargain.",
+      },
+      {
+        id: "m13-q4",
+        prompt:
+          "A $110 cash flow next year at 10% required return. Year-5 FCF $20m, g = 3%, r = 9%. What do the DCF notes show?",
+        choices: [
+          "PV of $110 is $100 today; FCF₆ = $20.6m and TV₅ = $343.33m — r must exceed g, and terminal value can dominate the DCF",
+          "PV of $110 is $110 because next year is not discounted; TV = $20m / 0.09",
+          "Grow Year-5 FCF is optional; TV₅ = $20m / (0.09 − 0.03) = $333.33m is the notes’ answer",
+          "If r equals g the Gordon formula is safer because the denominator is zero",
+        ],
+        correctIndex: 0,
+        explanation:
+          "$110 / 1.10 = $100. FCF₆ = $20m × 1.03 = $20.6m; TV₅ = $20.6m / 0.06 = $343.33m. Forgetting the extra growth year understates terminal value. Small changes in r or g move estimated value a lot.",
+      },
+      {
+        id: "m13-q5",
+        prompt:
+          "Estimated value $60 vs price $45, and separately value $80 with a required 20% MOS. For the $14,800 book, what is the Portal 13 application?",
+        choices: [
+          "MOS is 25%; maximum purchase price is $64 — estimate value and a defensible buy price; a large MOS is worthless if the value estimate is unrealistic, and multiples are not compared mechanically across unrelated firms",
+          "MOS is 25% so any price below $60 is a buy with the full $14,800",
+          "Maximum price is $80 because margin of safety is optional once DCF is done",
+          "Compare this P/E to an unrelated company and buy the lower multiple automatically",
+        ],
+        correctIndex: 0,
+        explanation:
+          "($60 − $45) / $60 = 25%. $80 × 0.80 = $64. The lab task is a defensible purchase price. Growth, margins, cyclicality, accounting, leverage, capital intensity and risk can justify different multiples.",
       },
     ],
   },
