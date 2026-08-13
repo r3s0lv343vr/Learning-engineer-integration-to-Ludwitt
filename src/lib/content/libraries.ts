@@ -162,10 +162,24 @@ export const CITY_LIBRARIES: CityLibrary[] = [
   {
     areaId: "brick-exchange",
     name: "Brick Exchange Library",
-    tagline: "Analysis stacks — statements, ratios, and valuation briefs.",
+    tagline:
+      "Blue City analysis — study notes and the Analysis & Asset Selection teaching deck for portals 10–18.",
     x: 88,
     y: 82,
     classes: [
+      {
+        id: "ex-class-blue",
+        title: "Blue City Analysis & Asset Selection Walkthrough",
+        duration: "77 slides",
+        summary:
+          "Analysis & Asset Selection teaching deck walkthrough aligned to Blue City portals 10–18.",
+        outline: [
+          "Companies & statements",
+          "Ratios & interpretation",
+          "Comps, DCF & selection",
+          "Practice on the map portals",
+        ],
+      },
       {
         id: "ex-class-1",
         title: "Statements Night School",
@@ -182,6 +196,24 @@ export const CITY_LIBRARIES: CityLibrary[] = [
       },
     ],
     resources: [
+      {
+        id: "ex-blue-notes",
+        title: "Blue City Analysis & Asset Selection Notes",
+        kind: "notes",
+        description:
+          "Expanded study notes for Brick Exchange (Blue City) portals 10–18. Downloadable PDF.",
+        file: "blue-city-analysis-asset-selection-notes.pdf",
+        downloadName: "blue-city-analysis-and-asset-selection-notes.pdf",
+      },
+      {
+        id: "ex-blue-teaching-deck",
+        title: "Blue City Analysis & Asset Selection Teaching Deck",
+        kind: "powerpoint",
+        description:
+          "77-slide teaching deck for Portals 10–18 (PDF). Powers the Brick Exchange Library Classroom board.",
+        file: "blue-city-analysis-asset-selection-teaching-deck.pdf",
+        downloadName: "blue-city-analysis-asset-selection-teaching-deck.pdf",
+      },
       {
         id: "ex-pdf",
         title: "Exchange Research Brief",
