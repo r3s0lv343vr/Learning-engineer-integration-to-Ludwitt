@@ -105,51 +105,92 @@ export const MODULES_MID: ModuleQuest[] = [
     mapLabel: "Macro Desk",
     x: 44,
     y: 22,
-    summary: "Inflation, rates, and growth reshape holdings.",
-    concepts: ["GDP", "inflation", "rates", "yield curve", "FX"],
-    outcome: "Link macro shocks to assets you already hold.",
+    summary:
+      "Read the income statement, balance sheet and cash-flow statement together — working capital, free cash flow and net debt — to see how money moves through a company.",
+    concepts: [
+      "three financial statements",
+      "income statement layers",
+      "accounting equation",
+      "net working capital",
+      "free cash flow",
+      "net debt",
+    ],
+    outcome:
+      "Trace how money moves through a company and refuse to treat accounting profit as cash before the $14,800 book goes further.",
     lesson:
-      "Growth, inflation, and policy set the weather for assets. Rising rates pressure long-duration valuations; inflation hurts cash and some bonds; FX moves hit foreign earnings and forex trades.",
-    scenario: "Inflation rises, rates jump, growth slows. Re-underwrite your book.",
+      "Blue City Portal 11 translates the business model into the three statements. The income statement asks whether the company earned an accounting profit over a period (revenue, COGS, operating expenses, interest, tax, net income). The balance sheet asks what it owns and owes at a point in time (assets, liabilities, equity). The cash-flow statement asks where cash came from and went (operating, investing, financing). Build profit in layers: Gross profit = Revenue − COGS; Operating income = Gross profit − Operating expenses; then interest and tax to net income. Example: revenue $12.0m, COGS $7.2m, opex $2.4m, interest $0.3m, tax $0.42m → gross $4.8m, operating $2.4m, pre-tax $2.1m, net income $1.68m — profitable on paper, cash still unproven. Assets = Liabilities + Equity; $18m assets and $11m liabilities leave $7m book equity, which is not automatically market value. Net working capital = Current assets − Current liabilities; $5.4m − $3.9m = $1.5m — composition matters because inventory and receivables are not cash. Net income is not cash: accruals record activity when earned or incurred. Simplified FCF = CFO − Capex; $3.6m − $1.4m = $2.2m. If net income is $2.0m but receivables rise $0.9m and inventory $0.4m, approximate cash after those uses is $0.7m. Net debt = Debt − Cash; $9.0m − $2.5m = $6.5m, remembering not all cash may be available to repay. Link the statements: when revenue grows, ask receivables and inventory; when debt rises, ask where financing cash went; when capex rises, ask capacity versus maintenance.",
+    scenario:
+      "The name you shortlisted in Portal 10 now files statements. Build the income-statement layers, close the accounting equation, measure working capital and simplified FCF, and check whether profit converted to cash. For the $14,800 book: does money actually move through this company the way the earnings line suggests?",
     questions: [
       {
         id: "m11-q1",
-        prompt: "All else equal, higher discount rates tend to hurt most:",
+        prompt:
+          "The three statements answer different questions. Which pairing matches the notes?",
         choices: [
-          "Short-duration cash-like assets the most",
-          "Long-duration growth equities the most",
-          "Only gold forever",
-          "Nothing",
+          "Income statement: profit over a period; balance sheet: own and owe at a point in time; cash-flow statement: where cash came from and went",
+          "Income statement: assets today; balance sheet: cash only; cash-flow statement: next year’s share price",
+          "All three statements measure the same thing — net income — on the same date",
+          "The cash-flow statement replaces the need to read profit or the balance sheet",
         ],
-        correctIndex: 1,
-        explanation: "Distant cash flows are more sensitive to rate changes.",
-        chartHint: "stock",
+        correctIndex: 0,
+        explanation:
+          "Think of three views of one company: period profit, point-in-time resources and obligations, and actual cash movement (operating, investing, financing).",
       },
       {
         id: "m11-q2",
-        prompt: "A strengthening domestic currency can:",
+        prompt:
+          "Revenue $12.0m, COGS $7.2m, operating expenses $2.4m, interest $0.3m, tax $0.42m. What is net income, and what does it prove?",
         choices: [
-          "Boost translated foreign earnings for domestic multinationals",
-          "Pressure translated foreign earnings for domestic multinationals",
-          "Delete FX risk entirely",
-          "Set stock splits",
+          "$1.68m net income — accounting profit after the layers, not proof of cash",
+          "$4.8m net income — because gross profit is the bottom line",
+          "$2.4m net income — operating income already includes interest and tax",
+          "$12.0m net income — revenue is what owners keep",
         ],
-        correctIndex: 1,
-        explanation: "Stronger home currency reduces foreign earnings when translated home.",
-        chartHint: "forex",
+        correctIndex: 0,
+        explanation:
+          "Gross $4.8m − opex $2.4m = $2.4m operating; − interest $0.3m = $2.1m pre-tax; − tax $0.42m = $1.68m. The notes: profitable in accounting terms, but cash flow still needs examination.",
       },
       {
         id: "m11-q3",
-        prompt: "Stagflation-like conditions (high inflation, weak growth) often challenge:",
+        prompt:
+          "Assets are $18m and liabilities are $11m. Current assets are $5.4m and current liabilities are $3.9m. Which reading is correct?",
         choices: [
-          "Only crypto",
-          "Both traditional bonds and cyclical equities in different ways",
-          "Only cash",
-          "Nothing ever",
+          "Book equity $7m (not automatically market value) and NWC $1.5m (composition still matters)",
+          "Book equity $29m and NWC $9.3m — add the lines, then treat both as cash",
+          "Book equity $7m equals the market value of the shares, so NWC can be ignored",
+          "NWC $1.5m means every current asset is immediately spendable cash",
         ],
-        correctIndex: 1,
-        explanation: "Inflation hurts bonds; weak growth hurts cyclicals — a hard mix.",
-        newsHint: true,
+        correctIndex: 0,
+        explanation:
+          "Equity = Assets − Liabilities = $18m − $11m = $7m, an accounting residual. NWC = $5.4m − $3.9m = $1.5m. Cash is usable now; inventory and receivables may not be.",
+      },
+      {
+        id: "m11-q4",
+        prompt:
+          "CFO is $3.6m and capex is $1.4m. Separately, net income is $2.0m while receivables rise $0.9m and inventory $0.4m. What do the notes show?",
+        choices: [
+          "Simplified FCF $2.2m, and approximate cash after those working-capital uses $0.7m — strong profit can coexist with weak cash conversion",
+          "FCF $5.0m and cash $2.0m — add capex and ignore working capital",
+          "FCF equals net income $2.0m, so receivables never affect cash",
+          "Both figures are $3.6m because CFO is the only number that matters",
+        ],
+        correctIndex: 0,
+        explanation:
+          "FCF = CFO − Capex = $3.6m − $1.4m = $2.2m under the simplified definition. $2.0m − $0.9m − $0.4m = $0.7m. Accrual profit is not the same as cash.",
+      },
+      {
+        id: "m11-q5",
+        prompt:
+          "Your $14,800 Portfolio Lab application for Portal 11 is to assess how money moves through the company. What is the disciplined next step?",
+        choices: [
+          "Link the statements — if revenue grows, check receivables and inventory; if debt rises, ask where financing cash went; do not treat net income as deployable cash",
+          "Deploy the full $14,800 because $1.68m of net income already proves cash generation",
+          "Ignore the cash-flow statement once the income statement shows a profit",
+          "Treat book equity of $7m as the price you should pay for the shares",
+        ],
+        correctIndex: 0,
+        explanation:
+          "The notes’ statement-linking habit keeps one economic story across profit, resources and cash. Companies pay obligations with cash, not accounting earnings. A calculated profit is not yet an investment decision.",
       },
     ],
   },
