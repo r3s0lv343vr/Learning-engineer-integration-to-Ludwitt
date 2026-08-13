@@ -8,6 +8,17 @@ disable-model-invocation: true
 
 Repeatable factory for one sword at a time. Preserve sword shell + map placement; author scenario chain + rewards parameters only.
 
+## Source of truth (mandatory)
+
+Author from this stack, in order:
+
+1. **User-fed notes for this run** — pasted text, uploaded PDF/PPT, or paths the user provides. Primary.
+2. **That city’s curriculum** — classroom + study notes (Blue City = Analysis & Asset Selection).
+3. **Coral sword code** — structure/reference only (`steps`, `data`, `capitalPct`, rewards), **not** Coral story/content.
+4. **Existing sword stub** — keep `id`, `x`, `y`; replace single-step prompt/choices with a notes-based chain.
+
+If notes are missing, ask for them (or explicit permission to use repo classroom/notes only) before writing.
+
 ## Required inputs
 
 Before editing, confirm (ask if missing):
@@ -15,8 +26,8 @@ Before editing, confirm (ask if missing):
 1. `areaId` — city owning the sword
 2. `tradeId` — e.g. `tr-ex-ledger`
 3. Step count — **3, 4, or 5** (default **4**)
-4. Theme brief — what investment skill the chain teaches
-5. Source material — optional notes/PPT/calc pack
+4. **Notes package** — required unless user says “use repo classroom/notes only”
+5. Curriculum slice this sword practices (e.g. “acid-test + liquidity decision”, “EV/EBITDA comps”)
 6. Branch — prefer existing working branch
 
 Also load shared constraints: `.cursor/skills/questfolio-shared/SKILL.md`.
@@ -25,9 +36,10 @@ Also load shared constraints: `.cursor/skills/questfolio-shared/SKILL.md`.
 
 - **Do not** change sword map `x` / `y` or sword icon art.
 - **Do not** redesign `TradeClient` shell unless user explicitly asks.
-- Coral Ledger Bay already has multi-step chains in `trades-coral.ts` — treat as the **reference implementation**, not content to copy into other cities.
+- Coral Ledger Bay chains in `trades-coral.ts` are the **mechanical template only** — never copy Coral narratives into other cities.
 - Other cities currently ship single-step stubs in `src/lib/content/trades.ts` — upgrade by adding `steps` in the same shape as Coral.
 - Keep trade `id` and coordinates stable.
+- Every step’s `data` and choices must come from the fed notes/curriculum math and decision logic.
 
 ## File map
 
@@ -88,30 +100,38 @@ From `resolveTradePath`:
 
 Legacy single-step fallback still uses `capitalDeltaGain` / `capitalDeltaLoss` + `choices` when `steps` absent — when upgrading, set `steps` and leave fallback deltas sensible.
 
+## Blue City curriculum anchors (Brick Exchange)
+
+Default curriculum: **Blue City Analysis & Asset Selection**
+
+- `classroom-blue.ts`
+- `public/library/brick-exchange/blue-city-analysis-asset-selection-notes.pdf`
+- `public/library/brick-exchange/blue-city-analysis-asset-selection-teaching-deck.pdf`
+
+Sword chains should practice analysis decisions from those notes (statements, ratios, comps, DCF/selection), using figures the user fed when provided.
+
 ## Authorship recipe (follow in order)
 
-1. **Read** the existing sword stub and a Coral reference sword (`tr-bay-seed` is a good template).
-2. **Keep** `id`, `x`, `y` frozen.
-3. Design a **3–5 part investment chain** for this city’s skill, e.g. Brick:
-   - Part 1: evidence / statements
-   - Part 2: ratio or multiple calc
-   - Part 3: valuation / peer decision
-   - Part 4: size / risk
-   - Part 5 (optional): review / falsifier / IC language
-4. Each part must include usable `data` (not flavor-only): at least one of `table`, `calc`, `metrics`, `news`.
-5. Wire `capitalPct` so disciplined paths trend modestly positive and reckless paths negative; avoid every path being gain.
-6. Set `goldReward: 1` (or 2 only if user asks for a boss sword).
-7. Ensure `tradeHasSteps` path works: `choices: []` + populated `steps`.
-8. Typecheck; smoke `/trade/{id}` via demo launch when possible.
-9. Commit: `feat(sword): multi-step chain for tr-ex-ledger`.
+1. **Ingest** user-fed notes + city curriculum; list the calc/decision beats for this sword.
+2. **Read** existing stub + one Coral sword for **structure only** (`tr-bay-seed`).
+3. **Keep** `id`, `x`, `y` frozen.
+4. Build a **3–5 part chain** from the notes slice, e.g.:
+   - Part 1: evidence / statements from notes
+   - Part 2: ratio or multiple calc from notes
+   - Part 3: valuation / peer decision from notes
+   - Part 4: size / risk / mandate
+   - Part 5 (optional): falsifier / review language
+5. Each part needs usable `data` drawn from notes (table/calc/metrics/news) — not flavor-only.
+6. Wire `capitalPct` so disciplined paths trend modestly positive and reckless paths negative.
+7. Set `goldReward: 1` (or 2 if user asks).
+8. `choices: []` + populated `steps` so `tradeHasSteps` works.
+9. Typecheck; smoke `/trade/{id}`; commit `feat(sword): multi-step tr-ex-ledger from Blue City notes`.
 
 ## Quality bar
 
-- Feels like an investment decision chain, not a trivia quiz.
-- Numbers in `data` are used by at least one correct choice.
-- Map coordinates/icons untouched.
-- No Coral story copy-paste into Brick/Quay/Highlands.
-- Reward path uses existing resolver — no custom reward hacks in the client.
+- Traceable to fed notes + city curriculum.
+- Investment decision chain; numbers in `data` used by correct choices.
+- Map coords/icons untouched; no Coral story copy; existing reward resolver only.
 
 ## Done definition
 
