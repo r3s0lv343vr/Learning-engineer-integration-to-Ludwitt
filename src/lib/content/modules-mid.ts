@@ -201,51 +201,78 @@ export const MODULES_MID: ModuleQuest[] = [
     mapLabel: "News Wire",
     x: 30,
     y: 30,
-    summary: "Price moves vs expectations — not headlines alone.",
-    concepts: ["earnings", "guidance", "surprises", "material news"],
-    outcome: "Explain why good growth can still reprice a stock lower.",
+    summary:
+      "Use margins, liquidity, leverage, ROE, ROIC and free-cash-flow quality to diagnose financial strengths, weaknesses and red flags.",
+    concepts: [
+      "profitability margins",
+      "current and quick ratios",
+      "debt-to-equity and interest coverage",
+      "ROE and ROIC",
+      "FCF conversion",
+      "red-flag checklist",
+    ],
+    outcome:
+      "Identify financial strengths, weaknesses and red flags on the company you are considering for the $14,800 book.",
     lesson:
-      "Markets price expectations. Beating weak expectations can rally a name; beating lofty expectations by less than hoped can drop it. Guidance and quality of growth matter.",
+      "Blue City Portal 12 turns the statements into ratios. Margins convert a profit layer into a percentage of revenue so different-sized firms can be compared: Gross margin = Gross profit / Revenue; Operating margin = Operating income / Revenue; Net margin = Net income / Revenue. On $20m revenue, $8m gross, $3m operating and $2m net income the layers are 40%, 15% and 10% — a 40% gross margin means $0.40 of each $1.00 of sales remains after direct costs. If revenue grows while operating margin falls, ask whether costs are outrunning sales or the firm is investing. Liquidity is a different question: a profitable company can still miss near-term payments. Current ratio = Current assets / Current liabilities; $6.0m / $4.0m = 1.50× — not a universal pass/fail. Quick ratio drops inventory: ($1.0m + $0.4m + $1.8m) / $4.0m = 0.80×. Leverage: D/E = Debt / Equity; $12m / $8m = 1.50× (debt is 150% of book equity). Interest coverage = EBIT / Interest; $4.5m / $1.0m = 4.5× — a falling trend often matters more than one print. ROE = Net income / Average equity; average of $10m and $14m is $12m, so $2.4m / $12m = 20% — high ROE can be leverage. ROIC uses NOPAT ≈ EBIT × (1 − tax): $5m × 0.75 = $3.75m; $3.75m / $20m = 18.75%. FCF conversion = FCF / Net income; $1.5m / $2.0m = 75%. Red flags include receivables racing ahead of revenue, profit up while operating cash falls, debt up as coverage weakens, and ROE high mainly because equity was shrunk.",
     scenario:
-      "A company grows strongly yet the shares fall. Investigate expectations before changing thesis.",
+      "The statements from Portal 11 are now ratio-ready. Compute the margin stack, current vs quick liquidity, D/E and coverage, then ROE/ROIC and FCF conversion. For the $14,800 book: where is this company strong, where is it weak, and which red flags would stop you treating one attractive ratio as a buy?",
     questions: [
       {
         id: "m12-q1",
-        prompt: "An earnings beat with a falling stock often means:",
+        prompt:
+          "A 40% gross margin means which of the following, and why are net and operating margins read together?",
         choices: [
-          "Accounting is illegal always",
-          "Results failed a higher bar priced into the shares (or guidance disappointed)",
-          "Markets never look forward",
-          "Volume was zero",
+          "$0.40 of each $1.00 of revenue remains after direct costs; net margin is also shaped by interest and tax, so it is not a standalone operating-quality score",
+          "The company keeps $0.40 of cash for every $1.00 of revenue, so liquidity is proven",
+          "Owners automatically earn 40% on the share price",
+          "Operating margin must equal 40% because all cost layers are the same",
         ],
-        correctIndex: 1,
-        explanation: "Expectation gaps dominate short-term earnings reactions.",
-        newsHint: true,
-        chartHint: "stock",
+        correctIndex: 0,
+        explanation:
+          "Gross margin is the first layer after COGS. Net margin comes after operating costs, financing and tax, so the notes compare it with operating margin rather than using it alone.",
       },
       {
         id: "m12-q2",
-        prompt: "Material news is information that:",
+        prompt:
+          "Revenue $20m, GP $8m, EBIT $3m, NI $2m. Current assets $6.0m and current liabilities $4.0m; quick assets $3.2m. Which set is correct?",
         choices: [
-          "Is only gossip",
-          "Could reasonably influence an investor's decisions",
-          "Never affects price",
-          "Only appears on weekends",
+          "Margins 40% / 15% / 10%; current ratio 1.50×; quick ratio 0.80× — current is not a universal pass/fail, and dropping inventory shows tighter liquidity",
+          "Margins 40% / 15% / 10% and both liquidity ratios 1.50× because inventory always counts as cash",
+          "Margins 8% / 3% / 2% and current ratio 0.67×",
+          "Only the current ratio matters; margins cannot be compared across companies",
         ],
-        correctIndex: 1,
-        explanation: "Materiality is about decision-relevance.",
+        correctIndex: 0,
+        explanation:
+          "$8m/$20m, $3m/$20m, $2m/$20m. Current = $6.0m/$4.0m = 1.50×. Quick = $3.2m/$4.0m = 0.80×. Industry and asset quality still matter.",
       },
       {
         id: "m12-q3",
-        prompt: "Before rewriting a thesis on one print, check:",
+        prompt:
+          "Debt $12m, equity $8m; EBIT $4.5m, interest $1.0m. Net income $2.4m on average equity $12m. EBIT $5m at a 25% tax rate on $20m invested capital. What do the notes show?",
         choices: [
-          "Only the emoji reactions",
-          "Whether the long-term drivers actually changed",
-          "Only the opening second",
-          "Nothing",
+          "D/E 1.50×, coverage 4.5×, ROE 20% (can be leverage-amplified), ROIC 18.75% after NOPAT $3.75m",
+          "D/E 0.67×, coverage 1.0×, ROE 20% that cannot be affected by debt, ROIC 25%",
+          "D/E 1.50× equals interest coverage, so ROE and ROIC can be skipped",
+          "ROE 20% is the market return you will earn on the $14,800",
         ],
-        correctIndex: 1,
-        explanation: "Separate noise from thesis-breaking facts.",
+        correctIndex: 0,
+        explanation:
+          "$12m/$8m = 1.50×; $4.5m/$1.0m = 4.5×. ROE = $2.4m/$12m = 20%. NOPAT = $5m × 0.75 = $3.75m; ROIC = $3.75m/$20m = 18.75%. Compare ROIC with the cost of capital; decompose high ROE.",
+      },
+      {
+        id: "m12-q4",
+        prompt:
+          "FCF is $1.5m and net income is $2.0m. For the $14,800 book, what is the Portal 12 application?",
+        choices: [
+          "FCF conversion is 75% — diagnose strengths, weaknesses and red flags (receivables racing sales, profit up while operating cash falls, coverage weakening); one ratio is not a buy",
+          "75% conversion proves earnings quality forever, so deploy the full $14,800",
+          "Ignore conversion because any positive net income is deployable cash",
+          "A single 1.50× current ratio is a universal pass, so skip the red-flag list",
+        ],
+        correctIndex: 0,
+        explanation:
+          "$1.5m/$2.0m = 75% FCF conversion. One weak year can be timing; repeated weakness deserves investigation. The lab task is to identify strengths, weaknesses and red flags — not to treat a calculated ratio as an investment decision.",
       },
     ],
   },
