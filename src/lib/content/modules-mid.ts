@@ -667,48 +667,92 @@ export const MODULES_MID: ModuleQuest[] = [
     mapLabel: "Bias Mirror",
     x: 58,
     y: 12,
-    summary: "Your history becomes the curriculum.",
-    concepts: ["confirmation bias", "disposition effect", "overconfidence"],
-    outcome: "Correct recurring behavioural patterns with targeted scenarios.",
+    summary:
+      "Read currency pairs, pips, spreads and leverage — then research and size a simulated FX position instead of treating the quote as a stock ticker.",
+    concepts: [
+      "base vs quote currency",
+      "percentage FX move",
+      "pips and bid-ask spread",
+      "notional vs equity leverage",
+      "macro FX drivers",
+      "hedging vs speculation",
+    ],
+    outcome:
+      "Research and size a simulated currency position that the $14,800 book can survive if the pair moves against you.",
     lesson:
-      "Journals expose patterns: selling winners too early, clinging to losers, seeking confirming news, overtrading after wins. Adaptation means changing behaviour, not just reading about biases.",
-    scenario: "Review your Portfolio Lab history; face a personalised corrective scenario.",
+      "Blue City Portal 17: a quote compares two currencies. EUR/USD = 1.1000 means one euro costs 1.10 dollars — EUR is base, USD is quote. Quote-currency value = base amount × rate: €8,000 × 1.1000 = $8,800. The other way, divide: $10,000 / 1.2500 = €8,000. Percentage change = (new − old) / old; 1.1000 to 1.1550 is 5.0% — the euro strengthened vs the dollar, not “both currencies rose.” For many four-decimal majors, one pip is 0.0001. GBP/USD 1.2700 to 1.2765 is 65 pips. Spread = ask − bid; 1.1051 − 1.1048 = 0.0003 = 3 pips of immediate friction. Notional = equity × leverage; $1,000 at 5× is $5,000 notional. Approximate P/L = notional × % move; a 2% adverse move is −$100, or 10% of the $1,000 equity. Drivers: rate differentials, central-bank policy, inflation, growth, external balances, risk sentiment and geopolitics. A hedge reduces a defined currency risk on another asset; it has costs and can remove favorable FX gains. It is not a new speculative bet.",
+    scenario:
+      "You are sizing a simulated EUR or GBP pair for the $14,800 book. Convert both ways, measure a 5% move and a 65-pip print, pay the 3-pip spread, then apply 5× to a $1,000 sleeve. If the pair drops 2%, what happens to equity — and is this a hedge or a speculation?",
     questions: [
       {
         id: "m17-q1",
-        prompt: "The disposition effect is the tendency to:",
+        prompt:
+          "EUR/USD = 1.1000. Convert €8,000 to dollars. Separately, EUR/USD = 1.2500 and you convert $10,000 to euros. Which pairing matches the notes?",
         choices: [
-          "Sell winners too early and hold losers too long",
-          "Only buy bonds",
-          "Never trade",
-          "Ignore taxes only",
+          "$8,800 and €8,000 — multiply base × rate to get quote currency; divide quote amount by the rate to get base",
+          "$8,800 both ways — always multiply, never divide",
+          "€8,800 and $8,000 — EUR is the quote currency in EUR/USD",
+          "$8,000 and €10,000 — the rate is ignored once the pair is named",
         ],
         correctIndex: 0,
-        explanation: "It is a classic behavioural leak around realizing gains/losses.",
+        explanation:
+          "EUR is base and USD is quote. €8,000 × 1.1000 = $8,800. $10,000 / 1.2500 = €8,000. Unit analysis (USD ÷ USD/EUR) prevents multiplying in both directions.",
       },
       {
         id: "m17-q2",
-        prompt: "Confirmation bias shows up when you:",
+        prompt:
+          "EUR/USD rises from 1.1000 to 1.1550. GBP/USD moves from 1.2700 to 1.2765 with a 0.0001 pip. What do the notes show?",
         choices: [
-          "Seek only evidence that supports your existing view",
-          "Actively seek disconfirming data",
-          "Use checklists",
-          "Size small",
+          "A 5.0% rise (euro stronger vs the dollar) and 65 pips — the old rate is the base, and pip size must match the pair’s convention",
+          "A 5.0% rise meaning both EUR and USD strengthened, and 65% not 65 pips",
+          "A 15.5% rise using the new rate as the denominator, and 0.65 pips",
+          "Pips replace percentage change, so the 5.0% figure can be ignored",
         ],
         correctIndex: 0,
-        explanation: "You filter the world to protect the thesis.",
+        explanation:
+          "(1.1550 − 1.1000) / 1.1000 = 5.0%. (1.2765 − 1.2700) / 0.0001 = 65 pips. JPY pairs often use a different pip convention.",
       },
       {
         id: "m17-q3",
-        prompt: "A useful journal entry includes:",
+        prompt:
+          "EUR/USD bid 1.1048 and ask 1.1051. What is the spread, and what does it mean?",
         choices: [
-          "Only the P&L number",
-          "Thesis, evidence, emotions, and what would change your mind",
-          "Only screenshots of green candles",
-          "Nothing dated",
+          "0.0003, or 3 pips — the gap between the immediate buy and sell quotes; a wider spread makes a round trip more expensive",
+          "3.00, because you subtract the last two digits only",
+          "Zero, because majors have no trading friction",
+          "65 pips, reused from the GBP example",
         ],
-        correctIndex: 1,
-        explanation: "Process detail enables later bias detection.",
+        correctIndex: 0,
+        explanation:
+          "1.1051 − 1.1048 = 0.0003; 0.0003 / 0.0001 = 3 pips. The spread is an immediate trading cost, not a forecast.",
+      },
+      {
+        id: "m17-q4",
+        prompt:
+          "You allocate $1,000 of equity at 5× leverage. The currency then moves 2% against you. What do the notes show?",
+        choices: [
+          "$5,000 notional and −$100 P/L — a 10% loss on the $1,000 equity before costs, because P/L is driven by notional, not the deposit alone",
+          "−$20 P/L — apply 2% only to the $1,000 equity",
+          "$5,000 notional and −$5,000, because leverage implies total loss on any move",
+          "No loss until you convert back to euros",
+        ],
+        correctIndex: 0,
+        explanation:
+          "$1,000 × 5 = $5,000 notional. $5,000 × (−0.02) = −$100, which is 10% of the equity sleeve. Leverage magnifies both gains and losses.",
+      },
+      {
+        id: "m17-q5",
+        prompt:
+          "Your $14,800 Portfolio Lab application for Portal 17 is to research and size a simulated currency position. What is the disciplined next step?",
+        choices: [
+          "State the pair, drivers (rates, policy, inflation, growth, flows, risk), hedge vs speculation, spread cost and a notional the $14,800 book can survive — do not treat a 5× sleeve as a free 2% bet",
+          "Put the full $14,800 on 5× EUR/USD because the euro rose 5% in the example",
+          "Skip pips and spreads; only the headline percentage matters",
+          "Call any FX trade a hedge even if you have no foreign asset to protect",
+        ],
+        correctIndex: 0,
+        explanation:
+          "A hedge reduces a defined currency risk and can also remove favorable FX gains. The lab task is research-and-size, not maximum leverage. A calculated pip or P/L is not yet an investment decision.",
       },
     ],
   },
