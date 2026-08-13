@@ -380,49 +380,91 @@ export const MODULES_MID: ModuleQuest[] = [
     mapLabel: "Crisis Archive",
     x: 12,
     y: 24,
-    summary: "Act first — learn the analogue after.",
-    concepts: ["1987", "dot-com", "2008", "COVID shock", "2022 rates"],
-    outcome: "Compare your live decisions to historical analogues.",
+    summary:
+      "Use growth, value, quality, dividend, momentum, contrarian and GARP lenses — then size a position instead of treating every idea equally.",
+    concepts: [
+      "selection styles as lenses",
+      "dividend yield and payout",
+      "position sizing",
+      "weight after price movement",
+      "stock-selection worksheet",
+    ],
+    outcome:
+      "Select a stock and set an appropriate position size in the $14,800 book using a written worksheet, not conviction alone.",
     lesson:
-      "Regimes rhyme: leverage unwind, valuation resets, policy shocks, and liquidity freezes. Studying analogues builds pattern recognition without assuming perfect repetition.",
-    scenario: "Enter a hidden historical-style tape; decide; then reveal the analogue.",
+      "Blue City Portal 14: selection styles are lenses, not guarantees. Growth asks whether earnings/cash can compound (trap: paying too much). Value asks whether price is low vs normalized economics (trap: value trap). Quality asks whether the economics are durable (trap: overpaying). Dividend asks whether income is durable and covered (trap: yield from a collapsing price). Momentum asks whether trends persist (trap: reversal/crowd). Contrarian asks whether consensus is extreme (trap: early or wrong). GARP asks whether growth is available at a reasonable price (trap: forecast optimism). Dividend yield = Annual DPS / Price; $1.80 / $45 = 4.0% — a falling price can mechanically raise yield, so check sustainability. Payout = Dividends / Net income; $24m / $60m = 40%, so 60% of accounting profit is retained. Then size: Position value = Portfolio × target weight (8% as 0.08). On $14,800 that is $1,184; shares = $1,184 / $37 = 32. If the position rises to $1,360 while the book is $15,200, weight = 8.95% — a winner can become a larger risk without buying more. The worksheet: style, business model, financial health, at least two valuation methods, catalyst, what would falsify the thesis, maximum weight/dollars, and an exit/review rule.",
+    scenario:
+      "Valuation from Portal 13 produced a defensible price. Now choose a lens, test dividend coverage if income is part of the thesis, and convert an 8% rule into shares in the $14,800 book. After a gain, recompute weight. What would falsify the thesis — and what is the maximum position before you buy?",
     questions: [
       {
         id: "m14-q1",
-        prompt: "The 2008 crisis centered heavily on:",
+        prompt:
+          "Stock-selection styles are lenses, not guarantees. Which pairing matches the notes?",
         choices: [
-          "Only a single tech IPO",
-          "Leverage and fragile funding against housing/credit assets",
-          "A gold standard return",
-          "FX pip spreads alone",
+          "Value’s trap is a value trap; dividend’s trap is a yield caused by a collapsing price; quality’s trap is overpaying for durability",
+          "Growth has no trap if revenue is rising, and momentum never reverses",
+          "GARP removes the need for a growth forecast, and contrarian is always right if you wait",
+          "Every style answers the same question, so the worksheet can skip the thesis type",
         ],
-        correctIndex: 1,
-        explanation: "Funding and credit fragility amplified the housing shock.",
+        correctIndex: 0,
+        explanation:
+          "Each style has a primary question, typical evidence and a main trap. Paying too much for growth, overpaying for quality, crowded momentum and forecast-optimistic GARP are the other named traps.",
       },
       {
         id: "m14-q2",
-        prompt: "2022 challenged long-duration assets mainly via:",
+        prompt:
+          "Annual dividend $1.80 on a $45 share. Dividends $24m and net income $60m. What are yield and payout, and why is a high yield not automatically a bargain?",
         choices: [
-          "Rate and inflation shocks repricing distant cash flows",
-          "The end of all stocks forever",
-          "Zero volatility",
-          "Mandatory gold ownership",
+          "4.0% yield and 40% payout (60% retained) — a falling price can mechanically raise yield, so coverage and the balance sheet still need a check",
+          "4.0% yield and 40% payout, which guarantees the dividend forever",
+          "40% yield and 4.0% payout because the formulas are reversed",
+          "4.0% yield means owners earn 4% regardless of payout or cash",
         ],
         correctIndex: 0,
-        explanation: "Higher rates compressed valuations for long-duration claims.",
-        newsHint: true,
+        explanation:
+          "$1.80 / $45 = 4.0%. $24m / $60m = 40% payout. For cash-intensive firms, compare dividends with free cash flow as an extra sustainability test.",
       },
       {
         id: "m14-q3",
-        prompt: "Using history well means:",
+        prompt:
+          "Portfolio $14,800, target weight 8%, share price $37. What position do the notes size?",
         choices: [
-          "Copy-pasting the last war blindly",
-          "Extracting mechanisms while respecting differences today",
-          "Ignoring primary sources",
-          "Only trading memes",
+          "$1,184 and 32 shares — 8% is 0.08, so conviction is converted into a controlled weight rather than an arbitrary size",
+          "$1,184 and 32 shares, so you should ignore rounding if fractional shares are unavailable",
+          "$14,800 and 400 shares — the full book is the default size for a high-conviction idea",
+          "$37 × 8 = $296, because weight is applied to the share price",
         ],
-        correctIndex: 1,
-        explanation: "Mechanisms transfer better than exact path copies.",
+        correctIndex: 0,
+        explanation:
+          "$14,800 × 0.08 = $1,184; $1,184 / $37 = 32 shares exactly. If fractions are unavailable, round and then recompute actual value and weight.",
+      },
+      {
+        id: "m14-q4",
+        prompt:
+          "The $1,184 position rises to $1,360 while the whole portfolio is $15,200. What is the new weight, and what does that mean?",
+        choices: [
+          "8.95% — a winner can become a larger risk exposure even without buying more shares",
+          "8.00% — weight is fixed at the original target until you trade",
+          "11.5% — $1,360 / $14,800, using the old book as the denominator",
+          "32% — share count is the portfolio weight",
+        ],
+        correctIndex: 0,
+        explanation:
+          "$1,360 / $15,200 = 8.95%. Sizing is not finished at purchase; drift changes the risk you actually hold.",
+      },
+      {
+        id: "m14-q5",
+        prompt:
+          "Your $14,800 Portfolio Lab application for Portal 14 is to select stocks and determine appropriate position sizes. What belongs on the worksheet before you buy?",
+        choices: [
+          "Style, business model, financial health, at least two valuation methods, catalyst, what would falsify the thesis, maximum weight/dollars, and an exit or review rule",
+          "Only the ticker and last price — the lenses replace a written thesis",
+          "A single multiple and maximum conviction, with no falsifier or size cap",
+          "Deploy the full $14,800 in one name if PEG looks attractive",
+        ],
+        correctIndex: 0,
+        explanation:
+          "The notes’ worksheet turns analysis into a controlled buy: evidence, two valuation methods, a falsifier, a maximum position and a review rule. A calculated yield or weight is not yet an investment decision.",
       },
     ],
   },
