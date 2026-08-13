@@ -1,0 +1,13 @@
+---
+description: Questfolio map freeze and shared shells (library, portal, swords)
+alwaysApply: true
+---
+
+# Questfolio shell & map rules
+
+- Do not change map layout, poster, icon art, or marker coordinates unless the user explicitly asks.
+- Library Classroom is a shared shell (`LibraryClassroom.tsx`); cities differ by colour + content only.
+- Portal learner shell stays standard; do not redesign quest UI. Admin overlays are additive only.
+- Trade sword UI/placement stays stable; author scenario content and reward params, not new map geometry.
+- Never copy Coral Ledger Bay / Purple City curriculum into other cities.
+- For repeating portal/sword authorship, use `/author-portal` or `/author-sword` skills.
