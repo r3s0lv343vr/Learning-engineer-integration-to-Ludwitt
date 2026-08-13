@@ -763,50 +763,92 @@ export const MODULES_MID: ModuleQuest[] = [
     mapLabel: "Fund Mandate",
     x: 78,
     y: 16,
-    summary: "Graduate from $14,800 to a $10M professional mandate.",
-    concepts: ["IPS", "constraints", "committee", "multi-year simulation"],
-    outcome: "Integrate judgement, risk, and behaviour under mandate pressure.",
+    summary:
+      "Compare stock, private-business, property and forex opportunities in one language — then allocate remaining capital and defend the choices.",
+    concepts: [
+      "cross-asset comparison",
+      "scenario-weighted expected return",
+      "opportunity cost",
+      "capital allocation arithmetic",
+      "committee defense",
+    ],
+    outcome:
+      "Allocate remaining capital in the $14,800 book among competing Blue City opportunities and defend the process.",
     lesson:
-      "Module 18 expands the Portfolio Lab into a professional mandate: $10M AUM, 5-year horizon, 7–10% target return, 20% max drawdown, liquidity and concentration constraints. Write an IPS, face client pressure, survive a crisis exam, and defend process before committee.",
+      "Blue City Portal 18 is the investment committee. A stock, private business, property and FX position generate returns differently — do not pick the largest headline percentage. Compare expected reward, downside, liquidity, evidence quality, valuation, financing, horizon and portfolio fit. Stocks: earnings, dividends, valuation; usually liquid. Private business: cash flow, growth, exit; low liquidity, high control, concentration/execution/debt risk. Real estate: rent, NOI, appreciation; illiquid directly, more liquid via REIT. Forex: rate moves and carry; liquid majors, leverage and policy risk. Expected return = Σ (probabilityᵢ × returnᵢ) with probabilities as decimals summing to 1. Stock: 0.30×30% + 0.50×10% + 0.20×(−20%) = 10% — a planning estimate, not a guarantee. Property: 0.25×18% + 0.55×8% + 0.20×(−12%) = 6.5%. A lower E(R) can still win on downside, liquidity or diversification. Incremental expected return = 10% − 6.5% = 3.5 percentage points — not an automatic buy. The notes’ arithmetic example (not a recommended book): $6,000 remaining after Purple City holdings split 35% / 20% / 30% / 15% → $2,100 stock, $1,200 private-business sim, $1,800 real-estate, $900 FX equity. Dollars and weights must reconcile. Committee defense: how it makes money, strongest evidence, health, valuation, entry price, size, worst downside, liquidity/financing, best alternative, and what would make you reject, reduce or exit. Arithmetic is not the conclusion — match claims, track units, and interpret against risk and evidence.",
     scenario:
-      "Present your $14,800 history, accept the mandate, build the fund, and endure multi-year shocks without abandoning process.",
+      "Four Brick Exchange files sit in front of the committee: a public stock, a simulated acquisition, a property (or REIT), and an FX sleeve. Compute scenario-weighted expected returns, the 3.5-point gap, and a $6,000 remaining-capital split. For the $14,800 book: which mix do you defend, and what evidence would make you cut a sleeve?",
     questions: [
       {
         id: "m18-q1",
-        prompt: "An Investment Policy Statement (IPS) should define:",
+        prompt:
+          "Cross-asset comparison needs a common language. Which statement matches the notes?",
         choices: [
-          "Only a lucky ticker",
-          "Objectives, constraints, risk limits, and governance rules before deploying capital",
-          "Intraday scalps only",
-          "A promise of no drawdowns",
+          "Do not choose the largest headline percentage — compare expected reward, downside, liquidity, evidence quality, valuation, financing, horizon and portfolio fit",
+          "Always buy the asset with the highest single-scenario return",
+          "Public stock, private business, property and FX all share the same return engine, so one multiple works",
+          "Liquidity can be ignored if expected return is positive",
         ],
-        correctIndex: 1,
-        explanation: "IPS is the constitution of the mandate.",
+        correctIndex: 0,
+        explanation:
+          "Return sources differ: earnings/dividends vs cash-flow/exit vs rent/NOI vs FX/carry. Key risks differ too — valuation, concentration/debt, vacancy/rates, and macro/leverage/policy.",
       },
       {
         id: "m18-q2",
-        prompt: "A client demanding you chase a fashionable asset is a test of:",
+        prompt:
+          "Stock scenarios: 30% of +30%, 50% of +10%, 20% of −20%. Property: 25% of +18%, 55% of +8%, 20% of −12%. What are the expected returns?",
         choices: [
-          "Whether you abandon process for politics",
-          "Your ability to ignore fiduciary duty",
-          "Candlestick colors",
-          "Tax lot software only",
+          "Stock 10% and property 6.5% — probability-weighted planning estimates, not guaranteed outcomes; a lower E(R) can still be attractive on downside, liquidity or diversification",
+          "Stock 20% and property 14% — average the three returns without probabilities",
+          "Stock 10% guaranteed, so property can be discarded",
+          "Both 0% because one scenario is negative",
         ],
         correctIndex: 0,
-        explanation: "Stakeholder pressure is part of professional investing.",
+        explanation:
+          "0.30×30% + 0.50×10% + 0.20×(−20%) = 10%. 0.25×18% + 0.55×8% + 0.20×(−12%) = 6.5%. Probabilities are decimals and should sum to 1.00.",
       },
       {
         id: "m18-q3",
-        prompt: "In the assessment framework, raw return weight is relatively:",
+        prompt:
+          "Stock E(R) is 10% and property E(R) is 6.5%. What is incremental expected return, and what does it settle?",
         choices: [
-          "Dominant over all process scores",
-          "Small versus reasoning, risk, research, and behaviour",
-          "The only score that matters",
-          "Ignored entirely",
+          "3.5 percentage points — an expected-return advantage, not an automatic win, because risk, liquidity and confidence in the estimates may differ",
+          "3.5% growth of the property, so the stock is always inferior",
+          "16.5% — add the two expected returns",
+          "Zero — opportunity cost only applies inside one asset class",
         ],
-        correctIndex: 1,
-        explanation: "Syllabus weights return at 5% — process dominates mastery.",
+        correctIndex: 0,
+        explanation:
+          "10% − 6.5% = 3.5 percentage points. Capital committed to one asset cannot fund the best rejected alternative. The gap is a comparison input, not the decision.",
+      },
+      {
+        id: "m18-q4",
+        prompt:
+          "The notes’ arithmetic example (not a recommended allocation) splits $6,000 remaining capital 35% stock, 20% private-business sim, 30% real estate, 15% FX equity. Which check is correct?",
+        choices: [
+          "$2,100 + $1,200 + $1,800 + $900 = $6,000 — dollars must reconcile to deployable capital and weights to 100% unless cash is left unallocated",
+          "$2,100 + $1,200 + $1,800 + $900 = $6,000, so this mix is the official $14,800 policy",
+          "Weights can sum to 150% if conviction is high",
+          "Skip the dollar check once percentages look round",
+        ],
+        correctIndex: 0,
+        explanation:
+          "$6,000 × 0.35 / 0.20 / 0.30 / 0.15. The notes label this a demonstration of arithmetic after Purple City holdings, not a prescribed book.",
+      },
+      {
+        id: "m18-q5",
+        prompt:
+          "Your $14,800 Portfolio Lab application for Portal 18 is to allocate capital among competing opportunities and defend the choices. What belongs in the committee defense?",
+        choices: [
+          "How it makes money, strongest evidence, health, valuation, entry, size, worst downside, liquidity/financing, best alternative, and what would make you reject, reduce or exit — a calculated E(R) is not yet a buy",
+          "Only the 10% stock expected return, then deploy the full $14,800 in that name",
+          "The $10M IPS and 20% max-drawdown mandate from a different syllabus",
+          "Skip alternatives and falsifiers if the allocation table adds to $6,000",
+        ],
+        correctIndex: 0,
+        explanation:
+          "The notes’ ten-point defense is the Blue City close. Separate calculation from interpretation. The core skill is connecting economics, numbers, valuation, risk and portfolio fit — not finding a single best number.",
       },
     ],
-  }
+  },
 ];
