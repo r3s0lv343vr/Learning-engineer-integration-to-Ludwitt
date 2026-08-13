@@ -475,48 +475,92 @@ export const MODULES_MID: ModuleQuest[] = [
     mapLabel: "Risk Bastion",
     x: 26,
     y: 14,
-    summary: "Returns are not enough — control downside.",
-    concepts: ["beta", "Sharpe", "drawdown", "VaR", "stress tests"],
-    outcome: "Manage the book inside explicit risk limits.",
+    summary:
+      "Evaluate a whole-company acquisition: enterprise value, normalized earnings, financing, DSCR and due diligence — not just the seller’s equity price.",
+    concepts: [
+      "equity value vs enterprise value",
+      "normalized EBITDA",
+      "acquisition multiple",
+      "deal financing",
+      "DSCR",
+      "due diligence",
+    ],
+    outcome:
+      "Evaluate and negotiate a simulated whole-company acquisition before treating it as a use of the $14,800 book.",
     lesson:
-      "Risk metrics quantify path pain and efficiency. Max drawdown, volatility, beta, and stress scenarios constrain how you pursue return. Alpha is excess return after risk/factor exposure.",
-    scenario: "Hit risk limits even if recent returns look fine.",
+      "Blue City Portal 15: a public-stock investor may buy a small equity claim; an acquirer evaluates control of the whole operating business. Enterprise value = Equity value + Debt − Cash. Seller wants $4.0m for equity with $1.2m debt and $0.3m cash → EV = $4.9m — the operating business costs more than the equity cheque. Private accounts may include owner-specific or one-off items. Normalized EBITDA = Reported EBITDA + valid add-backs − missing recurring costs. $700,000 + $80,000 legal add-back − $60,000 below-market owner salary = $720,000. Each adjustment needs evidence or normalization inflates value. Then EV = Normalized EBITDA × selected multiple; $720,000 × 5.5 = $3.96m — defend both the earnings base and the multiple with quality, growth, concentration, cyclicality and comps. Financing: Debt = Price × debt %; $4.0m × 0.60 = $2.4m debt and $1.6m equity cheque. More debt lowers the immediate equity cheque and raises future service. DSCR = Cash available for debt service / Required debt service; $600,000 / $400,000 = 1.50× — a lower ratio leaves less room for a downturn. Due diligence covers revenue quality, earnings sustainability, working-capital need, liens/legal, customers, operations, assets, whether the business runs without the seller, and deal terms. A cheap multiple can hide a fragile business. Whole-company deals concentrate capital, add financing risk and often reduce liquidity.",
+    scenario:
+      "A Brick Exchange seller wants $4.0m for equity. Rebuild EV, normalize EBITDA, apply a 5.5× multiple, then size 60% debt and test DSCR. For the $14,800 book this is a simulated control deal: which diligence questions would stop you treating a cheap multiple as a yes?",
     questions: [
       {
         id: "m15-q1",
-        prompt: "Maximum drawdown measures:",
+        prompt:
+          "A public-stock investor may buy a small equity claim. An acquirer evaluates the whole operating business. Seller wants $4.0m equity; debt $1.2m; cash $0.3m. What is EV, and why is it not the equity cheque?",
         choices: [
-          "Average dividend",
-          "Peak-to-trough decline over a period",
-          "Only one-day moves",
-          "Bid-ask spread",
+          "$4.9m — EV = equity + debt − cash, so assumed financing claims make the operating business cost more than the $4.0m paid to owners",
+          "$4.0m — equity price is already enterprise value",
+          "$5.5m — add cash instead of subtracting it",
+          "$2.5m — subtract debt and ignore cash",
         ],
-        correctIndex: 1,
-        explanation: "It captures the worst peak-to-trough loss path.",
+        correctIndex: 0,
+        explanation:
+          "$4.0m + $1.2m − $0.3m = $4.9m. EV bridges what equity owners receive to the value of the operating company across the capital structure.",
       },
       {
         id: "m15-q2",
-        prompt: "A high Sharpe ratio suggests:",
+        prompt:
+          "Reported EBITDA $700,000. Valid one-time legal add-back $80,000. Owner salary is $60,000 below market. What is normalized EBITDA, and what is the trap?",
         choices: [
-          "Return per unit of volatility looked attractive historically",
-          "No future risk exists",
-          "Leverage is infinite",
-          "Beta is zero always",
+          "$720,000 — add evidenced one-offs and deduct missing recurring costs; aggressive add-backs can overstate value",
+          "$780,000 — add both the legal item and the salary gap as add-backs",
+          "$700,000 — never adjust private-company accounts",
+          "$640,000 — subtract the legal expense again because it already hit EBITDA",
         ],
         correctIndex: 0,
-        explanation: "Sharpe is a historical efficiency snapshot, not a guarantee.",
+        explanation:
+          "$700,000 + $80,000 − $60,000 = $720,000. Normalization estimates sustainable economics. Each adjustment needs evidence.",
       },
       {
         id: "m15-q3",
-        prompt: "Stress testing is valuable because:",
+        prompt:
+          "Normalized EBITDA is $720,000 and the selected multiple is 5.5×. What EV do the notes get, and where is the real work?",
         choices: [
-          "It predicts exact future prices",
-          "It reveals how the portfolio might behave in adverse scenarios",
-          "It replaces diversification",
-          "It is only for banks",
+          "$3.96m — the arithmetic is easy; the work is defending the normalized base and the multiple with quality, growth, risk and comps",
+          "$3.96m, so any 5.5× deal is automatically cheap",
+          "$720,000 — the multiple is ignored once earnings are normalized",
+          "$4.9m — reuse the seller’s equity-plus-debt EV instead of the multiple",
         ],
-        correctIndex: 1,
-        explanation: "Scenarios expose hidden concentrations before reality does.",
+        correctIndex: 0,
+        explanation:
+          "$720,000 × 5.5 = $3.96m. The multiple should reflect business quality, growth, customer concentration, cyclicality and comparable transactions.",
+      },
+      {
+        id: "m15-q4",
+        prompt:
+          "Purchase price $4.0m with 60% lender financing. Cash available for debt service $600,000; annual principal + interest $400,000. What do financing and DSCR show?",
+        choices: [
+          "$2.4m debt and $1.6m equity; DSCR 1.50× — leverage cuts the upfront cheque and creates fixed service; a lower DSCR leaves less room for a downturn",
+          "$2.4m equity and $1.6m debt; DSCR 0.67×, which the notes call a comfortable cushion",
+          "100% debt is safer because DSCR is then undefined",
+          "DSCR 1.50× means cash equals debt service with no cushion",
+        ],
+        correctIndex: 0,
+        explanation:
+          "$4.0m × 0.60 = $2.4m debt; equity = $1.6m. DSCR = $600,000 / $400,000 = 1.50×. Keep the cash-available definition consistent across deals. Fees or working-capital needs can raise the real cash required at close.",
+      },
+      {
+        id: "m15-q5",
+        prompt:
+          "Your $14,800 Portfolio Lab application for Portal 15 is to evaluate and negotiate a simulated whole-company acquisition. What is the disciplined next step?",
+        choices: [
+          "Run diligence on revenue quality, sustainable earnings, working-capital need, legal/debt, customers, operations and whether the business runs without the seller — a cheap multiple can hide a fragile, illiquid, concentrated bet",
+          "Sign because 5.5× looks cheaper than public comps, and skip diligence as administrative",
+          "Fund the $4.9m EV entirely from the $14,800 book",
+          "Treat headline profit as normalized EBITDA and waive warranties",
+        ],
+        correctIndex: 0,
+        explanation:
+          "The notes: due diligence is part of valuation. Whole-company acquisition concentrates capital, introduces financing risk and often reduces liquidity. A calculated EV is not yet a deal decision.",
       },
     ],
   },
