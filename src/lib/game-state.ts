@@ -1,4 +1,5 @@
 import { MODULES } from "@/lib/content/modules";
+import { examAfterModule, getExam } from "@/lib/content/exams";
 import { moduleGridPosition } from "@/lib/content/map-layout";
 import type {
   GameState,
@@ -35,7 +36,10 @@ export function createInitialState(input: {
     wrongQuestionIds: [],
     completedModules: [],
     completedSidequests: [],
+    completedTrades: [],
     unlockedModules: ["m1"],
+    unlockedExams: [],
+    completedExams: [],
     mapPosition: moduleGridPosition(0),
     investorProfile: input.investorProfile ?? "exploratory",
     holdings: [],
@@ -145,28 +149,113 @@ export function applyAnswer(
   return next;
 }
 
+export function normalizeState(state: GameState): GameState {
+  return {
+    ...state,
+    unlockedExams: state.unlockedExams ?? [],
+    completedExams: state.completedExams ?? [],
+    completedTrades: state.completedTrades ?? [],
+  };
+}
+
+/** Resolve a city trade area — capital delta may raise or lower the book. */
+export function applyTradeAreaResult(
+  state: GameState,
+  opts: {
+    tradeId: string;
+    outcome: "gain" | "loss";
+    capitalDelta: number;
+    goldReward?: number;
+  },
+): GameState {
+  state = normalizeState(state);
+  if (state.completedTrades.includes(opts.tradeId)) return state;
+  const capital = Math.max(0, state.capital + opts.capitalDelta);
+  const cash = Math.max(0, state.cash + opts.capitalDelta);
+  const goldBars =
+    state.goldBars +
+    (opts.outcome === "gain" ? (opts.goldReward ?? 0) : 0);
+  let next: GameState = {
+    ...state,
+    capital,
+    cash,
+    goldBars,
+    completedTrades: Array.from(
+      new Set([...state.completedTrades, opts.tradeId]),
+    ),
+  };
+  next = pushEvent(next, "trade_area_started", {
+    tradeId: opts.tradeId,
+    outcome: opts.outcome,
+  });
+  next = pushEvent(next, "trade_area_completed", {
+    tradeId: opts.tradeId,
+    outcome: opts.outcome,
+    capitalDelta: opts.capitalDelta,
+  });
+  return next;
+}
+
 export function completeModule(state: GameState, moduleId: string): GameState {
+  state = normalizeState(state);
   if (state.completedModules.includes(moduleId)) return state;
   const idx = MODULES.findIndex((m) => m.id === moduleId);
   const nextId = MODULES[idx + 1]?.id;
+  const gate = examAfterModule(moduleId);
   const unlocked = new Set([...state.unlockedModules, moduleId]);
+  const unlockedExams = new Set(state.unlockedExams);
+  // Portals unlock sequentially so the coin can advance city-by-city.
+  // Exams still unlock as checkpoints but no longer soft-lock the next portal.
   if (nextId) unlocked.add(nextId);
+  if (gate && !state.completedExams.includes(gate.id)) {
+    unlockedExams.add(gate.id);
+  }
+  const coinIdx = nextId ? idx + 1 : Math.max(0, idx);
   let next = pushEvent(
     {
       ...state,
       completedModules: [...state.completedModules, moduleId],
       unlockedModules: Array.from(unlocked),
+      unlockedExams: Array.from(unlockedExams),
       goldBars: state.goldBars + 1,
-      mapPosition: moduleGridPosition(Math.max(0, idx)),
+      mapPosition: moduleGridPosition(coinIdx),
       activeQuestId: nextId,
       capital: state.capital + 250,
       cash: state.cash + 250,
     },
     "module_completed",
-    { moduleId },
+    { moduleId, examUnlocked: gate?.id, nextModuleId: nextId },
   );
   next = pushEvent(next, "lesson_completed", { moduleId });
   next = pushEvent(next, "competency_demonstrated", { moduleId });
+  return next;
+}
+
+export function completeExam(state: GameState, examId: string): GameState {
+  state = normalizeState(state);
+  if (state.completedExams.includes(examId)) return state;
+  const exam = getExam(examId);
+  if (!exam) return state;
+  const unlocked = new Set(state.unlockedModules);
+  if (exam.unlocksModuleId) unlocked.add(exam.unlocksModuleId);
+  // Also unlock the module after the gate if it differs
+  const afterIdx = MODULES.findIndex((m) => m.id === exam.afterModuleId);
+  const following = MODULES[afterIdx + 1]?.id;
+  if (following) unlocked.add(following);
+  let next = pushEvent(
+    {
+      ...state,
+      completedExams: [...state.completedExams, examId],
+      unlockedModules: Array.from(unlocked),
+      goldBars: state.goldBars + 2,
+      capital: state.capital + 400,
+      cash: state.cash + 400,
+      activeQuestId: exam.unlocksModuleId,
+    },
+    "exam_completed",
+    { examId, roman: exam.roman },
+  );
+  next = pushEvent(next, "competency_demonstrated", { examId });
   return next;
 }
 

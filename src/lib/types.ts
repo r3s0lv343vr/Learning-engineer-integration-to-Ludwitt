@@ -44,11 +44,15 @@ export interface LearningEvent {
     | "remediation_completed"
     | "sidequest_started"
     | "sidequest_completed"
+    | "trade_area_started"
+    | "trade_area_completed"
     | "lesson_started"
     | "lesson_completed"
     | "quiz_submitted"
     | "session_heartbeat"
-    | "chest_opened";
+    | "chest_opened"
+    | "exam_started"
+    | "exam_completed";
   sessionId: string;
   userId: string;
   metadata?: Record<string, unknown>;
@@ -72,7 +76,11 @@ export interface GameState {
   wrongQuestionIds: string[];
   completedModules: string[];
   completedSidequests: string[];
+  /** City trade areas resolved (gain or loss still marks complete) */
+  completedTrades: string[];
   unlockedModules: string[];
+  unlockedExams: string[];
+  completedExams: string[];
   mapPosition: { x: number; y: number };
   activeQuestId?: string;
   investorProfile: InvestorProfile;
@@ -130,7 +138,7 @@ export interface SideQuest {
   capitalDeltaSuccess: number;
   capitalDeltaFail: number;
   goldReward?: number;
-  chestGold?: 3 | 5 | 10;
+  chestGold?: 1 | 2 | 3 | 5 | 10;
   prompt: string;
   choices: { label: string; success: boolean; feedback: string }[];
   x: number;
