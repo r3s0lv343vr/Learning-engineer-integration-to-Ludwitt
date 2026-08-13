@@ -2,55 +2,99 @@ import type { ModuleQuest } from "@/lib/types";
 
 /** Brick Exchange portals 10–18 (kept from prior syllabus core). */
 export const MODULES_MID: ModuleQuest[] = [
-{
+  {
     id: "m10",
     number: 10,
     title: "Portfolio Construction",
     mapLabel: "Portfolio Plaza",
     x: 58,
     y: 28,
-    summary: "Stress-test concentration and correlations.",
-    concepts: ["diversification", "correlation", "sizing", "rebalancing"],
-    outcome: "Decide whether to rebalance after a risk review.",
+    summary:
+      "Understand business models, revenue drivers, customers, competitors, market share and competitive advantage before deeper analysis.",
+    concepts: [
+      "company as an economic system",
+      "revenue = price × quantity",
+      "revenue growth",
+      "market share",
+      "competitive advantage",
+      "company comparison scorecard",
+    ],
+    outcome:
+      "Compare companies on the Blue City scorecard and select one for deeper analysis before deploying the $14,800 book.",
     lesson:
-      "Diversification helps when holdings do not all move together. Position sizing and sector/geography exposure control single-point failure. Rebalancing restores target risk.",
-    scenario: "AI flags correlated tech concentration. Rebalance or defend the bet?",
+      "Blue City Portal 10 starts with the business, not the stock price. A company is an economic system: it sells something, incurs costs, invests capital, competes for customers and tries to keep enough value for owners. Identify what is sold, who pays, how often, what drives volume and price, and the main costs — financial statements are outputs of that system. Then quantify the engine. Revenue = Price × Quantity (same unit for price and quantity). A company selling 240,000 units at an $18 average selling price generates $4,320,000 of sales — scale, not profit. Revenue growth = (Revenue₁ − Revenue₀) / Revenue₀ × 100%; $48m to $54m is 12.5%, and growth still must be read against margins, cash flow and the price paid. Market share = Company sales / Total market sales × 100%; $900m in a $6bn market is 15%. A firm can grow while losing share if the market grows faster. Share is position, not profitability. Competitive advantage is evidence that customers, margins or returns can be defended (cost, switching costs, network effects, brand/pricing power, IP, distribution/data) — not merely a popular brand. Use the comparison scorecard (growth, gross margin, customer concentration, share trend, advantage evidence, capital needs, key risk) before picking a name for deeper work.",
+    scenario:
+      "Two Brick Exchange names are on the watchlist for your $14,800 Portfolio Lab. Before statements and valuation, map each economic system, compute revenue, growth and share from the notes examples, and ask whether any advantage looks durable. Which company deserves deeper analysis — and why is a calculated number not yet a buy?",
     questions: [
       {
         id: "m10-q1",
-        prompt: "True diversification requires more than many tickers if:",
+        prompt:
+          "Before ratios and valuation, Blue City treats a company first as an economic system. What should you identify?",
         choices: [
-          "They are highly correlated to the same factor",
-          "They have different CUSIPs only",
-          "They are all cash",
-          "Fees are low",
+          "What is sold, who pays, how often, what drives volume and price, and the main costs",
+          "Only the last closing price and ticker symbol",
+          "Only the number of shares outstanding",
+          "Only whether the brand is popular",
         ],
         correctIndex: 0,
-        explanation: "Correlated bets collapse together in stress.",
+        explanation:
+          "Financial statements are outputs of the operating system. Start with the business model — product or service, customer, frequency, volume and price drivers, and costs — not the stock quote.",
       },
       {
         id: "m10-q2",
-        prompt: "Rebalancing typically:",
+        prompt:
+          "A company sells 240,000 units at an average selling price of $18. Revenue = Price × Quantity. What is revenue, and what does that number prove?",
         choices: [
-          "Sells relative winners and buys relative laggards toward targets",
-          "Always doubles winners",
-          "Ignores risk",
-          "Only happens in bull markets",
+          "$4,320,000 of sales — the scale of sales, not profitability",
+          "$18,000 of sales — and that the company is cheap",
+          "$4,320,000 of net income — so owners are already rewarded",
+          "$240,000 of sales — because quantity is the only driver",
         ],
         correctIndex: 0,
-        explanation: "It restores intended allocation and risk.",
+        explanation:
+          "Revenue = $18 × 240,000 = $4,320,000. Price and quantity must use the same unit. The notes interpret this as sales scale; it does not show profit, cash or a purchase price.",
       },
       {
         id: "m10-q3",
-        prompt: "Position sizing matters because:",
+        prompt:
+          "Revenue rises from $48 million to $54 million. Growth = (Revenue₁ − Revenue₀) / Revenue₀ × 100%. What is the growth rate, and why is old revenue the denominator?",
         choices: [
-          "A correct idea sized too large can still ruin the portfolio",
-          "Size never affects outcomes",
-          "Only entry price matters",
-          "It replaces research",
+          "12.5% — growth is measured relative to the starting base, in comparable periods",
+          "12.5% — because $6m divided by new revenue $54m is the standard",
+          "6% — the dollar change without dividing by the base",
+          "11.1% — ($54m − $48m) / $54m",
         ],
         correctIndex: 0,
-        explanation: "Risk of ruin is a sizing problem as much as a foresight problem.",
+        explanation:
+          "Change = $6m; $6m / $48m × 100% = 12.5%. The earlier-period revenue is the base. Growth still must be compared with margins, cash flow and the price paid for the stock.",
+      },
+      {
+        id: "m10-q4",
+        prompt:
+          "A firm has $900 million of sales in a $6 billion market. Which reading matches the notes?",
+        choices: [
+          "15% market share — position in the defined market, not profitability; the firm can grow sales and still lose share if the market grows faster",
+          "15% net margin — so the economics are already proven durable",
+          "6.7% share — $6bn / $900m, and share equals a buy signal",
+          "90% share — $900m is almost the whole market",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Market share = $0.9bn / $6.0bn × 100% = 15%. Numerator and denominator must match units, geography, product and period. Share describes position; competitive advantage asks whether that position can persist.",
+      },
+      {
+        id: "m10-q5",
+        prompt:
+          "Your $14,800 Portfolio Lab application for Portal 10 is to compare companies before selecting one for deeper analysis. What is the disciplined next step?",
+        choices: [
+          "Score both names on growth, share trend, advantage evidence, capital needs and key risk — then choose one for deeper work; a calculated number is not yet an investment decision",
+          "Buy the cheaper ticker immediately with the full $14,800",
+          "Skip the business model and jump to a price target",
+          "Treat a popular brand as proof of durable advantage and deploy now",
+        ],
+        correctIndex: 0,
+        explanation:
+          "The notes’ scorecard compares growth, margins, concentration, share trend, advantage evidence, reinvestment need and key risk. Blue City’s rule: interpret every answer economically — a calculated number is not yet an investment decision.",
       },
     ],
   },
