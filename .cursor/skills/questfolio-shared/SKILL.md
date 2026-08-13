@@ -57,6 +57,16 @@ Do **not** change unless the user explicitly asks:
 
 Simulator reference capital: **$14,800**.
 
+## Notes-driven authorship
+
+When completing portals or swords for a city:
+
+1. Prefer **user-fed notes** for that run (paste/upload/path).
+2. Fall back to that city’s classroom + library notes in repo.
+3. For Blue City / Brick Exchange, curriculum is **Analysis & Asset Selection** (`classroom-blue.ts` + Blue City notes/deck PDFs).
+4. Do not invent an alternate syllabus; do not reuse another city’s curriculum text.
+5. If notes are absent, ask for them before authoring.
+
 ## Delivery habits
 
 - Prefer content edits over architecture edits
