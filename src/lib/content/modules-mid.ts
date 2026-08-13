@@ -571,48 +571,92 @@ export const MODULES_MID: ModuleQuest[] = [
     mapLabel: "Thesis Forge",
     x: 42,
     y: 10,
-    summary: "Write what you own, why, risks, and kill criteria.",
-    concepts: ["mispricing", "catalysts", "sell discipline", "falsification"],
-    outcome: "Defend formal theses for selected holdings.",
+    summary:
+      "Underwrite rental income, NOI, cap rates, vacancy, LTV, cash-on-cash return and REITs — then compare a property with liquid alternatives.",
+    concepts: [
+      "gross potential rent and vacancy",
+      "NOI before financing",
+      "cap rate and implied value",
+      "LTV and leverage",
+      "cash-on-cash return",
+      "REITs vs direct property",
+    ],
+    outcome:
+      "Underwrite a property and compare it with liquid alternatives before using the $14,800 book.",
     lesson:
-      "A thesis states the bet, the market's potential miss, catalysts, risks, and what would prove you wrong. Without falsifiers, you cannot sell with discipline.",
-    scenario: "Draft theses for your top holdings with explicit kill switches.",
+      "Blue City Portal 16 underwrites property instead of trusting the listing price. Gross potential rent assumes full occupancy: 4 × $1,500 × 12 = $72,000. Vacancy loss = $72,000 × 5% = $3,600, so effective rental income is $68,400. NOI = Effective gross income − operating expenses and is before financing, taxes and capital structure so different mortgages stay comparable. EGI $70,000 − opex $26,000 = $44,000 NOI. Cap rate = NOI / Property value; $44,000 / $550,000 = 8.0% — an unlevered income yield that excludes appreciation, financing, taxes and major capex. Value = NOI / cap rate; $60,000 / 0.075 = $800,000 — a lower required cap rate raises value for the same NOI. Loan = Price × LTV; $600,000 × 70% = $420,000 loan and $180,000 equity — leverage magnifies equity gains and losses; closing costs can raise cash needed. Cash-on-cash = (NOI − debt service) / cash invested; ($54,000 − $30,000) / $180,000 = 13.33% — an equity cash yield, not total return. Appreciation from $600,000 to $630,000 is 5.0% and is not cash until sale or refinance. Direct property is typically illiquid and concentrated; REITs are exchange-traded, professionally managed and usually more diversified, with less investor control.",
+    scenario:
+      "A four-unit Brick Exchange listing shows $1,500 per unit. Build GPR, vacancy, NOI and an 8% cap rate, then size 70% LTV and cash-on-cash. For the $14,800 book: is this a direct property you can actually underwrite, or does a REIT (or another liquid sleeve) fit the mandate better?",
     questions: [
       {
         id: "m16-q1",
-        prompt: "A falsification criterion is:",
+        prompt:
+          "Four units rent for $1,500 per month; expected vacancy is 5%. Effective gross income including other income is $70,000 and operating expenses are $26,000. Which reading matches the notes?",
         choices: [
-          "A reason to never sell",
-          "A pre-defined signal that the thesis is broken",
-          "A tax form",
-          "A candlestick color",
+          "GPR $72,000, vacancy loss $3,600, effective rent $68,400, NOI $44,000 — NOI is before financing so different mortgages stay comparable",
+          "GPR $72,000 is already cash collected, and NOI subtracts the mortgage",
+          "NOI $44,000 includes income tax and is therefore a levered equity yield",
+          "Vacancy is ignored because GPR assumes collection",
         ],
-        correctIndex: 1,
-        explanation: "It is your pre-committed 'wrong' detector.",
+        correctIndex: 0,
+        explanation:
+          "4 × $1,500 × 12 = $72,000 theoretical rent. $72,000 × 0.05 = $3,600 vacancy. $70,000 − $26,000 = $44,000 NOI. Keep debt service out of NOI.",
       },
       {
         id: "m16-q2",
-        prompt: "Catalysts matter because:",
+        prompt:
+          "NOI $44,000 on a $550,000 price. Separately, NOI $60,000 at a 7.5% market cap rate. What do the notes show?",
         choices: [
-          "They may close the gap between price and value",
-          "They guarantee timing",
-          "They replace valuation",
-          "They eliminate risk",
+          "8.0% cap rate and $800,000 implied value — a lower required cap rate produces a higher value for the same NOI; cap rate excludes appreciation, financing, taxes and major capex",
+          "8.0% cap rate equals cash-on-cash, so leverage can be ignored",
+          "Value = $60,000 × 0.075 = $4,500",
+          "Cap rate is a universal pass/fail: anything above 8% is a buy",
         ],
         correctIndex: 0,
-        explanation: "Value can stay unrecognized without a path to recognition.",
+        explanation:
+          "$44,000 / $550,000 = 8.0%. $60,000 / 0.075 = $800,000. Compare cap rates with similar properties, locations, growth and risk.",
       },
       {
         id: "m16-q3",
-        prompt: "Sell discipline fails most often when:",
+        prompt:
+          "Property price $600,000 at 70% LTV. What loan and equity do the notes size, and what does leverage do?",
         choices: [
-          "Rules were never defined and hope takes over",
-          "You rebalance on schedule",
-          "You size positions modestly",
-          "You keep a journal",
+          "$420,000 loan and $180,000 equity — leverage magnifies both equity gains and losses; fees, taxes, repairs and reserves can raise cash invested",
+          "$180,000 loan and $420,000 equity, because LTV is the down-payment percent",
+          "$600,000 loan — 70% LTV means the bank funds the full price",
+          "Equity is $0 if the cap rate is 8%",
         ],
         correctIndex: 0,
-        explanation: "Hope is not a risk process.",
+        explanation:
+          "$600,000 × 0.70 = $420,000; equity = $180,000 before extra closing cash. Cap rate is unlevered; LTV is the financing layer.",
+      },
+      {
+        id: "m16-q4",
+        prompt:
+          "NOI $54,000, annual debt service $30,000, cash invested $180,000. The property then rises from $600,000 to $630,000. Which reading is correct?",
+        choices: [
+          "Cash-on-cash 13.33% and 5.0% appreciation — CoC is an equity cash yield, not total return; appreciation is not cash until sale or refinance",
+          "Cash-on-cash 13.33% already includes the 5% appreciation",
+          "CoC = $54,000 / $180,000 = 30% because debt service stays in NOI",
+          "5.0% appreciation is immediately spendable cash to the equity holder",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Cash flow = $24,000; $24,000 / $180,000 = 13.33%. ($630,000 − $600,000) / $600,000 = 5.0%. A leveraged equity percentage change may be larger, but costs and debt still matter.",
+      },
+      {
+        id: "m16-q5",
+        prompt:
+          "Your $14,800 Portfolio Lab application for Portal 16 is to underwrite a property and compare it with liquid alternatives. What is the disciplined next step?",
+        choices: [
+          "Complete the rent-to-NOI, cap-rate, LTV and CoC stack, then compare direct property (illiquid, more control, concentrated) with a REIT (exchange-traded, less control, usually more diversified) — do not fund a $180,000 down payment from $14,800",
+          "Buy the four-unit building with the full $14,800 because the cap rate is 8%",
+          "Treat a REIT as identical to direct property because both mention real estate",
+          "Skip vacancy and NOI and use the listing price as value",
+        ],
+        correctIndex: 0,
+        explanation:
+          "The notes’ lab task is underwrite-and-compare. Direct property is usually low-liquidity and concentrated; REITs are market-priced and more liquid. A calculated cap rate is not yet an investment decision.",
       },
     ],
   },
