@@ -292,58 +292,97 @@ export const MODULES_EXTRA: ModuleQuest[] = [
   {
     id: "m22",
     number: 22,
-    title: "Earnings Quality Screen",
+    title: "Portfolio Diversification",
     mapLabel: "Quality Screen",
     x: 50,
     y: 50,
-    summary: "Spot earnings that may not convert to cash.",
+    summary:
+      "Understand correlation, concentration, sector, geographic and currency exposure, and liquidity; find hidden concentrations and diversification gaps.",
     concepts: [
-      "accruals",
-      "cash conversion",
-      "one-offs"
+      "diversification vs name-count",
+      "concentration weight",
+      "correlation",
+      "two-asset portfolio volatility",
+      "FX + local return",
+      "liquidity diversification",
     ],
-    outcome: "Flag one red flag in a sample statement.",
+    outcome:
+      "Audit the $14,800 book for hidden concentration and correlation risk, then identify diversification and liquidity gaps before acting.",
     lesson:
-      "Rising accruals, widening gap between NI and FCF, and recurring 'one-offs' weaken earnings quality.",
+      "Diversification is not counting tickers — five banks can still be one credit/rate/economy bet. Audit issuer, sector, geography, currency, economic sensitivity, liquidity, duration and cash-flow source. Relationships change; correlations can rise in crises. Concentration weight = Exposure / Portfolio × 100% (e.g. $6,216 tech / $14,800 = 42%). Correlation ranges from −1 to +1 and describes co-movement, not causation. Two-asset variance: σp² = w₁²σ₁² + w₂²σ₂² + 2w₁w₂σ₁σ₂ρ₁₂; σp = √σp². Example: 60%/40%, σ 15%/10%, ρ=0.20 → ≈10.56% volatility; if ρ rises to 0.90 → ≈12.72%. Domestic-currency return ≈ (1+Local)(1+FX)−1 (e.g. +8% local and +5% FX → 13.4%). A portfolio can be asset-class diversified yet illiquid (property, private business, lockups).",
     scenario:
-      "Apply Module 22 concepts inside Portfolio Lab with explicit size, risk, and a falsifier.",
+      "In Portfolio Lab your $14,800 book looks ‘diversified’ because it owns many names. Audit whether they share the same drivers, measure sector concentration and correlation benefit, check FX on foreign holdings, and ask whether you can sell what you own in a stress week.",
     questions: [
       {
         id: "m22-q1",
-        prompt: "In Module 22 (Earnings Quality Screen), the best first step is to:",
+        prompt:
+          "In Green City Portal 22, true diversification primarily requires:",
         choices: [
-          "Skip the numbers and follow tips",
-          "Define the decision, risks, and what would change your mind",
-          "Maximise leverage",
-          "Ignore liquidity"
+          "Examining how exposures overlap (drivers, sector, geography, currency, liquidity) — not merely counting holdings",
+          "Owning as many tickers as possible regardless of shared risks",
+          "Eliminating all portfolio risk",
+          "Assuming correlation stays fixed forever once measured",
         ],
-        correctIndex: 1,
-        explanation: "Process first: decision, risks, falsifiers.",
+        correctIndex: 0,
+        explanation:
+          "Notes §22.1: many holdings can still be concentrated if they respond to the same economic drivers; correlations are dynamic.",
       },
       {
         id: "m22-q2",
-        prompt: "Which formula pair is most relevant when checking short-term survival?",
+        prompt:
+          "Technology-related holdings total $6,216 in a $14,800 portfolio. Sector concentration is:",
         choices: [
-          "P/E and PEG only",
-          "Current ratio and acid-test (quick) ratio",
-          "CAGR only",
-          "Dividend yield only"
+          "42%",
+          "24%",
+          "6.2%",
+          "148%",
         ],
-        correctIndex: 1,
-        explanation: "Liquidity ratios stress near-term obligations.",
+        correctIndex: 0,
+        explanation:
+          "Notes Example 22.1: $6,216 / $14,800 × 100% = 42% technology-sector exposure.",
       },
       {
         id: "m22-q3",
-        prompt: "A healthy learner response after being wrong is to:",
+        prompt:
+          "Portfolio is 60% Asset A (σ=15%) and 40% Asset B (σ=10%) with correlation 0.20. Approximate portfolio volatility is:",
         choices: [
-          "Delete the journal",
-          "Update the thesis and falsifiers",
-          "Double the size immediately",
-          "Blame the market exclusively"
+          "About 10.56%",
+          "About 12.5% (weighted average of 15% and 10%)",
+          "About 25%",
+          "About 15% — equal to the riskier asset",
         ],
-        correctIndex: 1,
-        explanation: "Learning compounds through revised process.",
-      }
+        correctIndex: 0,
+        explanation:
+          "Notes Example 22.2: σp² = 0.00810 + 0.00160 + 0.00144 = 0.01114; σp ≈ 10.56%. Risk is not a simple weighted average of volatilities.",
+      },
+      {
+        id: "m22-q4",
+        prompt:
+          "Using the same 60/40 and 15%/10% volatilities, if correlation rises from 0.20 to 0.90, portfolio volatility becomes about:",
+        choices: [
+          "12.72% — higher because assets move more together",
+          "10.56% — unchanged because weights are unchanged",
+          "Lower than 10.56% because diversification always improves in crises",
+          "0% because correlation cannot exceed 0.5",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes Example 22.3: higher ρ raises the covariance term; σp ≈ 12.72%. Diversification can weaken when correlations rise.",
+      },
+      {
+        id: "m22-q5",
+        prompt:
+          "A foreign stock rises 8% locally and the foreign currency appreciates 5% vs home currency. Approximate domestic-currency return is:",
+        choices: [
+          "13.4% — (1.08)×(1.05) − 1",
+          "13.0% — 8% + 5%",
+          "3.0% — 8% − 5%",
+          "8.0% — ignore FX for diversified portfolios",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes Example 22.4: Domestic return = (1+0.08)(1+0.05) − 1 = 13.4%. Geographic diversification does not automatically remove currency risk.",
+      },
     ],
   },
   {
