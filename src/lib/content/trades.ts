@@ -1520,24 +1520,249 @@ const QUAY: TradeArea[] = [
     id: "tr-quay-wire",
     areaId: "signal-quay",
     title: "Macro Wire Desk",
-    summary: "Rates reaction trade around a policy print.",
+    summary:
+      "Read a policy/rates wire through Green City macro channels, size the duration hit on the bond sleeve, then respond with discipline — not an all-in rates bet.",
     risk: "high",
     capitalDeltaGain: 480,
     capitalDeltaLoss: -360,
     goldReward: 1,
     x: 66,
     y: 24,
-    prompt: "Position for the policy print?",
-    choices: [
+    prompt: "Complete the Macro Wire rates-and-duration chain.",
+    choices: [],
+    steps: [
       {
-        label: "Barbell duration with hedges",
-        outcome: "gain",
-        feedback: "Print lands in the channel. Gain.",
+        id: "wire-1",
+        title: "Part 1 · Macro transmission, not fortune-telling",
+        narrative:
+          "A Quay wire flags tighter policy. Green City Portal 24: macro works through channels (borrowing costs, bond prices, property, FX). Ask what happens to cash flows and required returns — do not pretend you can forecast every print.",
+        data: [
+          {
+            kind: "news",
+            title: "Macro Wire Desk",
+            items: [
+              {
+                headline: "Policy path: markets price a firmer nominal rate near 5.5%",
+                source: "Central bank / rates desk",
+              },
+              {
+                headline: "Inflation print still sticky near 3.2%",
+                source: "CPI release",
+                note: "Real rate ≈ nominal − inflation (Portal 24.2)",
+              },
+            ],
+          },
+          {
+            kind: "calc",
+            title: "Real rate check (notes Examples 24.1–24.2)",
+            lines: [
+              "Approximate real ≈ 5.5% − 3.2% = 2.3%",
+              "Exact real = (1.055 / 1.032) − 1 ≈ 2.23%",
+              "Higher real rates can tighten conditions and pressure long-duration assets.",
+            ],
+          },
+          {
+            kind: "table",
+            title: "Transmission channels (Portal 24.1)",
+            headers: ["Channel", "Portfolio question"],
+            rows: [
+              ["Discount rates", "Do required returns rise?"],
+              ["Borrowing costs", "Mortgage / corporate refinance pressure?"],
+              ["Bond prices", "Inverse yield–price hit on duration?"],
+              ["Risk appetite", "Do equities and credit reprice together?"],
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "wire-1a",
+            "Map sensitivities: ~2.3% real rate → tighter conditions; stress bond duration, property finance, and equity risk appetite before trading",
+            "gain",
+            0.015,
+            "Process first. Macro is an environment lens, not a crystal ball.",
+          ),
+          choice(
+            "wire-1b",
+            "Ignore channels — “rates always mean buy stocks”",
+            "loss",
+            -0.02,
+            "Same print hits assets differently. Notes: do not replace asset analysis with fortune-telling.",
+          ),
+          choice(
+            "wire-1c",
+            "Skip the real-rate math and max leverage into the next headline",
+            "loss",
+            -0.015,
+            "No units, no formula — Green City insists you convert numbers into decisions.",
+          ),
+        ],
       },
       {
-        label: "All-in directional rates bet",
-        outcome: "loss",
-        feedback: "Surprise path. Portfolio drops.",
+        id: "wire-2",
+        title: "Part 2 · Yield curve as evidence",
+        narrative:
+          "The curve is inverted on the 2s10s. Portal 24.4: treat inversion as evidence about policy and growth expectations — not a guaranteed recession timer — and use it to inform duration choices.",
+        data: [
+          {
+            kind: "metrics",
+            title: "Government curve snapshot",
+            items: [
+              { label: "10-year yield", value: "4.0%" },
+              { label: "2-year yield", value: "4.7%" },
+              { label: "Book reference", value: "$14,800" },
+            ],
+          },
+          {
+            kind: "calc",
+            title: "Term spread (notes Example 24.3)",
+            lines: [
+              "Term spread = 10Y − 2Y = 4.0% − 4.7% = −0.70 pp (−70 bps)",
+              "Interpretation: this slice of the curve is inverted.",
+              "Implication: investigate policy/growth expectations; do not auto-time a recession trade.",
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "wire-2a",
+            "Treat −70 bps as a signal to review duration and refinance risk — not a surefire crisis bet",
+            "gain",
+            0.018,
+            "Inversion is evidence. Duration and liquidity still need explicit checks.",
+          ),
+          choice(
+            "wire-2b",
+            "All-in short the economy because the curve inverted",
+            "loss",
+            -0.025,
+            "Notes: inversion is not a guaranteed recession timer. Reckless directional bet.",
+          ),
+          choice(
+            "wire-2c",
+            "Assume the curve is irrelevant to bond sleeves",
+            "loss",
+            -0.012,
+            "Portal 24: the curve informs duration choices and relative short- vs long-maturity attractiveness.",
+          ),
+        ],
+      },
+      {
+        id: "wire-3",
+        title: "Part 3 · Duration hit on the bond sleeve",
+        narrative:
+          "Portal 19.6: approximate %ΔPrice ≈ −Modified duration × ΔYield. Quantify the rate-shock P/L on the fixed-income sleeve before choosing a response.",
+        data: [
+          {
+            kind: "metrics",
+            title: "Bond sleeve on the $14,800 book",
+            items: [
+              { label: "Bond allocation", value: "$3,700" },
+              { label: "Modified duration", value: "5.2" },
+              { label: "Assumed ΔYield", value: "+0.75 pp (= 0.0075)" },
+            ],
+          },
+          {
+            kind: "calc",
+            title: "Duration shock (notes Example 19.4)",
+            lines: [
+              "%ΔPrice ≈ −5.2 × 0.0075 = −0.039 → −3.9%",
+              "Est. dollar P/L ≈ $3,700 × (−0.039) ≈ −$144",
+              "Interest-rate risk ≠ credit risk — coupons can still be paid while price falls.",
+            ],
+          },
+          {
+            kind: "table",
+            title: "Credit context (notes Example 19.6)",
+            headers: ["Bond", "Yield", "Spread vs gov 4.1%"],
+            rows: [
+              ["5Y government", "4.1%", "—"],
+              ["5Y corporate", "6.4%", "2.3 pp / 230 bps"],
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "wire-3a",
+            "Accept ~−3.9% / ≈−$144 as the rate lens on the $3,700 sleeve; keep credit spread as a separate question",
+            "gain",
+            0.02,
+            "Duration gives the first risk estimate. Separate rate risk from credit risk before acting.",
+          ),
+          choice(
+            "wire-3b",
+            "Ignore duration — “bonds only pay coupons, price can’t fall”",
+            "loss",
+            -0.03,
+            "Portal 19: fixed-rate bonds compete with new yields; price can fall even when every coupon is paid.",
+          ),
+          choice(
+            "wire-3c",
+            "Enter Δy as 0.75 instead of 0.0075 and panic-exit the whole book",
+            "loss",
+            -0.022,
+            "Common error: percentage points vs decimals. Notes lab: convert deliberately before calculating.",
+          ),
+        ],
+      },
+      {
+        id: "wire-4",
+        title: "Part 4 · Position the wire — discipline over YOLO",
+        narrative:
+          "Decide how the $14,800 book responds: barbell duration with hedges and a written review trigger, or an all-in directional rates bet. Fixed income’s role (income, stability, diversification) still matters (Portal 19.8).",
+        data: [
+          {
+            kind: "table",
+            title: "Response grid",
+            headers: ["Action", "Rationale"],
+            rows: [
+              [
+                "Barbell + hedge",
+                "Keep some short quality for liquidity; trim long duration; hedge residual rate risk",
+              ],
+              [
+                "Hold core gov sleeve",
+                "If mandate needs ballast and loss ≈−$144 is tolerable vs equity shock",
+              ],
+              [
+                "All-in directional",
+                "Max long or short duration on the print — no size, no falsifier",
+              ],
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "Portfolio Lab checks",
+            items: [
+              { label: "Scenario bond hit", value: "≈ −$144 on $3,700 sleeve" },
+              { label: "Real rate (approx)", value: "+2.3%" },
+              { label: "2s10s spread", value: "−70 bps" },
+              { label: "Falsifier", value: "If real rates fall back <1% with curve steepening, revisit" },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "wire-4a",
+            "Barbell duration with hedges — size to the −3.9% estimate and keep a review trigger",
+            "gain",
+            0.022,
+            "Disciplined path: quantified sensitivity, role of bonds preserved, no fortune-telling bet.",
+          ),
+          choice(
+            "wire-4b",
+            "All-in directional rates bet sized past mandate",
+            "loss",
+            -0.035,
+            "Surprise path. Macro wires punish oversized directional bets.",
+          ),
+          choice(
+            "wire-4c",
+            "Dump every bond because price might fall, ignoring income/diversification role",
+            "loss",
+            -0.018,
+            "Portal 19.8: fixed income can still contribute income, ballast, and diversification when sized deliberately.",
+          ),
+        ],
       },
     ],
   }),
