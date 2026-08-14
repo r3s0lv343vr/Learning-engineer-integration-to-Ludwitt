@@ -1059,58 +1059,97 @@ export const MODULES_EXTRA: ModuleQuest[] = [
   {
     id: "m30",
     number: 30,
-    title: "Behavioural Fire Drill",
+    title: "Portfolio Optimization",
     mapLabel: "Bias Drill",
     x: 50,
     y: 50,
-    summary: "Catch common biases under time pressure.",
+    summary:
+      "Understand expected return, risk-adjusted performance, correlations, concentration, risk budgets and capital efficiency — then propose an improved portfolio under realistic constraints.",
     concepts: [
-      "loss aversion",
-      "anchoring",
-      "FOMO"
+      "weighted expected portfolio return",
+      "two-asset variance / correlation",
+      "Sharpe ratio",
+      "risk budget vs capital weight",
+      "optimization constraints",
+      "portfolio as a system",
     ],
-    outcome: "Name the bias in a chase-the-rally vignette.",
+    outcome:
+      "Improve the $14,800 Highlands book as a system: compute E(Rp), volatility with correlation, Sharpe, and a simple risk-budget check — then apply mandate constraints rather than maximizing return alone.",
     lesson:
-      "Anchoring on entry price, FOMO after headlines, and loss aversion delaying cuts destroy process.",
+      "Optimization improves the return–risk trade-off under constraints; it is not maximize forecast return at any cost. Inputs (returns, vols, correlations) are estimates — combine math with constraints, scenarios and judgment. E(Rp)=Σ wᵢE(Rᵢ) (e.g. 40%/9%, 25%/4%, 20%/6%, 15%/2% → 6.10%). Risk needs interaction: σp²=w₁²σ₁²+w₂²σ₂²+2w₁w₂σ₁σ₂ρ₁₂ (e.g. 60%/16%, 40%/10%, ρ=0.25 → σp≈11.29% < 16%). Sharpe=[E(Rp)−Rf]/σp (e.g. 8%, 3%, 10% → 0.50) — useful but incomplete (drawdown, liquidity, non-normal returns). Capital weight ≠ risk share: simplified risk share ≈ wσ/Σ(wσ) (e.g. B at 30%/20% can match A at 50%/12%). Constraints (max position, cash reserve, illiquidity, sector/FX, leverage, turnover) keep optimization realistic when forecasts are wrong.",
     scenario:
-      "Apply Module 30 concepts inside Portfolio Lab with explicit size, risk, and a falsifier.",
+      "In Portfolio Lab you must propose an improved $14,800 allocation for Mandate Highlands. Compute expected return and two-asset volatility with correlation, check Sharpe and which sleeve drives risk, then change weights only inside stated constraints — not an unconstrained max-return bet.",
     questions: [
       {
         id: "m30-q1",
-        prompt: "In Module 30 (Behavioural Fire Drill), the best first step is to:",
+        prompt:
+          "In Yellow City Portal 30, what does portfolio optimization mean professionally?",
         choices: [
-          "Skip the numbers and follow tips",
-          "Define the decision, risks, and what would change your mind",
-          "Maximise leverage",
-          "Ignore liquidity"
+          "Improve the trade-off between expected return and risk subject to real-world constraints — not maximize forecast return at any cost",
+          "Accept any mathematical output without judgment because forecasts are certain",
+          "Maximize expected return while ignoring volatility, liquidity and concentration",
+          "Judge each holding only in isolation and never as a system",
         ],
-        correctIndex: 1,
-        explanation: "Process first: decision, risks, falsifiers.",
+        correctIndex: 0,
+        explanation:
+          "Notes §30.1: make the portfolio more efficient and deliberate; combine estimates with constraints and judgment.",
       },
       {
         id: "m30-q2",
-        prompt: "Which formula pair is most relevant when checking short-term survival?",
+        prompt:
+          "Weights 40% equities @9%, 25% bonds @4%, 20% real estate @6%, 15% cash @2%. Expected portfolio return is:",
         choices: [
-          "P/E and PEG only",
-          "Current ratio and acid-test (quick) ratio",
-          "CAGR only",
-          "Dividend yield only"
+          "6.10%",
+          "9.00%",
+          "5.25%",
+          "21.00%",
         ],
-        correctIndex: 1,
-        explanation: "Liquidity ratios stress near-term obligations.",
+        correctIndex: 0,
+        explanation:
+          "Notes Example 30.1: 3.60%+1.00%+1.20%+0.30% = 6.10%. Each asset contributes in proportion to capital weight.",
       },
       {
         id: "m30-q3",
-        prompt: "A healthy learner response after being wrong is to:",
+        prompt:
+          "60% Asset A (σ=16%), 40% Asset B (σ=10%), ρ=0.25. Approximate portfolio volatility is:",
         choices: [
-          "Delete the journal",
-          "Update the thesis and falsifiers",
-          "Double the size immediately",
-          "Blame the market exclusively"
+          "11.29%",
+          "16.00%",
+          "13.00%",
+          "26.00%",
         ],
-        correctIndex: 1,
-        explanation: "Learning compounds through revised process.",
-      }
+        correctIndex: 0,
+        explanation:
+          "Notes Example 30.2: variance 0.012736 → σp≈11.29%. Diversification works because correlation is imperfect.",
+      },
+      {
+        id: "m30-q4",
+        prompt:
+          "E(Rp)=8%, Rf=3%, σp=10%. Sharpe ratio is:",
+        choices: [
+          "0.50",
+          "0.80",
+          "5.00",
+          "0.10",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes Example 30.3: (8%−3%)/10% = 0.50 excess return per unit of volatility — incomplete alone, but comparable when measured consistently.",
+      },
+      {
+        id: "m30-q5",
+        prompt:
+          "On the $14,800 book, Asset B is only 30% of capital but 20% volatility while A is 50%/12%. Best optimization next step is:",
+        choices: [
+          "Check risk-budget share (B can rival A’s risk) and resize under constraints — do not assume largest capital weight is largest risk",
+          "Ignore B because its capital weight is smaller than A’s",
+          "Put 100% in the highest expected-return name with no max-position or cash reserve",
+          "Add only ‘low-vol’ names without checking correlation",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes Examples 30.4 + §30.6: capital ≠ risk; constraints and covariance thinking keep the improved portfolio realistic.",
+      },
     ],
   },
   {
