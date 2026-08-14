@@ -196,58 +196,97 @@ export const MODULES_EXTRA: ModuleQuest[] = [
   {
     id: "m21",
     number: 21,
-    title: "Factor Awareness",
+    title: "Strategic Asset Allocation",
     mapLabel: "Factor Desk",
     x: 50,
     y: 50,
-    summary: "Recognize common return factors without overclaiming.",
+    summary:
+      "Understand long-term allocation across stocks, businesses, property, forex, bonds, alternatives and cash; create a target multi-asset portfolio.",
     concepts: [
-      "value factor",
-      "momentum",
-      "quality"
+      "strategic asset allocation",
+      "portfolio weights",
+      "target dollars",
+      "expected portfolio return",
+      "rebalancing to target",
+      "strategic vs tactical",
     ],
-    outcome: "Explain one factor exposure in your book.",
+    outcome:
+      "Create a target multi-asset allocation for the $14,800 book and compute the rebalancing trade needed to reconnect actual holdings to policy.",
     lesson:
-      "Factors are systematic return drivers (value, momentum, quality, size). Know what you own — accidental factor bets are still bets.",
+      "Strategic asset allocation sets long-term target weights from objectives, horizon, risk capacity, liquidity needs and beliefs — not a bet on which asset wins next month. Even an attractive security can hurt the portfolio if its weight is excessive. Asset weight = Asset value / Total portfolio value × 100% (e.g. $4,440 / $14,800 = 30% stocks). Target dollars = Portfolio value × Target weight (e.g. 25% bonds × $14,800 = $3,700). Example policy on $14,800: stocks 30% ($4,440), bonds 25% ($3,700), real estate 15% ($2,220), broad ETF 10% ($1,480), commodities/alts 5% ($740), forex/hedge 5% ($740), cash 10% ($1,480). Expected portfolio return = Σ (weight × expected asset return) with weights summing to 100% and consistent horizons (e.g. 50%×8% + 30%×4% + 20%×2% = 5.60%). Expected ≠ guaranteed. Rebalancing trade = Target dollars − Current dollars (e.g. target bonds $3,700 vs current $3,150 → buy/add $550). Strategic = long-term architecture; tactical = temporary deviation on a short/medium-term view that adds timing risk.",
     scenario:
-      "Apply Module 21 concepts inside Portfolio Lab with explicit size, risk, and a falsifier.",
+      "In Portfolio Lab you must turn the $14,800 book into a written multi-asset policy: pick target weights, convert them to dollars, estimate weighted expected return, then rebalance any sleeve that has drifted — without confusing strategic architecture with a tactical chase.",
     questions: [
       {
         id: "m21-q1",
-        prompt: "In Module 21 (Factor Awareness), the best first step is to:",
+        prompt:
+          "In Green City Portal 21, strategic asset allocation primarily sets:",
         choices: [
-          "Skip the numbers and follow tips",
-          "Define the decision, risks, and what would change your mind",
-          "Maximise leverage",
-          "Ignore liquidity"
+          "Long-term target weights from objectives, horizon, risk capacity and liquidity needs — not a prediction of next month’s winner",
+          "Which single stock will outperform this week",
+          "Day-trading entry signals for every sleeve",
+          "A guarantee of the highest possible return",
         ],
-        correctIndex: 1,
-        explanation: "Process first: decision, risks, falsifiers.",
+        correctIndex: 0,
+        explanation:
+          "Notes §21.1: SAA is portfolio architecture. An excellent asset can still create a poor portfolio if its weight is excessive.",
       },
       {
         id: "m21-q2",
-        prompt: "Which formula pair is most relevant when checking short-term survival?",
+        prompt:
+          "A $14,800 portfolio holds $4,440 in stocks. Stock weight is:",
         choices: [
-          "P/E and PEG only",
-          "Current ratio and acid-test (quick) ratio",
-          "CAGR only",
-          "Dividend yield only"
+          "30%",
+          "44.4%",
+          "14.8%",
+          "70%",
         ],
-        correctIndex: 1,
-        explanation: "Liquidity ratios stress near-term obligations.",
+        correctIndex: 0,
+        explanation:
+          "Notes Example 21.1: Weight = $4,440 / $14,800 × 100% = 30%.",
       },
       {
         id: "m21-q3",
-        prompt: "A healthy learner response after being wrong is to:",
+        prompt:
+          "Target bond weight is 25% of a $14,800 portfolio. Target bond dollars equal:",
         choices: [
-          "Delete the journal",
-          "Update the thesis and falsifiers",
-          "Double the size immediately",
-          "Blame the market exclusively"
+          "$3,700",
+          "$2,960",
+          "$4,440",
+          "$1,480",
         ],
-        correctIndex: 1,
-        explanation: "Learning compounds through revised process.",
-      }
+        correctIndex: 0,
+        explanation:
+          "Notes Example 21.2: Target value = $14,800 × 0.25 = $3,700.",
+      },
+      {
+        id: "m21-q4",
+        prompt:
+          "A portfolio is 50% stocks E(R)=8%, 30% bonds E(R)=4%, 20% cash E(R)=2%. Expected portfolio return is:",
+        choices: [
+          "5.60%",
+          "8.00%",
+          "4.67% (simple average of 8%, 4%, 2%)",
+          "14.00%",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes Example 21.3: 0.50×8% + 0.30×4% + 0.20×2% = 4% + 1.2% + 0.4% = 5.60%. Use weighted contributions, not an unweighted average.",
+      },
+      {
+        id: "m21-q5",
+        prompt:
+          "Target bond value is $3,700 but bonds currently equal $3,150 in the $14,800 book. The rebalancing trade is:",
+        choices: [
+          "Buy/add $550 of bonds (target − current)",
+          "Sell $550 of bonds",
+          "Do nothing — strategic allocation never rebalances",
+          "Move the entire $3,700 into cash",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes Example 21.4: Trade = $3,700 − $3,150 = +$550. Rebalancing reconnects actual holdings to strategic policy.",
+      },
     ],
   },
   {
