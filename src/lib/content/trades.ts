@@ -3961,23 +3961,362 @@ const HIGHLANDS: TradeArea[] = [
     id: "tr-high-summit",
     areaId: "mandate-highlands",
     title: "Summit IC Lot",
-    summary: "Investment committee defence — size or pass.",
+    summary:
+      "Close the multi-year $10m Highlands path — geometric compounding, turnover and cadence — then defend total/active return, contribution, skill vs luck and philosophy before the Final Investment Committee.",
     risk: "high",
     capitalDeltaGain: 500,
     capitalDeltaLoss: -350,
+    goldReward: 1,
     x: 32,
     y: 46,
-    prompt: "Defend the lot to the mock IC?",
-    choices: [
+    prompt: "Complete the Multi-Year Summit IC defence chain.",
+    choices: [],
+    steps: [
       {
-        label: "Defend with full packet",
-        outcome: "gain",
-        feedback: "IC clears. Book jumps.",
+        id: "summit-1",
+        title: "Part 1 · Path dependence and cadence",
+        narrative:
+          "Portal 35.1 / 35.5: multi-year outcomes depend on sequence — early losses shrink the base for later gains. Monitor daily/weekly for breaches; review monthly/quarterly; do not equate continuous monitoring with continuous trading. The $10m mandate still binds as conditions change.",
+        data: [
+          {
+            kind: "table",
+            title: "Decision cadence (notes §35.5)",
+            headers: ["Frequency", "Primary task"],
+            rows: [
+              ["Daily/weekly", "Material events and risk breaches"],
+              ["Monthly", "Positioning, liquidity, risk dashboard"],
+              ["Quarterly", "Thesis refresh, earnings, allocation"],
+              ["Annual", "Mandate / philosophy assessment"],
+              ["Event-driven", "Act when thesis-changing info arrives"],
+            ],
+          },
+          {
+            kind: "news",
+            title: "Path chatter",
+            items: [
+              {
+                headline: "Trade every tick — monitoring frequency = turnover",
+                source: "Desk FOMO",
+              },
+              {
+                headline: "Early −20% year ‘doesn’t matter if we finish green’",
+                source: "Message board",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "summit-1a",
+            "Keep process through the path — monitor for breaches, trade on deliberate cadence; respect that sequence changes the capital base",
+            "gain",
+            0.012,
+            "Notes §35.1: path dependence + usable process through changing conditions.",
+          ),
+          choice(
+            "summit-1b",
+            "Trade continuously because you are monitoring continuously",
+            "loss",
+            -0.018,
+            "Monitor ≠ trade continuously. Turnover without thesis raises costs.",
+          ),
+          choice(
+            "summit-1c",
+            "Ignore early drawdowns — only the final-year print matters",
+            "loss",
+            -0.014,
+            "A large early loss changes the base on which later gains compound.",
+          ),
+        ],
       },
       {
-        label: "Wing it without data",
-        outcome: "loss",
-        feedback: "Rejected and marked down.",
+        id: "summit-2",
+        title: "Part 2 · Geometric return",
+        narrative:
+          "Portal 35.2: Geometric return = [Π(1+Rt)]^(1/n) − 1 respects compounding. Path +10%, −5%, +12% → growth 1.1704 → ≈5.38% annualized. Arithmetic averages can overstate realized multi-period growth.",
+        data: [
+          {
+            kind: "calc",
+            title: "Geometric return (notes Example 35.1)",
+            lines: [
+              "Growth factor = 1.10 × 0.95 × 1.12 = 1.1704",
+              "Geometric return = 1.1704^(1/3) − 1",
+              "≈ 1.05382 − 1 = 5.38%",
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "summit-2a",
+            "Report ≈5.38% geometric — the compounding path for the IC packet",
+            "gain",
+            0.014,
+            "Example 35.1: geometric matches the wealth path; arithmetic can overstate when vols vary.",
+          ),
+          choice(
+            "summit-2b",
+            "Present (10−5+12)/3 = 5.67% as the official multi-year rate",
+            "loss",
+            -0.016,
+            "Arithmetic ignores compounding. Use [Π(1+R)]^(1/n) − 1.",
+          ),
+          choice(
+            "summit-2c",
+            "Lead with the +12% year only and bury the −5%",
+            "loss",
+            -0.012,
+            "Path dependence means the full sequence belongs in the defence.",
+          ),
+        ],
+      },
+      {
+        id: "summit-3",
+        title: "Part 3 · Ending fund value",
+        narrative:
+          "Portal 35.3: Ending value = Beginning × Π(1+Rt). $10m × 1.1704 = $11.704m before flows/fees. Dollars make the path tangible for the committee.",
+        data: [
+          {
+            kind: "calc",
+            title: "Ending value (notes Example 35.2)",
+            lines: [
+              "Beginning fund = $10,000,000",
+              "Growth factor = 1.1704",
+              "Ending value = $10,000,000 × 1.1704 = $11,704,000",
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "Scale reminder",
+            items: [
+              { label: "Simulated fund", value: "$10m Highlands mandate" },
+              { label: "Starter book reference", value: "$14,800 (graduation complete)" },
+              { label: "Flows in example", value: "None (simplified)" },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "summit-3a",
+            "State ending NAV $11.704m and compare the path to benchmark and risk taken",
+            "gain",
+            0.014,
+            "Example 35.2: dollars + relative risk — not a victory speech on ending NAV alone.",
+          ),
+          choice(
+            "summit-3b",
+            "Claim $17.04m by misreading 1.1704 as a dollar add-on",
+            "loss",
+            -0.02,
+            "Multiply beginning value by the growth factor: $10m × 1.1704 = $11.704m.",
+          ),
+          choice(
+            "summit-3c",
+            "Skip ending value — geometric % is enough for the IC",
+            "loss",
+            -0.012,
+            "Ending value makes managed-capital impact tangible for the committee.",
+          ),
+        ],
+      },
+      {
+        id: "summit-4",
+        title: "Part 4 · Turnover vs decision quality",
+        narrative:
+          "Portal 35.4: Turnover ≈ lesser(purchases, sales) / average fund value. Purchases $3.0m, sales $2.6m, average $10.4m → 25%. Explain rotations; high turnover can adapt or just burn costs.",
+        data: [
+          {
+            kind: "calc",
+            title: "Turnover (notes Example 35.3)",
+            lines: [
+              "Lesser(purchases, sales) = $2.6m",
+              "Average fund value = $10.4m",
+              "Turnover = $2.6m / $10.4m × 100% = 25%",
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "summit-4a",
+            "Report 25% turnover with thesis reasons for material rotations — not churn for its own sake",
+            "gain",
+            0.014,
+            "Example 35.3: explain what information caused each material rotation vs cost/tax drag.",
+          ),
+          choice(
+            "summit-4b",
+            "Celebrate (3.0+2.6)/10.4 ≈ 54% as ‘maximum activity = skill’",
+            "loss",
+            -0.018,
+            "Use lesser of purchases or sales. Activity ≠ edge.",
+          ),
+          choice(
+            "summit-4c",
+            "Hide turnover from the IC packet",
+            "loss",
+            -0.012,
+            "Ending value shows result; turnover shows how much trading was required.",
+          ),
+        ],
+      },
+      {
+        id: "summit-5",
+        title: "Part 5 · Total and active return",
+        narrative:
+          "Portal 36.2–36.3: committee starts with how much the fund gained, then vs benchmark. $10m → $11.3m with no flows = 13% total return. Active return = 13.0% − 9.5% = +3.5 pp — still ask why.",
+        data: [
+          {
+            kind: "calc",
+            title: "Total return (notes Example 36.1)",
+            lines: [
+              "Begin $10.0m → End $11.3m; no external flows",
+              "Return = ($11.3m − $10.0m) / $10.0m × 100% = 13.0%",
+            ],
+          },
+          {
+            kind: "calc",
+            title: "Active return (notes Example 36.2)",
+            lines: [
+              "Rp = 13.0%; Rb = 9.5%",
+              "Active return = 13.0% − 9.5% = +3.5 percentage points",
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "summit-5a",
+            "Present 13% total and +3.5 pp active — then prepare attribution for whether it was intended",
+            "gain",
+            0.015,
+            "Examples 36.1–36.2: absolute then relative; outperformance still needs explanation.",
+          ),
+          choice(
+            "summit-5b",
+            "Stop at 13% absolute and skip the benchmark",
+            "loss",
+            -0.02,
+            "Positive absolute can still be weak relative to the mandate’s comparison standard.",
+          ),
+          choice(
+            "summit-5c",
+            "Claim skill proven solely by +3.5 pp in one period",
+            "loss",
+            -0.014,
+            "One period of outperformance does not prove skill (Portal 36.6).",
+          ),
+        ],
+      },
+      {
+        id: "summit-6",
+        title: "Part 6 · Contribution and allocation effect",
+        narrative:
+          "Portal 36.4–36.5: Contribution ≈ weight × asset return (40% × 15% ≈ +6.0 pp). Allocation effect ≈ (wp − wb) × benchmark asset return (50%−40% × 12% ≈ +1.2 pp). Weights always accompany performance talk.",
+        data: [
+          {
+            kind: "calc",
+            title: "Contribution (notes Example 36.3)",
+            lines: [
+              "Beginning equity weight = 40%",
+              "Equities return = 15%",
+              "Contribution ≈ 0.40 × 0.15 = +6.0 percentage points",
+            ],
+          },
+          {
+            kind: "calc",
+            title: "Allocation effect (notes Example 36.4)",
+            lines: [
+              "Fund equity 50%; benchmark equity 40%",
+              "Benchmark equity return = 12%",
+              "Effect ≈ (0.50 − 0.40) × 0.12 = +1.2 percentage points",
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "summit-6a",
+            "Attribute +6.0 pp equity contribution and +1.2 pp allocation overweight — separate absolute sources from active weighting",
+            "gain",
+            0.015,
+            "Contribution ≠ full Brinson attribution; both belong in an honest IC defence.",
+          ),
+          choice(
+            "summit-6b",
+            "Say equities ‘returned 15% to the fund’ without the 40% weight",
+            "loss",
+            -0.018,
+            "A high asset return with small weight may contribute less than a moderate return with large weight.",
+          ),
+          choice(
+            "summit-6c",
+            "Treat +1.2 pp allocation as proof of stock-picking skill",
+            "loss",
+            -0.012,
+            "Allocation effect is about active asset weighting vs benchmark — not security selection.",
+          ),
+        ],
+      },
+      {
+        id: "summit-7",
+        title: "Part 7 · Skill vs luck and philosophy defence",
+        narrative:
+          "Portal 36.6–36.8: the Summit IC is not a victory speech. Separate repeatable process from luck, admit mistakes, and state a philosophy specific enough to guide future Highlands decisions — mandate compliance included.",
+        data: [
+          {
+            kind: "table",
+            title: "Skill vs luck (notes §36.6)",
+            headers: ["More like skill", "More like luck"],
+            rows: [
+              ["Repeatable process across periods", "One concentrated bet decides result"],
+              ["Calibrated forecasts", "Outcomes far beyond assumptions"],
+              ["Risk limits respected", "Large uncompensated risk"],
+              ["Attribution matches theses", "Unexpected factor exposure"],
+              ["Mistakes identified and corrected", "Narrative rewritten after the fact"],
+            ],
+          },
+          {
+            kind: "table",
+            title: "IC packet checklist (notes §36.8)",
+            headers: ["#", "Cover"],
+            rows: [
+              ["1–3", "Mandate, allocation, performance / active return"],
+              ["4–6", "Drawdown, attribution, best/worst decisions"],
+              ["7–11", "Behavior, rotation, stress, skill vs luck"],
+              ["12", "Final investment philosophy (not slogans)"],
+            ],
+          },
+          {
+            kind: "news",
+            title: "Pressure line",
+            items: [
+              {
+                headline: "Hide the mandate breach — NAV finished ahead of the $14,800 book",
+                source: "Bad counsel",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "summit-7a",
+            "Defend with full packet — attribution, drawdown, skill vs luck, admitted mistakes, and a specific philosophy; refuse to hide breaches",
+            "gain",
+            0.018,
+            "Notes §36.1 / 36.7–36.8: explain what was attempted, what failed, and what will guide future decisions.",
+          ),
+          choice(
+            "summit-7b",
+            "Wing it — absolute return only; declare skill from one good year",
+            "loss",
+            -0.03,
+            "Strong returns via hidden concentration or mandate violations are not automatically strong management.",
+          ),
+          choice(
+            "summit-7c",
+            "Rewrite the journal after results so every trade looks intentional",
+            "loss",
+            -0.02,
+            "Rewritten narratives after the outcome are evidence of luck-storytelling, not skill.",
+          ),
+        ],
       },
     ],
   }),
