@@ -2811,24 +2811,239 @@ const HIGHLANDS: TradeArea[] = [
     id: "tr-high-mandate",
     areaId: "mandate-highlands",
     title: "Mandate Defence Lot",
-    summary: "Trade only inside IPS language — or breach.",
+    summary:
+      "Graduate the Highlands book to a simulated $10m fund: treat the IPS as constitution, scale weights to dollars, enforce max position and liquidity reserve, and refuse preference-driven breaches.",
     risk: "low",
     capitalDeltaGain: 230,
     capitalDeltaLoss: -260,
     goldReward: 1,
     x: 18,
     y: 24,
-    prompt: "Approve the lot under the IPS?",
-    choices: [
+    prompt: "Complete the Fund Mandate IPS chain.",
+    choices: [],
+    steps: [
       {
-        label: "Approve within mandate bands",
-        outcome: "gain",
-        feedback: "Compliant gain. Book rises.",
+        id: "mandate-1",
+        title: "Part 1 · IPS is the constitution",
+        narrative:
+          "You leave the $14,800 starter book for a simulated $10m Highlands fund. Portal 34.1: scale alone is not the change — obligations are. The IPS defines objective, risk, liquidity, benchmark, ranges and concentration so decisions follow the mandate, not personal preference after a rough week.",
+        data: [
+          {
+            kind: "table",
+            title: "IPS elements (notes §34.1)",
+            headers: ["Element", "Example question"],
+            rows: [
+              ["Objective", "What is the fund trying to achieve?"],
+              ["Return target", "Absolute, real or benchmark-relative?"],
+              ["Risk limit", "Max volatility, drawdown or VaR?"],
+              ["Liquidity", "How quickly must assets convert to cash?"],
+              ["Benchmark", "What is the comparison portfolio/index?"],
+              ["Concentration", "Max single-name / sector / country weight?"],
+            ],
+          },
+          {
+            kind: "news",
+            title: "Highlands desk chatter",
+            items: [
+              {
+                headline: "Ignore the IPS this quarter — the opportunity set changed",
+                source: "Message board",
+                note: "Changing rules after discomfort is exactly what the mandate prevents",
+              },
+              {
+                headline: "Policy note: preference ≠ permitted risk",
+                source: "Portfolio Lab mandate",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "mandate-1a",
+            "Lock the IPS as constitution — trades must fit objective, risk, liquidity and concentration before preference",
+            "gain",
+            0.015,
+            "Notes §34.1: the IPS prevents rewriting the rules when performance becomes uncomfortable.",
+          ),
+          choice(
+            "mandate-1b",
+            "Manage the $10m book by personal preference until returns feel right, then write the IPS",
+            "loss",
+            -0.02,
+            "A professional fund cannot be managed simply by preference. Mandate first.",
+          ),
+          choice(
+            "mandate-1c",
+            "Treat the IPS as optional marketing text that never constrains tickets",
+            "loss",
+            -0.015,
+            "Without enforceable limits, unconstrained global choices become mandate drift.",
+          ),
+        ],
       },
       {
-        label: "Stretch outside the IPS",
-        outcome: "loss",
-        feedback: "Breach costs and mark-down.",
+        id: "mandate-2",
+        title: "Part 2 · Scale weights to dollars",
+        narrative:
+          "Portal 34.2: Dollar allocation = Fund × Weight. The arithmetic from $14,800 still applies, but at $10m implementation, liquidity and market impact matter. A 35% equity target is $3.5m — not a reason to ignore execution risk.",
+        data: [
+          {
+            kind: "calc",
+            title: "Professional allocation (notes Example 34.1)",
+            lines: [
+              "Fund value = $10,000,000",
+              "Strategic equity target = 35% = 0.35",
+              "Equity allocation = $10,000,000 × 0.35",
+              "= $3,500,000",
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "Scale reminder",
+            items: [
+              { label: "Starter book", value: "$14,800" },
+              { label: "Simulated fund", value: "$10,000,000" },
+              { label: "Same 35% equity at $14,800", value: "≈ $5,180" },
+              { label: "Same 35% equity at $10m", value: "$3,500,000" },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "mandate-2a",
+            "Set $3.5m equity target and flag implementation/liquidity risk — weights scale; market impact does too",
+            "gain",
+            0.02,
+            "Example 34.1: $10m × 0.35 = $3.5m. Distinguish allocation arithmetic from implementation risk.",
+          ),
+          choice(
+            "mandate-2b",
+            "Treat $3.5m like a $5k ticket — fill instantly with no impact or unwind plan",
+            "loss",
+            -0.018,
+            "At institutional size, easy small-account trades can move prices and be hard to unwind.",
+          ),
+          choice(
+            "mandate-2c",
+            "Book $35m equity because ‘35% of $10m looks bigger with an extra zero’",
+            "loss",
+            -0.025,
+            "Arithmetic error. $10m × 0.35 = $3.5m, not $35m.",
+          ),
+        ],
+      },
+      {
+        id: "mandate-3",
+        title: "Part 3 · Active return and max position",
+        narrative:
+          "Portal 34.3–34.4: Active return = Rp − Rb (8.4% − 7.1% = +1.3 pp). Absolute gain can still be weak relatively. Max dollar position = Fund × Limit (6% of $10m = $600k) — monitor after price moves so winners do not silently breach.",
+        data: [
+          {
+            kind: "calc",
+            title: "Active return (notes Example 34.2)",
+            lines: [
+              "Fund return Rp = 8.4%",
+              "Benchmark Rb = 7.1%",
+              "Active return = 8.4% − 7.1% = +1.3 percentage points",
+            ],
+          },
+          {
+            kind: "calc",
+            title: "Position limit (notes Example 34.3)",
+            lines: [
+              "Fund value = $10,000,000",
+              "Max single-stock weight = 6% = 0.06",
+              "Max position = $10,000,000 × 0.06 = $600,000",
+            ],
+          },
+          {
+            kind: "news",
+            title: "Ticket proposal",
+            items: [
+              {
+                headline: "Add $900k to RidgeForge — thesis is working; let it run past 6%",
+                source: "PM chat",
+              },
+              {
+                headline: "‘We beat cash’ — skip the benchmark this quarter",
+                source: "Desk rumor",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "mandate-3a",
+            "Score +1.3 pp active return vs benchmark and refuse any add that would push a name above the $600k / 6% cap",
+            "gain",
+            0.022,
+            "Examples 34.2–34.3: relative performance and enforceable position limits are mandate rules, not vibes.",
+          ),
+          choice(
+            "mandate-3b",
+            "Approve the $900k add — winners deserve more than 6%",
+            "loss",
+            -0.028,
+            "Position limits exist so one wrong thesis cannot dominate. Monitor after rallies too.",
+          ),
+          choice(
+            "mandate-3c",
+            "Ignore the benchmark because absolute 8.4% ‘feels fine’",
+            "loss",
+            -0.016,
+            "A positive absolute return can still be poor relative performance vs the mandate’s comparison standard.",
+          ),
+        ],
+      },
+      {
+        id: "mandate-4",
+        title: "Part 4 · Liquidity reserve — approve or breach",
+        narrative:
+          "Portal 34.5: Minimum liquid reserve = Fund × Required % (12% of $10m = $1.2m). Too little liquidity forces bad sales; too much cash can drag return. Approve only lots that keep the reserve and concentration limits intact on the $10m Highlands fund.",
+        data: [
+          {
+            kind: "calc",
+            title: "Liquidity requirement (notes Example 34.4)",
+            lines: [
+              "Required liquidity = 12% = 0.12",
+              "Reserve = $10,000,000 × 0.12 = $1,200,000",
+              "At least $1.2m in cash / highly liquid instruments",
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "Proposed illiquid opportunity lot",
+            items: [
+              { label: "Proposed deployment", value: "$1.8m into hard-to-sell private-style sleeve" },
+              { label: "Cash after fill (if approved)", value: "~$0.4m (< $1.2m reserve)" },
+              { label: "Single-name after add", value: "Would also press past 6% on one name" },
+              { label: "Mandate check", value: "Liquidity + concentration breach" },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "mandate-4a",
+            "Refuse the lot — keep ≥ $1.2m liquid and stay inside the 6% cap; hunt opportunity without breaching the IPS",
+            "gain",
+            0.025,
+            "Example 34.4: liquidity balances readiness with capital efficiency. Attractive ≠ permitted.",
+          ),
+          choice(
+            "mandate-4b",
+            "Deploy the $1.8m — cash is a drag and the IPS can be ‘amended later’",
+            "loss",
+            -0.03,
+            "Rewriting rules after the opportunity appears is preference management, not a mandate.",
+          ),
+          choice(
+            "mandate-4c",
+            "Approve half now and ignore the reserve until redemptions hit",
+            "loss",
+            -0.02,
+            "Reserves exist before stress. Forced sales after the fact are the cost of skipping liquidity.",
+          ),
+        ],
       },
     ],
   }),
