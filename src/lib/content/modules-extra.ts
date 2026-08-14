@@ -5,58 +5,97 @@ export const MODULES_EXTRA: ModuleQuest[] = [
   {
     id: "m19",
     number: 19,
-    title: "Multi-Asset Mix Lab",
+    title: "Bonds & Fixed Income",
     mapLabel: "Asset Mix Lab",
     x: 50,
     y: 50,
-    summary: "Build a simple multi-asset mix with explicit roles for each sleeve.",
+    summary:
+      "Understand government and corporate bonds, yields, duration, credit risk and interest-rate sensitivity.",
     concepts: [
-      "asset roles",
-      "correlation",
-      "rebalancing bands"
+      "bond cash flows",
+      "coupon and current yield",
+      "holding-period return",
+      "duration / rate sensitivity",
+      "credit spread",
+      "fixed-income portfolio role",
     ],
-    outcome: "Assign a role to each asset class in a starter mix.",
+    outcome:
+      "Decide whether fixed income improves the $14,800 portfolio after measuring coupon income, yield, duration risk and credit spread.",
     lesson:
-      "Cash is dry powder, bonds dampen equity shocks, equities drive growth, alternatives may diversify — only if understood. Write role + risk budget per sleeve.",
+      "A bond is a debt security: the investor is mainly a creditor, not an owner. Face (par) value is principal due at maturity; coupon rate sets contractual interest on face value; market price is what investors pay today for the promised cash flows; yield is the return implied by price and cash flows; duration measures interest-rate sensitivity; credit risk is the chance promised payments are missed. Annual coupon = Face value × Coupon rate (e.g. $1,000 × 6% = $60). Current yield = Annual coupon / Market price × 100% (e.g. $60 / $950 ≈ 6.32%) — it is not the same as yield to maturity. Holding-period return = (Coupon + Ending price − Beginning price) / Beginning price × 100% (e.g. buy $980, coupon $50, sell $1,005 → ≈ 7.65%). Bond prices move inversely to market yields: when rates rise, older lower-coupon bonds become less attractive and prices fall. Approximate % price change ≈ −Modified duration × Change in yield (e.g. duration 5.2 and +0.75 pp → ≈ −3.9%). Credit spread ≈ Corporate yield − Comparable government yield (e.g. 6.4% − 4.1% = 2.3% or 230 bp). Fixed income can add income, capital preservation, diversification, liability matching and recession ballast — but long duration, inflation and credit stress can still create losses.",
     scenario:
-      "Apply Module 19 concepts inside Portfolio Lab with explicit size, risk, and a falsifier.",
+      "In Portfolio Lab you are sizing a fixed-income sleeve beside equities and cash on the $14,800 book. Before you buy, you must know what a bond is, how coupon and current yield differ, how total return includes price change, how duration estimates rate risk, and whether a corporate spread compensates for credit risk — then decide if bonds improve the portfolio.",
     questions: [
       {
         id: "m19-q1",
-        prompt: "In Module 19 (Multi-Asset Mix Lab), the best first step is to:",
+        prompt:
+          "In Green City Portal 19, buying a conventional bond is economically different from buying a share mainly because:",
         choices: [
-          "Skip the numbers and follow tips",
-          "Define the decision, risks, and what would change your mind",
-          "Maximise leverage",
-          "Ignore liquidity"
+          "A bondholder is primarily a creditor with contractual cash-flow claims; a shareholder has a residual ownership claim",
+          "Bonds never change price after purchase",
+          "Bondholders always own voting control of the company",
+          "Shares repay a fixed face value at a stated maturity date",
         ],
-        correctIndex: 1,
-        explanation: "Process first: decision, risks, falsifiers.",
+        correctIndex: 0,
+        explanation:
+          "Notes §19.1: a shareholder participates in residual success; a bondholder has a contractual claim focused on coupons, principal, rates and ability to pay.",
       },
       {
         id: "m19-q2",
-        prompt: "Which formula pair is most relevant when checking short-term survival?",
+        prompt:
+          "A bond has face value $1,000 and a 6% annual coupon rate. What is the annual coupon payment?",
         choices: [
-          "P/E and PEG only",
-          "Current ratio and acid-test (quick) ratio",
-          "CAGR only",
-          "Dividend yield only"
+          "$60",
+          "$6",
+          "$1,060",
+          "$600",
         ],
-        correctIndex: 1,
-        explanation: "Liquidity ratios stress near-term obligations.",
+        correctIndex: 0,
+        explanation:
+          "Notes Example 19.1: Annual coupon = Face value × Coupon rate = $1,000 × 0.06 = $60.",
       },
       {
         id: "m19-q3",
-        prompt: "A healthy learner response after being wrong is to:",
+        prompt:
+          "A $1,000 face-value bond pays a $60 annual coupon and trades at $950. Approximate current yield is:",
         choices: [
-          "Delete the journal",
-          "Update the thesis and falsifiers",
-          "Double the size immediately",
-          "Blame the market exclusively"
+          "About 6.32% (coupon ÷ market price × 100%)",
+          "Exactly 6.00% because the coupon rate is 6%",
+          "About 15.8% ($950 ÷ $60)",
+          "Zero until maturity",
         ],
-        correctIndex: 1,
-        explanation: "Learning compounds through revised process.",
-      }
+        correctIndex: 0,
+        explanation:
+          "Notes Example 19.2: Current yield = $60 / $950 × 100% ≈ 6.32%. Coupon rate ≠ current yield; current yield is not YTM.",
+      },
+      {
+        id: "m19-q4",
+        prompt:
+          "A bond has modified duration 5.2 and market yield rises by 0.75 percentage points. Using the notes’ duration approximation, estimated price change is about:",
+        choices: [
+          "A 3.9% price decline (−5.2 × 0.0075)",
+          "A 3.9% price increase",
+          "No price change if coupons are still paid",
+          "A 5.2% price decline equal to duration in years",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes Example 19.4: %ΔPrice ≈ −Duration × ΔYield = −5.2 × 0.0075 = −0.039 → about −3.9%. Higher duration means more rate sensitivity.",
+      },
+      {
+        id: "m19-q5",
+        prompt:
+          "For the $14,800 Portfolio Lab book, which decision best applies Portal 19 fixed-income thinking?",
+        choices: [
+          "Add/size a bond sleeve only after checking income role, duration (rate) risk and credit spread — not because a high yield looks free",
+          "Treat every high-yield corporate bond as risk-free income",
+          "Ignore duration because coupon payments guarantee no mark-to-market loss",
+          "Replace all cash with the longest-duration bond available for maximum stability",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes §§19.7–19.8: fixed income can diversify and stabilize, but duration, inflation and credit risk can still create losses; a wide spread may warn of stress, not free return.",
+      },
     ],
   },
   {
