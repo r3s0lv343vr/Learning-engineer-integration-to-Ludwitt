@@ -963,58 +963,97 @@ export const MODULES_EXTRA: ModuleQuest[] = [
   {
     id: "m29",
     number: 29,
-    title: "Hedging Instincts",
+    title: "Behavioural Finance",
     mapLabel: "Hedge Booth",
     x: 50,
     y: 50,
-    summary: "Use hedges to reshape risk, not to gamble twice.",
+    summary:
+      "Understand loss aversion, FOMO, anchoring, overconfidence, herding, confirmation bias and the disposition effect — then audit your own trade history for behavioural weaknesses.",
     concepts: [
-      "hedge",
-      "basis risk",
-      "cost of hedge"
+      "loss aversion & recovery math",
+      "disposition effect (PGR − PLR)",
+      "forecast error / APE",
+      "anchoring & FOMO",
+      "overconfidence & herding",
+      "behavioural decision journal",
     ],
-    outcome: "Choose when a hedge is insurance vs speculation.",
+    outcome:
+      "Review decisions on the $14,800 book with recovery math, a disposition indicator, and a journal rule that re-underwrites from today’s price — not purchase price.",
     lesson:
-      "A hedge reduces an existing exposure. If it adds new directional risk, it is another bet.",
+      "Portal 28 builds a disciplined thesis; Portal 29 asks whether you can keep it when prices move. Biases systematically distort gains, losses, probabilities and social cues. Loss aversion: Required gain after loss = 1/(1−L)−1 (e.g. 30% loss → ≈42.86% to recover) because the capital base shrank — protect against permanent impairment, but do not confuse panic volatility with a broken thesis. Disposition effect: PGR = RG/(RG+PG), PLR = RL/(RL+PL), indicator = PGR−PLR (e.g. 12/20=0.60, 3/12=0.25 → 0.35) signals selling winners faster than losers. Overconfidence: Absolute % error = |Actual−Forecast|/|Forecast| (e.g. $102m vs $120m → 15%) — calibrate size when misses are large. Use a decision journal: feeling vs evidence, disagreeing evidence, size from confidence vs analysis, would I buy today if I did not already own it?",
     scenario:
-      "Apply Module 29 concepts inside Portfolio Lab with explicit size, risk, and a falsifier.",
+      "In Portfolio Lab you audit Highlands trades on the $14,800 book after a volatile week. Compute recovery math on a drawdown, measure any disposition pattern, check a forecast miss, and write one rule that stops purchase-price anchoring from running the next decision.",
     questions: [
       {
         id: "m29-q1",
-        prompt: "In Module 29 (Hedging Instincts), the best first step is to:",
+        prompt:
+          "In Yellow City Portal 29, why does behavioural finance matter even for investors who know the maths?",
         choices: [
-          "Skip the numbers and follow tips",
-          "Define the decision, risks, and what would change your mind",
-          "Maximise leverage",
-          "Ignore liquidity"
+          "Biases can systematically distort how evidence is interpreted under uncertainty and emotional pressure",
+          "Emotion should always replace the written thesis",
+          "Mathematics guarantees unbiased decisions",
+          "Only FOMO matters; other biases are irrelevant",
         ],
-        correctIndex: 1,
-        explanation: "Process first: decision, risks, falsifiers.",
+        correctIndex: 0,
+        explanation:
+          "Notes §29.1: the goal is rules and reviews so emotion does not silently control capital allocation.",
       },
       {
         id: "m29-q2",
-        prompt: "Which formula pair is most relevant when checking short-term survival?",
+        prompt:
+          "An investment falls 30%. Approximate gain required to return to the original value is:",
         choices: [
-          "P/E and PEG only",
-          "Current ratio and acid-test (quick) ratio",
-          "CAGR only",
-          "Dividend yield only"
+          "42.86%",
+          "30%",
+          "70%",
+          "15%",
         ],
-        correctIndex: 1,
-        explanation: "Liquidity ratios stress near-term obligations.",
+        correctIndex: 0,
+        explanation:
+          "Notes Example 29.1: 1/(1−0.30)−1 = 1/0.70−1 ≈ 42.86%. Equal % gains do not restore a smaller capital base.",
       },
       {
         id: "m29-q3",
-        prompt: "A healthy learner response after being wrong is to:",
+        prompt:
+          "Realized gains 12, paper gains 8, realized losses 3, paper losses 9. Disposition indicator (PGR − PLR) is:",
         choices: [
-          "Delete the journal",
-          "Update the thesis and falsifiers",
-          "Double the size immediately",
-          "Blame the market exclusively"
+          "0.35",
+          "0.60",
+          "0.25",
+          "1.00",
         ],
-        correctIndex: 1,
-        explanation: "Learning compounds through revised process.",
-      }
+        correctIndex: 0,
+        explanation:
+          "Notes Example 29.2: PGR=12/20=0.60; PLR=3/12=0.25; indicator=0.35 — winners realized faster than losers.",
+      },
+      {
+        id: "m29-q4",
+        prompt:
+          "Forecast revenue $120m; actual $102m. Absolute percentage error is:",
+        choices: [
+          "15%",
+          "18%",
+          "102%",
+          "0%",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes Example 29.3: |102−120|/120 = 15%. Large misses should reduce confidence or widen scenarios and may shrink size.",
+      },
+      {
+        id: "m29-q5",
+        prompt:
+          "Best Portfolio Lab response after spotting anchoring and disposition pressure on the $14,800 book is:",
+        choices: [
+          "Re-underwrite from today’s price (would I buy if I did not already own it?) and set a rule that separates thesis evidence from purchase-price / break-even feelings",
+          "Hold every loser until break-even regardless of economics",
+          "Sell every winner immediately because locking a gain always feels good",
+          "Increase size whenever confidence feels high, without tracking forecast error",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes §§29.2–29.5: combine recovery math with thesis review; journal questions convert bias into operating rules.",
+      },
     ],
   },
   {
