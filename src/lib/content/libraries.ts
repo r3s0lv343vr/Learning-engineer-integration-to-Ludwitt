@@ -357,10 +357,24 @@ export const CITY_LIBRARIES: CityLibrary[] = [
   {
     areaId: "mandate-highlands",
     name: "Mandate Highlands Library",
-    tagline: "Mastery archive — thesis, ethics, and mandate defence packs.",
+    tagline:
+      "Yellow City Master Investor — study notes and teaching deck for portals 28–36.",
     x: 10,
     y: 18,
     classes: [
+      {
+        id: "high-class-yellow",
+        title: "Yellow City Master Investor Walkthrough",
+        duration: "55 slides",
+        summary:
+          "Master Investor teaching deck walkthrough aligned to Yellow City portals 28–36.",
+        outline: [
+          "Thesis, behaviour & optimization",
+          "Capital rotation, crisis & global strategy",
+          "Fund mandate, multi-year sim & IC defence",
+          "Practice on the map portals",
+        ],
+      },
       {
         id: "high-class-1",
         title: "Thesis Forge Seminar Online",
@@ -377,6 +391,24 @@ export const CITY_LIBRARIES: CityLibrary[] = [
       },
     ],
     resources: [
+      {
+        id: "high-yellow-notes",
+        title: "Yellow City Master Investor Notes",
+        kind: "notes",
+        description:
+          "Connected explanations / expanded study notes for Mandate Highlands (Yellow City) portals 28–36. Downloadable PDF.",
+        file: "yellow-city-master-investor-notes.pdf",
+        downloadName: "yellow-city-master-investor-connected-explanations-notes.pdf",
+      },
+      {
+        id: "high-yellow-teaching-deck",
+        title: "Yellow City Master Investor Teaching Deck",
+        kind: "powerpoint",
+        description:
+          "55-slide teaching deck for Portals 28–36 (PDF). Powers the Mandate Highlands Library Classroom board.",
+        file: "yellow-city-master-investor-teaching-deck.pdf",
+        downloadName: "yellow-city-master-investor-teaching-deck.pdf",
+      },
       {
         id: "high-pdf",
         title: "Highlands Mandate Paper",
