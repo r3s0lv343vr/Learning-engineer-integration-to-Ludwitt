@@ -9,6 +9,10 @@ import { listAdminLibraryItems } from "@/lib/library-catalog";
  * Build the learner classroom lesson for an area.
  * Starts from the static shell content, then overlays admin uploads/links
  * for that area only. Does not change the Library Classroom UI component.
+ *
+ * Authored city classrooms (full teaching decks) keep their static
+ * Download Notes / Download PowerPoint targets. Admin notes/deck overlays
+ * only apply when the classroom is still a stub. Linked sites always merge.
  */
 export async function resolveClassroomLesson(
   areaId: string,
@@ -24,20 +28,24 @@ export async function resolveClassroomLesson(
     linkedSites: [...base.linkedSites],
   };
 
-  const notes = [...custom]
-    .filter((i) => i.classroomRole === "notes")
-    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0];
-  if (notes) {
-    lesson.notesHref = notes.href;
-    lesson.notesDownloadName = notes.downloadName || notes.title;
-  }
+  const authoredCurriculum = base.slides.length >= 20;
 
-  const deck = [...custom]
-    .filter((i) => i.classroomRole === "deck")
-    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0];
-  if (deck) {
-    lesson.deckHref = deck.href;
-    lesson.deckDownloadName = deck.downloadName || deck.title;
+  if (!authoredCurriculum) {
+    const notes = [...custom]
+      .filter((i) => i.classroomRole === "notes")
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0];
+    if (notes) {
+      lesson.notesHref = notes.href;
+      lesson.notesDownloadName = notes.downloadName || notes.title;
+    }
+
+    const deck = [...custom]
+      .filter((i) => i.classroomRole === "deck")
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))[0];
+    if (deck) {
+      lesson.deckHref = deck.href;
+      lesson.deckDownloadName = deck.downloadName || deck.title;
+    }
   }
 
   const links = custom.filter(
