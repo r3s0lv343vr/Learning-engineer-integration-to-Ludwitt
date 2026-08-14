@@ -2555,23 +2555,251 @@ const QUAY: TradeArea[] = [
     id: "tr-quay-pier",
     areaId: "signal-quay",
     title: "Pier Correlation Hedge",
-    summary: "Crisis hedge when correlations spike.",
+    summary:
+      "Run crisis triage and multi-asset stress on the $14,800 book, refresh weights as correlations spike, then HEDGE/TRIM with a recorded reason — not panic sell-all or stay naked.",
     risk: "medium",
     capitalDeltaGain: 340,
     capitalDeltaLoss: -190,
+    goldReward: 1,
     x: 76,
     y: 48,
-    prompt: "Buy the correlation hedge sleeve?",
-    choices: [
+    prompt: "Complete the Pier Correlation crisis-hedge chain.",
+    choices: [],
+    steps: [
       {
-        label: "Hedge into the stress window",
-        outcome: "gain",
-        feedback: "Hedge pays. Portfolio protected and up.",
+        id: "pier-1",
+        title: "Part 1 · Crisis triage before the hedge ticket",
+        narrative:
+          "Correlations are spiking on the pier. Portal 27: a crisis is a decision test. Do not react to every falling price — separate liquidity needs, forced risks, thesis breaks, and portfolio-level risk. Cash has option value.",
+        data: [
+          {
+            kind: "table",
+            title: "Crisis triage order (notes §27.2)",
+            headers: ["Order", "Check"],
+            rows: [
+              ["1", "Liquidity — near-term obligations / cash need?"],
+              ["2", "Forced risks — margin, refinancing, covenants?"],
+              ["3", "Thesis breaks — which assumptions failed?"],
+              ["4", "Concentration — what now dominates risk?"],
+              ["5", "Scenario losses & recovery capacity"],
+              ["6–8", "Valuation vs updated fundamentals → ADD/HOLD/TRIM/EXIT/REPLACE/HEDGE → record reason"],
+            ],
+          },
+          {
+            kind: "news",
+            title: "Pier wires",
+            items: [
+              {
+                headline: "Everything selling together — ‘dump the book’",
+                source: "Social feed",
+              },
+              {
+                headline: "Risk desk: pairwise equity ρ rising toward 0.9; liquidity still available in short gov / cash",
+                source: "Quay risk",
+              },
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "Book status",
+            items: [
+              { label: "Starting reference", value: "$14,800" },
+              { label: "Cash sleeve", value: "$1,800 (strategic optionality)" },
+              { label: "Leverage", value: "1.0× (no margin call)" },
+              { label: "Near-term cash need", value: "None this week" },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "pier-1a",
+            "Triage first: confirm liquidity and no forced selling, then plan hedges — do not sell every decline on headline fear",
+            "gain",
+            0.015,
+            "Process under pressure. Falling price ≠ automatic rising risk or EXIT.",
+          ),
+          choice(
+            "pier-1b",
+            "Stay naked and skip triage — ‘hedges are for cowards’",
+            "loss",
+            -0.02,
+            "Portal 26–27: stress without a response plan leaves the book exposed when correlations spike.",
+          ),
+          choice(
+            "pier-1c",
+            "Liquidate the entire portfolio immediately because prices fell",
+            "loss",
+            -0.018,
+            "Notes: identify thesis breaks vs intact fundamentals before acting; cash optionality is strategic, not panic.",
+          ),
+        ],
       },
       {
-        label: "Stay naked through the spike",
-        outcome: "loss",
-        feedback: "Everything sells together. Loss.",
+        id: "pier-2",
+        title: "Part 2 · Scenario stress — reveal the vulnerability",
+        narrative:
+          "Portal 26.10: stress testing asks what happens if a specified event occurs. Link shocks logically. If the loss exceeds tolerance, change size, liquidity, hedges, or allocation — do not only record the number.",
+        data: [
+          {
+            kind: "calc",
+            title: "Multi-asset recession stress (notes Example 26.9)",
+            lines: [
+              "Stocks $6,000 × (−20%) = −$1,200",
+              "Bonds $4,000 × (+5%) = +$200",
+              "Real estate $3,000 × (−15%) = −$450",
+              "Cash $1,800 × 0 = $0",
+              "Scenario P/L = −$1,450",
+            ],
+          },
+          {
+            kind: "calc",
+            title: "Scenario return (notes Example 26.10)",
+            lines: [
+              "Starting value $14,800",
+              "Scenario return = −$1,450 / $14,800 ≈ −9.80%",
+              "Compare with risk tolerance — bonds/cash helped but did not fully offset equity + property.",
+            ],
+          },
+          {
+            kind: "table",
+            title: "Why correlation hedge matters now",
+            headers: ["Lens", "Point"],
+            rows: [
+              ["Multi-dimensional risk", "Same vol can hide leverage/liquidity gaps (Portal 26.1)"],
+              ["Co-movement", "Risky assets often move together in stress (Portal 22/26)"],
+              ["Decision use", "If −9.8% is too large, hedge or cut size before the next leg"],
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "pier-2a",
+            "Accept −$1,450 / ≈−9.8% as the vulnerability map — use it to size a hedge, not as trivia",
+            "gain",
+            0.018,
+            "Scenario analysis reveals which sleeves drive loss and whether protection is enough.",
+          ),
+          choice(
+            "pier-2b",
+            "Ignore the stress because ‘VaR / average return looked fine last year’",
+            "loss",
+            -0.022,
+            "Historical stats do not guarantee the future. Stress deliberately steps outside normal behavior.",
+          ),
+          choice(
+            "pier-2c",
+            "Increase leverage to 1.5× to ‘earn back’ the −$1,450 faster",
+            "loss",
+            -0.025,
+            "Notes Example 26.8: leverage magnifies losses and can force selling when financing tightens.",
+          ),
+        ],
+      },
+      {
+        id: "pier-3",
+        title: "Part 3 · Weights after the move",
+        narrative:
+          "Portal 27.7: a defensive holding can become a larger portfolio weight even if its dollar value did not rise. Crisis rebalancing and hedge sizing must use updated weights.",
+        data: [
+          {
+            kind: "calc",
+            title: "Concentration after the shock (notes Example 27.3)",
+            lines: [
+              "Defensive / short-gov sleeve still $2,500",
+              "Book falls $14,800 → $12,500",
+              "New weight = $2,500 / $12,500 = 20%",
+              "Old target percentages are stale — resize hedges off the new book.",
+            ],
+          },
+          {
+            kind: "table",
+            title: "Integrated shock (notes §27.3)",
+            headers: ["Shock", "Portfolio question"],
+            rows: [
+              ["Rates +1.0 pp", "Duration loss on long bonds?"],
+              ["Equities −15%", "Thesis break or valuation opportunity?"],
+              ["Property −10%", "Can financing be serviced?"],
+              ["Home FX +6%", "Unhedged foreign sleeve hit?"],
+              ["Guidance cut", "EXIT/TRIM the broken name?"],
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "pier-3a",
+            "Recompute weights on the $12,500 mark — size any correlation hedge to the new book, not the old $14,800 targets",
+            "gain",
+            0.02,
+            "Updated weights prevent under-/over-hedging after the first leg of the crisis.",
+          ),
+          choice(
+            "pier-3b",
+            "Keep using pre-crisis target percentages and ignore the 20% defensive weight",
+            "loss",
+            -0.018,
+            "Notes: crisis rebalancing should use updated weights rather than old targets.",
+          ),
+          choice(
+            "pier-3c",
+            "Average down the guidance-cut name solely because it fell 30%",
+            "loss",
+            -0.022,
+            "Thesis breaks before bargains — a 30% decline is not automatically a buy.",
+          ),
+        ],
+      },
+      {
+        id: "pier-4",
+        title: "Part 4 · Hedge into the stress window",
+        narrative:
+          "Decide with a recorded reason: HEDGE residual equity/property co-movement, TRIM broken theses, HOLD quality short bonds/cash for liquidity. Do not stay naked through the correlation spike.",
+        data: [
+          {
+            kind: "table",
+            title: "Response grid (notes §27.4)",
+            headers: ["Holding", "Action bias"],
+            rows: [
+              ["Long-duration bond", "TRIM/HOLD — quantify duration loss"],
+              ["High-quality short bond / cash", "HOLD/ADD — liquidity & ballast"],
+              ["Growth equity cluster", "HEDGE/TRIM while ρ is elevated"],
+              ["Weak company (guidance cut)", "TRIM/EXIT if thesis broken"],
+              ["Direct property", "HOLD/Protect — check leverage & sale time"],
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "Pier hedge ticket",
+            items: [
+              { label: "Hedge notional", value: "~8–10% of marked book (sized to −9.8% stress)" },
+              { label: "Instrument role", value: "Offset equity/property co-move; not a directional YOLO" },
+              { label: "Review trigger", value: "ρ back <0.4 or stress P/L within tolerance → scale down hedge" },
+              { label: "Record", value: "Evidence / valuation / risk / liquidity / trigger (Portal 27.8)" },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "pier-4a",
+            "Hedge into the stress window — size to the −9.8% map, TRIM broken names, keep cash optionality, write the review trigger",
+            "gain",
+            0.022,
+            "Hedge pays as process: vulnerability reduced without abandoning the investment process.",
+          ),
+          choice(
+            "pier-4b",
+            "Stay naked through the correlation spike",
+            "loss",
+            -0.03,
+            "Everything sells together. Stress without hedge or size change leaves the book unprotected.",
+          ),
+          choice(
+            "pier-4c",
+            "Pledge cash and lever a bigger directional short ‘hedge’ past mandate",
+            "loss",
+            -0.02,
+            "Leverage can force action (Portal 26.9). A hedge that creates new forced-risk is not triage.",
+          ),
+        ],
       },
     ],
   }),
