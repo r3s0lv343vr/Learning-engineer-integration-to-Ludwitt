@@ -1443,58 +1443,97 @@ export const MODULES_EXTRA: ModuleQuest[] = [
   {
     id: "m34",
     number: 34,
-    title: "Ethics Under Pressure",
+    title: "The Fund Mandate",
     mapLabel: "Ethics Gate",
     x: 50,
     y: 50,
-    summary: "Refuse mandate breaches cleanly.",
+    summary:
+      "Develop an Investment Policy Statement — return target, risk limits, liquidity, benchmarks, concentration and allocation constraints — and graduate from the $14,800 book to a simulated $10 million professional fund.",
     concepts: [
-      "fiduciary duty",
-      "IPS",
-      "conflicts"
+      "IPS as fund constitution",
+      "scaling weights to dollars",
+      "active / benchmark-relative return",
+      "maximum position size",
+      "liquidity reserve",
+      "implementation vs allocation arithmetic",
     ],
-    outcome: "Respond to a breach request.",
+    outcome:
+      "Write mandate rules for a $10m Highlands fund: scale target weights to dollars, enforce max position and liquidity reserve, and judge performance vs benchmark — not personal preference.",
     lesson:
-      "Document, refuse non-compliant orders, offer compliant alternatives. Career > one trade.",
+      "A professional fund is managed to the mandate, not personal preference. The IPS is the fund’s constitution: objective, return target, risk/drawdown limits, liquidity, benchmark, asset ranges, concentration, leverage, currency and review process. Scaling $14,800 → $10m: Dollar allocation = Fund × Weight (e.g. 35% equity → $3.5m) — arithmetic is familiar, but market impact, liquidity and governance grow. Active return = Rp − Rb (e.g. 8.4% − 7.1% = +1.3 pp) — absolute gain can still be poor relatively. Max position = Fund × Limit (e.g. 6% of $10m = $600k); monitor after price moves. Liquidity reserve = Fund × Required % (e.g. 12% → $1.2m) balances readiness vs capital efficiency.",
     scenario:
-      "Apply Module 34 concepts inside Portfolio Lab with explicit size, risk, and a falsifier.",
+      "You graduate Portfolio Lab from the $14,800 book to a simulated $10m Highlands fund. Draft IPS limits, convert a 35% equity target to dollars, set a 6% single-name cap and 12% liquidity reserve, then score a period’s active return vs benchmark — refuse any trade that breaches the mandate.",
     questions: [
       {
         id: "m34-q1",
-        prompt: "In Module 34 (Ethics Under Pressure), the best first step is to:",
+        prompt:
+          "In Yellow City Portal 34, what is the role of the Investment Policy Statement?",
         choices: [
-          "Skip the numbers and follow tips",
-          "Define the decision, risks, and what would change your mind",
-          "Maximise leverage",
-          "Ignore liquidity"
+          "It is the fund’s constitution — defining objective, risk, liquidity, benchmark and limits so decisions follow the mandate, not personal preference after performance becomes uncomfortable",
+          "It is optional marketing text that never constrains trades",
+          "It only sets the stock ticker list and ignores risk and liquidity",
+          "It replaces the need for a benchmark or review process",
         ],
-        correctIndex: 1,
-        explanation: "Process first: decision, risks, falsifiers.",
+        correctIndex: 0,
+        explanation:
+          "Notes §34.1: the move to $10m is about obligations and consistency with the IPS, not merely scale.",
       },
       {
         id: "m34-q2",
-        prompt: "Which formula pair is most relevant when checking short-term survival?",
+        prompt:
+          "A $10m fund has a 35% strategic equity target. Dollar equity allocation is:",
         choices: [
-          "P/E and PEG only",
-          "Current ratio and acid-test (quick) ratio",
-          "CAGR only",
-          "Dividend yield only"
+          "$3.5 million",
+          "$350,000",
+          "$35 million",
+          "$1.48 million",
         ],
-        correctIndex: 1,
-        explanation: "Liquidity ratios stress near-term obligations.",
+        correctIndex: 0,
+        explanation:
+          "Notes Example 34.1: $10,000,000 × 0.35 = $3.5m. Same weight logic as $14,800, with larger implementation risk.",
       },
       {
         id: "m34-q3",
-        prompt: "A healthy learner response after being wrong is to:",
+        prompt:
+          "Fund returns 8.4%; benchmark returns 7.1%. Active return is:",
         choices: [
-          "Delete the journal",
-          "Update the thesis and falsifiers",
-          "Double the size immediately",
-          "Blame the market exclusively"
+          "+1.3 percentage points",
+          "15.5%",
+          "8.4%",
+          "−1.3 percentage points",
         ],
-        correctIndex: 1,
-        explanation: "Learning compounds through revised process.",
-      }
+        correctIndex: 0,
+        explanation:
+          "Notes Example 34.2: 8.4% − 7.1% = +1.3 pp. Absolute return can still be weak relative performance if risk was excessive.",
+      },
+      {
+        id: "m34-q4",
+        prompt:
+          "Fund value $10m; maximum single-stock weight 6%. Maximum dollar position is:",
+        choices: [
+          "$600,000",
+          "$6,000,000",
+          "$60,000",
+          "$1,200,000",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes Example 34.3: $10m × 0.06 = $600k. Monitor after market moves — winners can breach limits without new buys.",
+      },
+      {
+        id: "m34-q5",
+        prompt:
+          "Mandate requires 12% of the $10m fund in cash/highly liquid instruments. Best Portfolio Lab action is:",
+        choices: [
+          "Hold at least $1.2m liquid reserve and refuse over-allocation to attractive but hard-to-sell assets that would breach liquidity",
+          "Deploy every dollar into illiquid opportunities because cash always destroys return",
+          "Ignore the reserve once the equity target is filled",
+          "Treat the $14,800 starter book limits as optional forever after graduation",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes Example 34.4: $10m × 0.12 = $1.2m. Liquidity balances readiness with capital efficiency under the mandate.",
+      },
     ],
   },
   {
