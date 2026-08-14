@@ -1155,58 +1155,97 @@ export const MODULES_EXTRA: ModuleQuest[] = [
   {
     id: "m31",
     number: 31,
-    title: "Journal Sprint",
+    title: "Capital Rotation",
     mapLabel: "Journal Sprint",
     x: 50,
     y: 50,
-    summary: "Log decisions with falsifiers in under five minutes.",
+    summary:
+      "Understand opportunity cost, relative attractiveness, valuation changes and new opportunities — then decide where capital should remain versus redeploy.",
     concepts: [
-      "decision journal",
-      "falsifier",
-      "review cadence"
+      "opportunity cost",
+      "relative expected-return advantage",
+      "switching hurdle / net benefit",
+      "relative valuation spread",
+      "rotation decision framework",
+      "deliberate inaction",
     ],
-    outcome: "Write a mini journal entry for a trade.",
+    outcome:
+      "Redeploy capital on the $14,800 Highlands book only when a new opportunity clears the switching hurdle after costs, uncertainty, liquidity and portfolio fit — not because of boredom or purchase price.",
     lesson:
-      "Date, thesis, size, risks, falsifier, review date. Future-you needs the receipt.",
+      "Capital has opportunity cost: every dollar held chooses that asset over alternatives. Rotation is deliberate redeployment when reward-to-risk changes. Decide forward from today’s price — purchase price must not dominate. Relative expected-return advantage = E(Rnew)−E(Rcurrent) (e.g. 9.0%−5.5%=3.5 pp). Switching hurdle: Net benefit ≈ Advantage − trading cost% − tax/other% (e.g. 3.5%−0.4%−1.0%≈2.1 pp); modest edges can vanish under forecast error. Relative P/E spread = multipleA−multipleB (e.g. 24×−17×=7×) — cheaper is not automatically better unless quality/growth/risk are comparable. Framework compares expected return, downside, valuation, thesis, catalyst, liquidity, correlation, costs and size capacity. Do not rotate constantly: require material change in attractiveness; deliberate inaction is often professional.",
     scenario:
-      "Apply Module 31 concepts inside Portfolio Lab with explicit size, risk, and a falsifier.",
+      "In Portfolio Lab a Highlands holding on the $14,800 book offers ~5.5% expected return while a peer opportunity looks like ~9% at similar risk. Quantify the advantage, subtract switching costs, check relative valuation, then decide KEEP vs ROTATE with a written reason — not a boredom trade.",
     questions: [
       {
         id: "m31-q1",
-        prompt: "In Module 31 (Journal Sprint), the best first step is to:",
+        prompt:
+          "In Yellow City Portal 31, why is holding capital in one asset an active decision?",
         choices: [
-          "Skip the numbers and follow tips",
-          "Define the decision, risks, and what would change your mind",
-          "Maximise leverage",
-          "Ignore liquidity"
+          "Every dollar held cannot be invested elsewhere — opportunity cost means choosing it over the best available alternative today",
+          "Purchase price permanently locks the capital decision forever",
+          "Rotation should ignore expected return and only follow recent price charts",
+          "Opportunity cost only applies to cash, never to invested holdings",
         ],
-        correctIndex: 1,
-        explanation: "Process first: decision, risks, falsifiers.",
+        correctIndex: 0,
+        explanation:
+          "Notes §31.1: forward-looking reward-to-risk from today’s price — not original purchase price — drives rotation.",
       },
       {
         id: "m31-q2",
-        prompt: "Which formula pair is most relevant when checking short-term survival?",
+        prompt:
+          "Current holding E(R)=5.5%; new opportunity E(R)=9.0% at similar risk. Relative expected-return advantage is:",
         choices: [
-          "P/E and PEG only",
-          "Current ratio and acid-test (quick) ratio",
-          "CAGR only",
-          "Dividend yield only"
+          "3.5 percentage points",
+          "14.5%",
+          "5.5%",
+          "0%",
         ],
-        correctIndex: 1,
-        explanation: "Liquidity ratios stress near-term obligations.",
+        correctIndex: 0,
+        explanation:
+          "Notes Example 31.1: 9.0% − 5.5% = 3.5 pp. Rotation is still not automatic after costs and uncertainty.",
       },
       {
         id: "m31-q3",
-        prompt: "A healthy learner response after being wrong is to:",
+        prompt:
+          "Advantage is 3.5 pp; trading costs 0.4%; tax/other switching cost 1.0%. Approximate net benefit is:",
         choices: [
-          "Delete the journal",
-          "Update the thesis and falsifiers",
-          "Double the size immediately",
-          "Blame the market exclusively"
+          "2.1 percentage points",
+          "3.5 percentage points",
+          "4.9 percentage points",
+          "0.4 percentage points",
         ],
-        correctIndex: 1,
-        explanation: "Learning compounds through revised process.",
-      }
+        correctIndex: 0,
+        explanation:
+          "Notes Example 31.2: 3.5% − 0.4% − 1.0% ≈ 2.1 pp. A modest edge can disappear under costs or forecast error.",
+      },
+      {
+        id: "m31-q4",
+        prompt:
+          "Current holding at 24× earnings; alternative at 17× with similar growth and balance-sheet quality. P/E spread is:",
+        choices: [
+          "7×",
+          "41×",
+          "17×",
+          "1×",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes Example 31.3: 24× − 17× = 7×. Still verify quality, growth and risk before calling the cheaper name better.",
+      },
+      {
+        id: "m31-q5",
+        prompt:
+          "Best Portfolio Lab rule for rotating the $14,800 book is:",
+        choices: [
+          "Rotate only when relative attractiveness changes materially and net benefit clears the switching hurdle — deliberate inaction is fine when the thesis still fits",
+          "Trade every day so the book always feels active",
+          "Always sell after any short-term price move regardless of expected return",
+          "Ignore liquidity, taxes and correlation because expected return advantage alone is enough",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes §§31.4–31.5: material change drives rotation; constant activity can destroy performance through costs and overreaction.",
+      },
     ],
   },
   {
