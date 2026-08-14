@@ -524,23 +524,257 @@ const BRICK: TradeArea[] = [
     id: "tr-ex-crane",
     areaId: "brick-exchange",
     title: "Crane Capex Bid",
-    summary: "Capex-heavy industrial — growth or trap.",
+    summary:
+      "Compute FCF after crane capex, ask capacity vs maintenance, then compare ROIC and conversion before sizing — do not max-leverage a growth story.",
     risk: "high",
     capitalDeltaGain: 450,
     capitalDeltaLoss: -320,
+    goldReward: 1,
     x: 64,
     y: 68,
-    prompt: "Fund the crane expansion story?",
-    choices: [
+    prompt: "Complete the Crane Capex FCF chain.",
+    choices: [],
+    steps: [
       {
-        label: "Size small with a stop",
-        outcome: "gain",
-        feedback: "Guided raise lands. Book up.",
+        id: "crane-1",
+        title: "Part 1 · FCF is not net income",
+        narrative:
+          "CraneForge wants a bid on a yard expansion. The tape cites last year’s profit. Blue City Portal 11: companies pay suppliers, debt and the new crane with cash, not accounting earnings.",
+        data: [
+          {
+            kind: "calc",
+            title: "Simplified FCF (notes example 11.4)",
+            lines: [
+              "Cash flow from operations $3.6m; capital expenditure $1.4m",
+              "FCF = CFO − Capex",
+              "FCF = $3.6m − $1.4m = $2.2m",
+              "Interpretation: cash remaining after operations and capital investment under this definition.",
+            ],
+          },
+          {
+            kind: "calc",
+            title: "Profit is not the same cash (notes 11.1 vs 11.5)",
+            lines: [
+              "Income-statement NI on the teaching stack = $1.68m — profitable on paper",
+              "If NI were $2.0m with receivables +$0.9m and inventory +$0.4m → ~$0.7m cash",
+              "State the FCF definition before comparing names.",
+            ],
+          },
+          {
+            kind: "news",
+            title: "Yard wires",
+            items: [
+              {
+                headline: "Street note: ‘$1.68m profit — the crane pays for itself’",
+                source: "Sell-side blast",
+                note: "No CFO, capex or FCF line",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "crane-1a",
+            "Compute FCF = $3.6m − $1.4m = $2.2m — do not treat net income as deployable cash",
+            "gain",
+            0.014,
+            "Right first step. Simplified FCF starts with operating cash and subtracts capex.",
+          ),
+          choice(
+            "crane-1b",
+            "Fund the crane from $1.68m net income and skip the cash-flow statement",
+            "loss",
+            -0.02,
+            "Accrual profit is not cash. The notes: companies pay obligations with cash, not earnings.",
+          ),
+          choice(
+            "crane-1c",
+            "Report FCF as $1.4m − $3.6m = −$2.2m and call the firm insolvent",
+            "loss",
+            -0.012,
+            "The formula is CFO minus capex, not the reverse. Sign errors invent distress the notes do not show.",
+          ),
+        ],
       },
       {
-        label: "Max leverage on the story",
-        outcome: "loss",
-        feedback: "Cost overrun. Portfolio drops.",
+        id: "crane-2",
+        title: "Part 2 · Capacity vs maintenance",
+        narrative:
+          "Capex just jumped. Portal 11’s statement-linking habit: when capital expenditure rises, ask whether future capacity or maintenance needs explain it. Two crane bids hit the tape.",
+        data: [
+          {
+            kind: "table",
+            title: "Capex quality tape",
+            headers: ["Check", "CraneForge", "RustBoom"],
+            rows: [
+              ["CFO", "$3.6m", "$3.6m"],
+              ["Capex", "$1.4m (new yard crane + capacity)", "$3.1m (replace worn kit; backlog)"],
+              ["FCF (CFO − capex)", "$3.6m − $1.4m = $2.2m", "$3.6m − $3.1m = $0.5m"],
+              ["What the spend buys", "Contracted extra lifts / capacity", "Maintenance to keep old cranes running"],
+              ["Street pitch", "Quiet offtake memo", "‘Growth capex — load the boat’"],
+            ],
+          },
+          {
+            kind: "news",
+            title: "Statement-linking (notes 11)",
+            items: [
+              {
+                headline: "When capex rises, ask: future capacity or maintenance?",
+                source: "Blue City notes",
+              },
+              {
+                headline: "When debt rises, ask where the financing cash went",
+                source: "Blue City notes",
+              },
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "Practice FCF (appendix)",
+            items: [
+              { label: "CFO $8.5m; capex $3.1m", value: "FCF = $5.4m" },
+              { label: "Definition", value: "Always state FCF = CFO − capex before comparing" },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "crane-2a",
+            "Keep CraneForge — $1.4m looks like capacity with offtake; RustBoom’s jump reads as maintenance sold as growth",
+            "gain",
+            0.016,
+            "Ask what the spend buys. Rising capex is not automatically a growth story.",
+          ),
+          choice(
+            "crane-2b",
+            "Fund RustBoom because any capex increase means the firm is investing for the future",
+            "loss",
+            -0.022,
+            "Maintenance capex can keep the lights on without adding economic capacity. The notes tell you to ask which it is.",
+          ),
+          choice(
+            "crane-2c",
+            "Fail both names because all capex destroys FCF, so never fund a crane",
+            "loss",
+            -0.014,
+            "The formula subtracts capex to see residual cash — it does not say every investment is a trap. Capacity with offtake is the question.",
+          ),
+        ],
+      },
+      {
+        id: "crane-3",
+        title: "Part 3 · ROIC, conversion, then leverage",
+        narrative:
+          "CraneForge still wants the expansion debt-funded. Portal 12: ROIC vs cost of capital, FCF conversion, and the red flag that debt rises while coverage weakens.",
+        data: [
+          {
+            kind: "calc",
+            title: "ROIC (notes example 12.7)",
+            lines: [
+              "EBIT $5m; tax 25%; average invested capital $20m",
+              "NOPAT = $5m × (1 − 0.25) = $3.75m",
+              "ROIC = $3.75m / $20m × 100% = 18.75%",
+              "Compare with the company’s cost of capital: sustained ROIC above it suggests value creation — it is not the return on your $14,800.",
+            ],
+          },
+          {
+            kind: "calc",
+            title: "FCF conversion (example 12.8) and coverage (12.5)",
+            lines: [
+              "FCF $1.5m / NI $2.0m = 75% conversion — $0.75 FCF per $1.00 of profit",
+              "One weak year can be investment timing; repeated weakness needs investigation",
+              "EBIT $4.5m / interest $1.0m = 4.5× coverage; D/E $12m / $8m = 1.50×",
+            ],
+          },
+          {
+            kind: "news",
+            title: "Red-flag checklist (notes 12.6)",
+            items: [
+              {
+                headline: "Debt rises while interest coverage weakens",
+                source: "Blue City notes",
+                note: "Max-leverage crane bid would add this flag on purpose",
+              },
+              {
+                headline: "Profit rises while operating cash flow repeatedly falls",
+                source: "Blue City notes",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "crane-3a",
+            "Keep CraneForge if 18.75% ROIC clears cost of capital and 75% conversion is not a multi-year collapse — do not lever because 20% ROE looks larger",
+            "gain",
+            0.018,
+            "ROIC is the operating-capital test; high ROE can be leverage. Coverage 4.5× is a cushion, not a license to max the bid.",
+          ),
+          choice(
+            "crane-3b",
+            "Max-leverage the crane because 20% ROE and 18.75% ROIC are the return you will earn on the book",
+            "loss",
+            -0.025,
+            "Those ratios describe the company, not your $14,800. Debt up as coverage falls is a listed red flag.",
+          ),
+          choice(
+            "crane-3c",
+            "Treat 75% conversion as a fail and dump CraneForge with no other work",
+            "loss",
+            -0.015,
+            "The notes: one weak conversion year may reflect investment timing. Repeated weakness is the investigation trigger — not a single 75% print.",
+          ),
+        ],
+      },
+      {
+        id: "crane-4",
+        title: "Part 4 · Size small with a stop",
+        narrative:
+          "CraneForge cleared FCF, capex quality and ROIC. This sword is still a high-risk capex bid. Use the Blue City 8% sizing rule with a stop — not the full book on leverage.",
+        data: [
+          {
+            kind: "calc",
+            title: "Sleeve worksheet",
+            lines: [
+              "Book = $14,800",
+              "8% weight = $14,800 × 0.08 = $1,184",
+              "Max leverage on the crane story = 100% of the book in one capex name",
+            ],
+          },
+          {
+            kind: "table",
+            title: "Choices",
+            headers: ["Action", "Weight", "Process"],
+            rows: [
+              ["CraneForge $1,184 + stop", "8%", "Cleared chain, controlled size"],
+              ["Max leverage full $14,800", "100%", "Concentration + coverage red flag"],
+              ["Skip size after the chain", "0%", "Analysis without a ticket"],
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "crane-4a",
+            "Buy CraneForge at $1,184 (8%) with a stop — sized, not levered",
+            "gain",
+            0.015,
+            "Filter then size. Gold prints if the path stayed on FCF, capex quality and ROIC.",
+          ),
+          choice(
+            "crane-4b",
+            "Max leverage the crane expansion with the full $14,800",
+            "loss",
+            -0.022,
+            "Cost-overrun path. High-risk capex plus concentration is the stub’s trap.",
+          ),
+          choice(
+            "crane-4c",
+            "Leave the sleeve at zero and call the capex chain complete",
+            "loss",
+            -0.01,
+            "The lab still needs a controlled ticket in the name that passed.",
+          ),
+        ],
       },
     ],
   }),
