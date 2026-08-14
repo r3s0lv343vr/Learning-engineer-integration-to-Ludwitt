@@ -782,23 +782,230 @@ const BRICK: TradeArea[] = [
     id: "tr-ex-wharf",
     areaId: "brick-exchange",
     title: "Wharf Inventory Flip",
-    summary: "Short-cycle inventory arbitrage at the docks.",
+    summary:
+      "Read inventory as a working-capital use, fail names where stock races sales, then flip only with confirmed offtake — sized, not speculated.",
     risk: "medium",
     capitalDeltaGain: 280,
     capitalDeltaLoss: -200,
+    goldReward: 1,
     x: 80,
     y: 70,
-    prompt: "Flip the seasonal inventory?",
-    choices: [
+    prompt: "Complete the Wharf Inventory working-capital chain.",
+    choices: [],
+    steps: [
       {
-        label: "Flip with confirmed offtake",
-        outcome: "gain",
-        feedback: "Turn completes. Book rises.",
+        id: "wharf-1",
+        title: "Part 1 · Inventory is not cash",
+        narrative:
+          "A dockside lot is pitched as a short-cycle flip because net working capital looks fat. Blue City Portal 11: NWC is a starting point for liquidity — cash is usable now; inventory may take time to sell.",
+        data: [
+          {
+            kind: "calc",
+            title: "Net working capital (notes example 11.3)",
+            lines: [
+              "Current assets $5.4m; current liabilities $3.9m",
+              "NWC = Current assets − Current liabilities",
+              "NWC = $5.4m − $3.9m = $1.5m",
+              "Interpretation: positive NWC can support operations; too much inventory or slow receivables can tie up cash.",
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "Composition (notes 11.4 / 12.2)",
+            items: [
+              { label: "Cash", value: "Immediately usable" },
+              { label: "Inventory", value: "May take time to sell — not a cash equivalent" },
+              { label: "Receivables", value: "May take time to collect" },
+              { label: "Quick ratio", value: "Drops inventory on purpose; 1.50× current is not the same test" },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "wharf-1a",
+            "Read $1.5m NWC as a starting point — inventory is not spendable cash for the flip",
+            "gain",
+            0.013,
+            "Composition first. Positive NWC is not a verdict that the dock lot is liquid.",
+          ),
+          choice(
+            "wharf-1b",
+            "Treat $1.5m NWC as $1.5m of cash sitting on the wharf, then bid the full lot",
+            "loss",
+            -0.02,
+            "The notes: cash is usable now; inventory and receivables may not be. NWC is not a cash pile.",
+          ),
+          choice(
+            "wharf-1c",
+            "Invert NWC to $3.9m − $5.4m = −$1.5m and call the firm insolvent",
+            "loss",
+            -0.012,
+            "NWC is current assets minus current liabilities. Flipping the formula invents distress the notes do not show.",
+          ),
+        ],
       },
       {
-        label: "Spec without offtake",
-        outcome: "loss",
-        feedback: "Stock sits. Write-down hits.",
+        id: "wharf-2",
+        title: "Part 2 · Inventory rise uses cash",
+        narrative:
+          "TideCrate prints a profit while stock builds for the ‘seasonal flip.’ Portal 11 example 11.5: rising inventory is a use of cash even when net income looks strong.",
+        data: [
+          {
+            kind: "calc",
+            title: "Profit without equal cash (example 11.5)",
+            lines: [
+              "Net income $2.0m",
+              "Receivables rise $0.9m; inventory rises $0.4m",
+              "Approx. cash = $2.0m − $0.9m − $0.4m = $0.7m",
+              "Strong accounting profit can coexist with weak cash conversion.",
+            ],
+          },
+          {
+            kind: "news",
+            title: "Statement-linking habit (notes 11)",
+            items: [
+              {
+                headline: "When revenue grows, ask what happens to receivables and inventory",
+                source: "Blue City notes",
+              },
+              {
+                headline: "Street: ‘$2.0m profit funds the dock flip — ignore the stock build’",
+                source: "Message board",
+                note: "The $0.4m inventory rise already absorbed cash",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "wharf-2a",
+            "Bridge to ~$0.7m cash — the $0.4m inventory build is a use of cash, not extra dry powder",
+            "gain",
+            0.016,
+            "Right bridge. A calculated profit is not yet cash available to fund a speculative pile.",
+          ),
+          choice(
+            "wharf-2b",
+            "Add the inventory rise to profit ($2.0m + $0.4m) and call it $2.4m of flip capital",
+            "loss",
+            -0.022,
+            "Inventory increases use cash in the simplified bridge. Adding them invents capital the notes subtract.",
+          ),
+          choice(
+            "wharf-2c",
+            "Skip the bridge because net income is positive, so the flip is self-funding",
+            "loss",
+            -0.014,
+            "Accrual profit can coexist with weak cash. The notes make you subtract WC uses before treating earnings as deployable.",
+          ),
+        ],
+      },
+      {
+        id: "wharf-3",
+        title: "Part 3 · Offtake vs a stock pile",
+        narrative:
+          "Two lots hit the tape. Portal 12 red flag: inventory growing much faster than sales. The stub rule is the same decision: flip only with confirmed offtake.",
+        data: [
+          {
+            kind: "table",
+            title: "Dock tape",
+            headers: ["Check", "TideCrate", "SpecPile"],
+            rows: [
+              ["Sales vs inventory", "Inventory in line with sales", "Inventory growing much faster than sales"],
+              ["Receivables vs revenue", "In line", "Receivables also racing sales"],
+              ["Current vs quick", "Current 1.45× / quick 1.20×", "Current 1.50× / quick 0.80× — inventory carrying current"],
+              ["Offtake", "Confirmed buyer for the seasonal lot", "No offtake — ‘it always moves in Q4’"],
+              ["Street pitch", "Quiet contract memo", "‘Highest dock yield — spec the pile’"],
+            ],
+          },
+          {
+            kind: "news",
+            title: "Red-flag checklist (notes 12.6)",
+            items: [
+              {
+                headline: "Inventory grows much faster than sales",
+                source: "Blue City notes",
+              },
+              {
+                headline: "Revenue grows but receivables grow much faster",
+                source: "Blue City notes",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "wharf-3a",
+            "Flip TideCrate with confirmed offtake — fail SpecPile; 1.50× current does not clear a stock pile racing sales",
+            "gain",
+            0.018,
+            "Filter first. Confirmed offtake plus in-line inventory is the disciplined lot; spec without offtake is the write-down.",
+          ),
+          choice(
+            "wharf-3b",
+            "Spec SpecPile with no offtake because 1.50× current ‘proves’ the stock is liquid",
+            "loss",
+            -0.025,
+            "Quick 0.80× drops inventory on purpose. Stock that races sales and has no buyer is the notes’ red flag.",
+          ),
+          choice(
+            "wharf-3c",
+            "Buy both lots because both current ratios beat 1.0×",
+            "loss",
+            -0.016,
+            "The screen is offtake plus inventory vs sales, not a 1.0× current-ratio rubber stamp.",
+          ),
+        ],
+      },
+      {
+        id: "wharf-4",
+        title: "Part 4 · Size the offtake lot on $14,800",
+        narrative:
+          "TideCrate cleared composition, the cash bridge and the offtake screen. Conviction is still not a 100% book. Use the Blue City 8% sizing rule.",
+        data: [
+          {
+            kind: "calc",
+            title: "Sleeve worksheet",
+            lines: [
+              "Book = $14,800",
+              "8% weight = $14,800 × 0.08 = $1,184",
+              "SpecPile with the full book = 100% in a name that failed the inventory screen",
+            ],
+          },
+          {
+            kind: "table",
+            title: "Choices",
+            headers: ["Action", "Weight", "Process"],
+            rows: [
+              ["TideCrate $1,184", "8%", "Confirmed offtake, controlled size"],
+              ["SpecPile full $14,800", "100%", "No offtake + inventory red flag"],
+              ["Skip size after the screen", "0%", "Analysis without a ticket"],
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "wharf-4a",
+            "Buy TideCrate at $1,184 (8%) — offtake confirmed, sized to the book",
+            "gain",
+            0.014,
+            "Filter then size. Gold prints if the path stayed on working capital and offtake.",
+          ),
+          choice(
+            "wharf-4b",
+            "Rotate the full $14,800 into SpecPile now that you ‘understand’ 1.50× current",
+            "loss",
+            -0.022,
+            "You reversed the screen. Stock sits; the write-down is the stub’s trap.",
+          ),
+          choice(
+            "wharf-4c",
+            "Leave the sleeve at zero and call the inventory chain complete",
+            "loss",
+            -0.01,
+            "The lab still needs a controlled ticket in the lot that passed.",
+          ),
+        ],
       },
     ],
   }),
