@@ -1539,58 +1539,97 @@ export const MODULES_EXTRA: ModuleQuest[] = [
   {
     id: "m35",
     number: 35,
-    title: "Integrated Case Week",
+    title: "Multi-Year Fund Simulation",
     mapLabel: "Case Week",
     x: 50,
     y: 50,
-    summary: "Pull research, valuation, and risk into one case.",
+    summary:
+      "Operate the $10m Highlands fund across several simulated years — research, buy/add/hold/trim/sell, hedge and rebalance within the mandate — and measure path-dependent compounding with geometric return, ending value and turnover.",
     concepts: [
-      "integration",
-      "checklist",
-      "decision"
+      "path dependence",
+      "geometric (compounded) return",
+      "ending fund value",
+      "portfolio turnover",
+      "decision cadence (monitor vs trade)",
+      "multi-year decision journal",
     ],
-    outcome: "Produce a one-page buy/hold/sell with risks.",
+    outcome:
+      "Run a multi-year $10m simulation: compute geometric return and ending value, score turnover, keep a decision journal, and separate continuous monitoring from disciplined review/trade cadence.",
     lesson:
-      "Integration is the skill: statements → ratios → valuation → portfolio fit → falsifiers.",
+      "Managing well once is not enough. Multi-year management is path dependent: the order of returns and events changes the capital base on which later gains compound. Geometric return = [Π(1+Rt)]^(1/n) − 1 respects compounding (e.g. +10%, −5%, +12% → growth 1.1704 → ≈5.38% annualized); arithmetic averages can overstate realized growth. Ending value = Beginning × Π(1+Rt) (e.g. $10m × 1.1704 = $11.704m) before flows/fees. Turnover ≈ lesser of purchases or sales / average fund value × 100% (e.g. $2.6m / $10.4m = 25%) — explain rotations vs cost. Cadence: monitor daily/weekly for breaches; review monthly/quarterly; annual mandate review; event-driven when theses break — monitor continuously without trading continuously.",
     scenario:
-      "Apply Module 35 concepts inside Portfolio Lab with explicit size, risk, and a falsifier.",
+      "Your $10m Highlands fund enters a multi-year Portfolio Lab path with company events, rate moves and recessions. Keep the mandate, journal each material decision, then compute geometric return and ending value for +10%/−5%/+12%, estimate turnover when purchases are $3.0m and sales $2.6m on a $10.4m average book, and refuse continuous churn that is not thesis-driven.",
     questions: [
       {
         id: "m35-q1",
-        prompt: "In Module 35 (Integrated Case Week), the best first step is to:",
+        prompt:
+          "In Yellow City Portal 35, why is multi-year fund management path dependent?",
         choices: [
-          "Skip the numbers and follow tips",
-          "Define the decision, risks, and what would change your mind",
-          "Maximise leverage",
-          "Ignore liquidity"
+          "The sequence of returns, cash flows, rebalancing and opportunity changes affects the capital base and final outcome — not only the list of final asset returns",
+          "Only the last year’s return matters for compounding",
+          "Path dependence means the IPS can be ignored after year one",
+          "Order of returns never affects ending wealth if the arithmetic average is fixed",
         ],
-        correctIndex: 1,
-        explanation: "Process first: decision, risks, falsifiers.",
+        correctIndex: 0,
+        explanation:
+          "Notes §35.1: a large early loss changes the base for later gains; process must stay usable as conditions evolve.",
       },
       {
         id: "m35-q2",
-        prompt: "Which formula pair is most relevant when checking short-term survival?",
+        prompt:
+          "Annual returns are +10%, −5%, +12%. Approximate annualized geometric return is:",
         choices: [
-          "P/E and PEG only",
-          "Current ratio and acid-test (quick) ratio",
-          "CAGR only",
-          "Dividend yield only"
+          "5.38%",
+          "17.04%",
+          "5.67% (simple arithmetic mean)",
+          "12%",
         ],
-        correctIndex: 1,
-        explanation: "Liquidity ratios stress near-term obligations.",
+        correctIndex: 0,
+        explanation:
+          "Notes Example 35.1: 1.10 × 0.95 × 1.12 = 1.1704; 1.1704^(1/3) − 1 ≈ 5.38%. Geometric return respects compounding.",
       },
       {
         id: "m35-q3",
-        prompt: "A healthy learner response after being wrong is to:",
+        prompt:
+          "Beginning fund $10m; same path +10%, −5%, +12% (growth factor 1.1704). Ending fund value is:",
         choices: [
-          "Delete the journal",
-          "Update the thesis and falsifiers",
-          "Double the size immediately",
-          "Blame the market exclusively"
+          "$11.704 million",
+          "$10.538 million",
+          "$13.0 million",
+          "$1.1704 million",
         ],
-        correctIndex: 1,
-        explanation: "Learning compounds through revised process.",
-      }
+        correctIndex: 0,
+        explanation:
+          "Notes Example 35.2: $10,000,000 × 1.1704 = $11,704,000 before external flows or fees.",
+      },
+      {
+        id: "m35-q4",
+        prompt:
+          "Purchases $3.0m, sales $2.6m, average fund value $10.4m. Approximate annual turnover is:",
+        choices: [
+          "25%",
+          "56% ((3.0+2.6)/10.4)",
+          "30% (3.0/10.4)",
+          "2.5%",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes Example 35.3: lesser of purchases/sales = $2.6m; $2.6m / $10.4m × 100% = 25%. High turnover can adapt — or raise costs.",
+      },
+      {
+        id: "m35-q5",
+        prompt:
+          "Best Portfolio Lab cadence for the multi-year Highlands simulation is:",
+        choices: [
+          "Monitor continuously for material events and mandate breaches, but review and trade on a deliberate monthly/quarterly (and event-driven) cadence — journal why each material decision changed",
+          "Trade every day because monitoring frequency must equal turnover",
+          "Skip the journal once geometric return looks acceptable",
+          "Replace the $10m mandate with the old $14,800 book rules mid-simulation",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes §35.5–35.6: monitor ≠ trade continuously; cadence plus a multi-year decision journal keep process accountable before Portal 36’s committee defence.",
+      },
     ],
   },
   {
