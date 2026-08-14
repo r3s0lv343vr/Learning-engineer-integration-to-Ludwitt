@@ -1,7 +1,6 @@
 import { MAP_AREAS, type AreaId } from "@/lib/content/areas";
 import { getLibrary } from "@/lib/content/libraries";
 import { BLUE_CITY_CLASSROOM } from "@/lib/content/classroom-blue";
-import { GREEN_CITY_CLASSROOM } from "@/lib/content/classroom-green";
 
 /** Optional teaching-board diagram / calculation block (Portals 6–9 and later). */
 export type ClassroomFigure =
@@ -1197,7 +1196,7 @@ function stubClassroom(areaId: AreaId): ClassroomLesson {
 export const CLASSROOM_LESSONS: Record<AreaId, ClassroomLesson> = {
   "coral-ledger-bay": PURPLE_CITY_CLASSROOM,
   "brick-exchange": BLUE_CITY_CLASSROOM,
-  "signal-quay": GREEN_CITY_CLASSROOM,
+  "signal-quay": stubClassroom("signal-quay"),
   "mandate-highlands": stubClassroom("mandate-highlands"),
 };
 
