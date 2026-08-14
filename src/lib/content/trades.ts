@@ -23,30 +23,255 @@ function trade(partial: Omit<TradeArea, "scenarioReady">): TradeArea {
   return { ...partial, scenarioReady: true };
 }
 
-/** Brick Exchange — analysis trades (6) — single-step stubs */
+function choice(
+  id: string,
+  label: string,
+  outcome: TradeOutcome,
+  capitalPct: number,
+  feedback: string,
+): TradeChoice {
+  return { id, label, outcome, capitalPct, feedback };
+}
+
+/** Brick Exchange — analysis trades (6) */
 const BRICK: TradeArea[] = [
   trade({
     id: "tr-ex-ledger",
     areaId: "brick-exchange",
     title: "Ledger Pair Trade",
-    summary: "Long quality / short weak peer on statements.",
+    summary:
+      "Compare two Brick Exchange issuers as economic systems, then long the name whose statements convert to cash — and size the pair.",
     risk: "medium",
     capitalDeltaGain: 320,
     capitalDeltaLoss: -180,
     goldReward: 1,
     x: 68,
     y: 74,
-    prompt: "Put on the statements pair?",
-    choices: [
+    prompt: "Complete the Ledger Pair statements chain.",
+    choices: [],
+    steps: [
       {
-        label: "Long quality, short weak peer",
-        outcome: "gain",
-        feedback: "Spread widens your way.",
+        id: "ledger-1",
+        title: "Part 1 · Economic system, not the ticker",
+        narrative:
+          "Two dockside names compete for a pair sleeve. Blue City Portal 10: start with the business — what is sold, who pays, share and whether any advantage looks durable — before ratios.",
+        data: [
+          {
+            kind: "table",
+            title: "Company comparison scorecard",
+            headers: ["Factor", "KilnCo", "FlashWharf"],
+            rows: [
+              ["What is sold?", "Industrial kiln parts on contracts", "Fad consumer SKU, one-time"],
+              ["Who pays?", "Repeat B2B plants", "Promoters + three big buyers"],
+              ["Revenue", "$18 × 240,000 units = $4.32m", "$48m → $54m sales (12.5% growth)"],
+              ["Market share", "$900m / $6bn market = 15%", "Growing sales, losing share"],
+              ["Advantage evidence", "Lower unit cost, durable margins", "Popular brand only"],
+            ],
+          },
+          {
+            kind: "news",
+            title: "Exchange wires",
+            items: [
+              {
+                headline: "FlashWharf social thread: ‘12.5% growth — load the boat’",
+                source: "Message board",
+                note: "No share or customer-concentration check",
+              },
+              {
+                headline: "KilnCo plants re-up annual parts contracts",
+                source: "Customer filings / trade press",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "ledger-1a",
+            "Shortlist KilnCo — business model, 15% share and cost evidence beat headline growth",
+            "gain",
+            0.015,
+            "Scorecard first: a firm can grow while losing share. KilnCo stays on the pair list.",
+          ),
+          choice(
+            "ledger-1b",
+            "Chase FlashWharf because 12.5% revenue growth is the whole story",
+            "loss",
+            -0.02,
+            "Growth without share or advantage is not a buy. The notes: a calculated number is not yet a decision.",
+          ),
+          choice(
+            "ledger-1c",
+            "Skip the scorecard and double-long both tickers",
+            "loss",
+            -0.012,
+            "No process. Portal 10’s lab task is compare before selecting one for deeper work.",
+          ),
+        ],
       },
       {
-        label: "Double long both names",
-        outcome: "loss",
-        feedback: "Sector drawdown cuts the book.",
+        id: "ledger-2",
+        title: "Part 2 · Profit layers vs cash",
+        narrative:
+          "Portal 11: the three statements answer different questions. Build KilnCo’s income-statement layers, then test whether FlashWharf’s higher net income became cash.",
+        data: [
+          {
+            kind: "calc",
+            title: "KilnCo income statement (notes example 11.1)",
+            lines: [
+              "Revenue $12.0m − COGS $7.2m = Gross $4.8m",
+              "Gross $4.8m − opex $2.4m = Operating $2.4m",
+              "Operating $2.4m − interest $0.3m = Pre-tax $2.1m",
+              "Pre-tax $2.1m − tax $0.42m = Net income $1.68m",
+              "Interpretation: profitable on paper — cash still unproven.",
+            ],
+          },
+          {
+            kind: "calc",
+            title: "FlashWharf profit without equal cash (notes example 11.5)",
+            lines: [
+              "Net income $2.0m",
+              "Receivables rise $0.9m; inventory rises $0.4m",
+              "Approx. cash after those uses = $2.0m − $0.9m − $0.4m = $0.7m",
+              "Strong accounting profit can coexist with weak cash conversion.",
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "Simplified FCF (KilnCo)",
+            items: [
+              { label: "CFO", value: "$3.6m" },
+              { label: "Capex", value: "$1.4m" },
+              { label: "FCF = CFO − capex", value: "$2.2m" },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "ledger-2a",
+            "Treat FlashWharf’s $2.0m NI as weaker — $0.7m cash after working-capital uses; KilnCo’s $1.68m still needs FCF ($2.2m)",
+            "gain",
+            0.018,
+            "Net income is not cash. KilnCo’s statements tell one story; FlashWharf’s profit did not convert.",
+          ),
+          choice(
+            "ledger-2b",
+            "Long FlashWharf because $2.0m net income beats $1.68m",
+            "loss",
+            -0.025,
+            "Higher NI with receivables and inventory racing ahead is a Portal 11 red flag, not a pair long.",
+          ),
+          choice(
+            "ledger-2c",
+            "Ignore the cash-flow statement once both names show a profit",
+            "loss",
+            -0.015,
+            "Companies pay obligations with cash. Accrual profit is not deployable capital.",
+          ),
+        ],
+      },
+      {
+        id: "ledger-3",
+        title: "Part 3 · Build the statements pair",
+        narrative:
+          "The desk wants a pair: long quality / short the weak peer. Use share, advantage evidence and cash conversion — not the larger earnings print.",
+        data: [
+          {
+            kind: "table",
+            title: "Pair snapshot",
+            headers: ["Check", "KilnCo", "FlashWharf"],
+            rows: [
+              ["Share / advantage", "15% share; cost evidence", "Losing share; brand only"],
+              ["NI", "$1.68m", "$2.0m"],
+              ["Cash conversion", "FCF $2.2m", "~$0.7m after WC uses"],
+              ["NWC note", "Composition still matters", "Receivables + inventory soak cash"],
+            ],
+          },
+          {
+            kind: "news",
+            title: "Tape",
+            items: [
+              {
+                headline: "Street note: ‘FlashWharf cheapest on NI’",
+                source: "Sell-side blast",
+                note: "Pairs NI without the cash bridge",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "ledger-3a",
+            "Long KilnCo / short FlashWharf — quality statements vs weak cash conversion",
+            "gain",
+            0.02,
+            "Spread is the process: economic system + cash conversion, not the bigger earnings line.",
+          ),
+          choice(
+            "ledger-3b",
+            "Double-long both names so the sector cannot hurt you",
+            "loss",
+            -0.03,
+            "That is not a pair. A sector drawdown hits both; FlashWharf still fails the cash test.",
+          ),
+          choice(
+            "ledger-3c",
+            "Short KilnCo because $1.68m NI looks ‘expensive’ vs FlashWharf",
+            "loss",
+            -0.018,
+            "You inverted the scorecard. Lower NI with real FCF is not the weak peer.",
+          ),
+        ],
+      },
+      {
+        id: "ledger-4",
+        title: "Part 4 · Size the pair on $14,800",
+        narrative:
+          "Conviction is not a position size. Blue City notes: Position value = Portfolio × target weight (8% as 0.08). Recalculate actual weight if you cannot buy fractions.",
+        data: [
+          {
+            kind: "calc",
+            title: "Position-size worksheet (notes example 14.3)",
+            lines: [
+              "Book = $14,800",
+              "Target weight = 8% = 0.08",
+              "Position value = $14,800 × 0.08 = $1,184",
+              "Full-book pair = $14,800 — no remaining cash, no mandate room",
+            ],
+          },
+          {
+            kind: "table",
+            title: "Sizing options",
+            headers: ["Ticket", "Weight", "vs process"],
+            rows: [
+              ["$1,184", "8.0%", "Inside a controlled sleeve"],
+              ["$14,800", "100%", "Concentrates the book in one pair"],
+              ["$0 skip size", "0%", "Analysis without a sized decision"],
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "ledger-4a",
+            "Size the KilnCo / FlashWharf pair at $1,184 (8%) — process, not max conviction",
+            "gain",
+            0.016,
+            "Sized to the rule. A calculated pair is not a 100% book. Gold prints if the path stayed disciplined.",
+          ),
+          choice(
+            "ledger-4b",
+            "Put the full $14,800 into the pair because the statements ‘proved it’",
+            "loss",
+            -0.022,
+            "Portal 14: sizing links conviction to risk. The whole book in one pair is a concentration trap.",
+          ),
+          choice(
+            "ledger-4c",
+            "Leave size at zero and call the worksheet complete",
+            "loss",
+            -0.014,
+            "The lab still needs a controlled ticket. Analysis without a size is not a finished pair.",
+          ),
+        ],
       },
     ],
   }),
