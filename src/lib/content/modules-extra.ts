@@ -675,58 +675,97 @@ export const MODULES_EXTRA: ModuleQuest[] = [
   {
     id: "m26",
     number: 26,
-    title: "Credit Spreads 101",
+    title: "Risk Management & Stress Testing",
     mapLabel: "Credit Spread",
     x: 50,
     y: 50,
-    summary: "Understand credit risk pricing in yields.",
+    summary:
+      "Understand volatility, beta, drawdown, Sharpe, correlation, VaR, leverage, liquidity and scenario analysis; stress-test against recession, inflation, property, currency and company shocks.",
     concepts: [
-      "credit spread",
-      "default risk",
-      "yield"
+      "multi-dimensional risk",
+      "volatility",
+      "drawdown & recovery",
+      "Sharpe ratio",
+      "scenario stress P/L",
+      "liquidity stress",
     ],
-    outcome: "Explain why a BBB bond yields more than a Treasury.",
+    outcome:
+      "Stress-test the $14,800 book for a recession (and related) shocks, quantify scenario loss/return, and decide whether size, leverage or liquidity must change.",
     lesson:
-      "Credit spread compensates for default and liquidity risk over the risk-free curve.",
+      "Risk is multi-dimensional: volatility, beta, drawdown, Sharpe, VaR, leverage and liquidity answer different questions. Historical stats ≠ guaranteed future; stress tests ask what happens when assumptions fail. Ask how you can lose, how fast, what forces selling, and whether the book survives long enough for the thesis. Arithmetic mean = ΣR/n (e.g. 2%,−1%,3%,0%,1% → 1%). Sample volatility uses squared deviations /(n−1) (same series ≈ 1.58% monthly). Drawdown = (Trough − Peak)/Peak (e.g. $18,000 → $14,400 = −20%); recovery needed = Peak/Trough − 1 = 25% after a 20% loss. Sharpe = (Rp − Rf)/σp (e.g. 9%, 3%, 12% → 0.50). Scenario P/L = Σ(Value × shock); e.g. stocks $6,000/−20%, bonds $4,000/+5%, RE $3,000/−15%, cash $1,800/0 → −$1,450; on $14,800 that is ≈ −9.80%. Also ask liquidity: can you sell at the displayed price?",
     scenario:
-      "Apply Module 26 concepts inside Portfolio Lab with explicit size, risk, and a falsifier.",
+      "In Portfolio Lab you must prove the $14,800 book can survive a recession-style stress — not just quote average return. Compute drawdown math, run a multi-asset shock table, and decide if concentration, leverage or illiquid sleeves need to change before the next crisis.",
     questions: [
       {
         id: "m26-q1",
-        prompt: "In Module 26 (Credit Spreads 101), the best first step is to:",
+        prompt:
+          "In Green City Portal 26, why is one risk statistic (e.g. volatility alone) insufficient?",
         choices: [
-          "Skip the numbers and follow tips",
-          "Define the decision, risks, and what would change your mind",
-          "Maximise leverage",
-          "Ignore liquidity"
+          "Portfolios can share the same volatility but differ in leverage, concentration, liquidity and crisis vulnerability",
+          "Volatility already includes every possible loss path",
+          "Historical volatility guarantees the future distribution",
+          "Only maximum return matters for portfolio management",
         ],
-        correctIndex: 1,
-        explanation: "Process first: decision, risks, falsifiers.",
+        correctIndex: 0,
+        explanation:
+          "Notes §26.1: use several lenses and stress tests; ask how/when you can lose and what forces selling.",
       },
       {
         id: "m26-q2",
-        prompt: "Which formula pair is most relevant when checking short-term survival?",
+        prompt:
+          "A portfolio peaks at $18,000 and falls to $14,400. Drawdown and required recovery return are:",
         choices: [
-          "P/E and PEG only",
-          "Current ratio and acid-test (quick) ratio",
-          "CAGR only",
-          "Dividend yield only"
+          "−20% drawdown; 25% recovery required to regain the peak",
+          "−20% drawdown; 20% recovery required",
+          "−25% drawdown; 20% recovery required",
+          "No drawdown if the thesis is still intact",
         ],
-        correctIndex: 1,
-        explanation: "Liquidity ratios stress near-term obligations.",
+        correctIndex: 0,
+        explanation:
+          "Notes Examples 26.4–26.5: (−$3,600)/$18,000 = −20%; recovery = $18,000/$14,400 − 1 = 25%.",
       },
       {
         id: "m26-q3",
-        prompt: "A healthy learner response after being wrong is to:",
+        prompt:
+          "Portfolio return 9%, risk-free 3%, volatility 12%. Sharpe ratio is:",
         choices: [
-          "Delete the journal",
-          "Update the thesis and falsifiers",
-          "Double the size immediately",
-          "Blame the market exclusively"
+          "0.50",
+          "0.75",
+          "1.33",
+          "6.00",
         ],
-        correctIndex: 1,
-        explanation: "Learning compounds through revised process.",
-      }
+        correctIndex: 0,
+        explanation:
+          "Notes Example 26.6: Sharpe = (9%−3%)/12% = 0.50. Compare only with consistent methodology; pair with drawdown/scenarios.",
+      },
+      {
+        id: "m26-q4",
+        prompt:
+          "Recession stress: stocks $6,000 (−20%), bonds $4,000 (+5%), real estate $3,000 (−15%), cash $1,800 (0%). Scenario P/L is:",
+        choices: [
+          "−$1,450",
+          "−$1,200",
+          "+$200",
+          "−$14,800",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes Example 26.9: −$1,200 + $200 − $450 + $0 = −$1,450. Identifies which sleeves drive loss.",
+      },
+      {
+        id: "m26-q5",
+        prompt:
+          "On a $14,800 starting book, that −$1,450 recession P/L is about a −9.80% scenario return. Best Portfolio Lab response is:",
+        choices: [
+          "Compare the loss with risk tolerance/liquidity needs and change size, leverage, hedges or allocation if it is intolerable",
+          "Ignore the result because stress tests are not probabilities",
+          "Increase leverage to recover faster",
+          "Assume property can always be sold instantly at the model price",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes Examples 26.10–26.11: use scenario results to change decisions; include liquidity shocks where displayed prices may not be realizable.",
+      },
     ],
   },
   {
