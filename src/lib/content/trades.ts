@@ -3051,23 +3051,385 @@ const HIGHLANDS: TradeArea[] = [
     id: "tr-high-thesis",
     areaId: "mandate-highlands",
     title: "Thesis Forge Ticket",
-    summary: "Size a recommendation with falsifiers set.",
+    summary:
+      "Forge a Highlands thesis from expected return, upside/downside, variant perception, catalysts and falsifiers — then ticket only with sell criteria set before capital is exposed.",
     risk: "medium",
     capitalDeltaGain: 360,
     capitalDeltaLoss: -240,
+    goldReward: 1,
     x: 38,
     y: 22,
-    prompt: "Ticket the thesis with falsifiers?",
-    choices: [
+    prompt: "Complete the Investment Thesis forge chain.",
+    choices: [],
+    steps: [
       {
-        label: "Ticket with stops at falsifiers",
-        outcome: "gain",
-        feedback: "Process edge. Book up.",
+        id: "thesis-1",
+        title: "Part 1 · A thesis must be able to be wrong",
+        narrative:
+          "Portal 28.1: an idea is not a thesis. Research → valuation → thesis → then size. A useful thesis is specific enough to become wrong — connect economics, valuation, catalysts, risks and falsification. ‘Strong company’ is too vague for the Highlands book.",
+        data: [
+          {
+            kind: "table",
+            title: "Thesis elements (notes §28.1)",
+            headers: ["Element", "Question"],
+            rows: [
+              ["Asset/business", "What exactly do we own?"],
+              ["Price/value", "What is the market implying?"],
+              ["Expected return", "What return under stated assumptions?"],
+              ["Catalyst", "What could cause recognition?"],
+              ["Variant perception", "Where do we disagree with consensus?"],
+              ["Falsification", "What evidence would prove us wrong?"],
+              ["Sell criteria", "When do we exit or trim?"],
+            ],
+          },
+          {
+            kind: "news",
+            title: "Forge chatter",
+            items: [
+              {
+                headline: "RidgeForge is a strong company — buy the story",
+                source: "Message board",
+                note: "No horizon, catalysts, or falsifiers",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "thesis-1a",
+            "Draft a testable thesis — economics, valuation gap, catalyst, risks and what would force a rethink — before sizing",
+            "gain",
+            0.012,
+            "Notes §28.1: a thesis is a structured argument, not a pile of positive facts.",
+          ),
+          choice(
+            "thesis-1b",
+            "Ticket on ‘strong company’ vibes and write the thesis after the position works",
+            "loss",
+            -0.018,
+            "Sizing before reasoning inverts the sequence. Vague praise cannot be falsified.",
+          ),
+          choice(
+            "thesis-1c",
+            "Skip falsification — only list bullish facts so the ticket looks confident",
+            "loss",
+            -0.014,
+            "A one-sided argument is not a professional thesis.",
+          ),
+        ],
       },
       {
-        label: "Ticket with no exit plan",
-        outcome: "loss",
-        feedback: "Thesis breaks; no exit. Loss.",
+        id: "thesis-2",
+        title: "Part 2 · Scenario-weighted expected return",
+        narrative:
+          "Portal 28.2: Expected return = Σ(pᵢ × Rᵢ). Probabilities sum to 100%. The number makes assumptions visible — it is not a promise. Compare 8.5% to alternatives and to downside risk before committing the $14,800 sleeve.",
+        data: [
+          {
+            kind: "calc",
+            title: "Scenario-weighted E(R) (notes Example 28.1)",
+            lines: [
+              "30% × (+25%) = +7.5%",
+              "50% × (+10%) = +5.0%",
+              "20% × (−20%) = −4.0%",
+              "E(R) = 7.5% + 5.0% − 4.0% = 8.5%",
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "Screening check",
+            items: [
+              { label: "Thesis E(R)", value: "8.5%" },
+              { label: "Lower-risk alternative", value: "~8.5% available" },
+              { label: "Peer opportunity set", value: "Many names ~4–5%" },
+              { label: "Fragility test", value: "If one p shifts slightly, does E(R) collapse?" },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "thesis-2a",
+            "Record E(R) = 8.5% as a screen — compare to risk and competing uses of capital, not as a guaranteed print",
+            "gain",
+            0.014,
+            "Example 28.1: 8.5% summarizes the weighted path; it is only as good as the scenarios.",
+          ),
+          choice(
+            "thesis-2b",
+            "Treat 8.5% as locked next-year income and max the sleeve",
+            "loss",
+            -0.02,
+            "Expected return is forward-looking and assumption-dependent — not a coupon.",
+          ),
+          choice(
+            "thesis-2c",
+            "Ignore probabilities and average +25%, +10%, −20% as +5% ‘because three cases’",
+            "loss",
+            -0.015,
+            "Unweighted averaging drops the scenario design. Use Σ pᵢRᵢ.",
+          ),
+        ],
+      },
+      {
+        id: "thesis-3",
+        title: "Part 3 · Upside to fair value",
+        narrative:
+          "Portal 28.3: Upside = (Fair value − Price) / Price. At $42 vs $55 fair value, upside ≈ 30.95%. That gap is potential recognition — not a guaranteed return — and must sit beside downside and confidence.",
+        data: [
+          {
+            kind: "calc",
+            title: "Upside (notes Example 28.2)",
+            lines: [
+              "Current price = $42",
+              "Estimated fair value = $55",
+              "Difference = $13",
+              "Upside = $13 / $42 × 100% ≈ 30.95%",
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "thesis-3a",
+            "Mark ~31% valuation upside from $42 → $55 and pair it with bear-case risk before sizing",
+            "gain",
+            0.014,
+            "Example 28.2: ~30.95% is the gap from today’s price if the $55 estimate is right and recognized.",
+          ),
+          choice(
+            "thesis-3b",
+            "Read 31% upside as locked profit and skip the bear case",
+            "loss",
+            -0.018,
+            "Notes: ask whether reward compensates for being wrong — upside alone is incomplete.",
+          ),
+          choice(
+            "thesis-3c",
+            "Use dollar gap only ($13) and ignore percentage vs the $42 paid",
+            "loss",
+            -0.012,
+            "Always distinguish dollar difference from percentage upside from the price paid.",
+          ),
+        ],
+      },
+      {
+        id: "thesis-4",
+        title: "Part 4 · Downside and margin of safety",
+        narrative:
+          "Portal 28.3: Downside = (Bear value − Price) / Price. Equal % upside and downside is not automatically attractive — probabilities and consequences differ. Greater valuation uncertainty demands more margin of safety before the ticket.",
+        data: [
+          {
+            kind: "calc",
+            title: "Downside from today’s price (notes §28.3 formula)",
+            lines: [
+              "Current price = $42",
+              "Defensible bear value (thesis packet) = $32",
+              "Downside = ($32 − $42) / $42 × 100% ≈ −23.8%",
+              "Compare ≈31% upside vs ≈24% downside + confidence in $55",
+            ],
+          },
+          {
+            kind: "table",
+            title: "Margin-of-safety lens",
+            headers: ["Lens", "Read"],
+            rows: [
+              ["Reward vs being wrong", "31% upside must compensate for ~24% bear path"],
+              ["Uncertainty", "More uncertain valuation → demand more MoS / smaller size"],
+              ["Symmetry myth", "30% up / 30% down is not auto-attractive"],
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "thesis-4a",
+            "Require margin of safety — size only if upside vs bear path and confidence clear the screen",
+            "gain",
+            0.015,
+            "Notes §28.3: avoid paying a price that assumes everything goes right when uncertainty is high.",
+          ),
+          choice(
+            "thesis-4b",
+            "Ignore bear value — 31% upside ‘covers’ any downside",
+            "loss",
+            -0.022,
+            "Upside and downside are not symmetrical concepts; probabilities and consequences differ.",
+          ),
+          choice(
+            "thesis-4c",
+            "Treat 30/30 up/down as a free coin-flip and overload the sleeve",
+            "loss",
+            -0.016,
+            "Equal percentages do not imply an attractive risk-adjusted ticket.",
+          ),
+        ],
+      },
+      {
+        id: "thesis-5",
+        title: "Part 5 · Variant perception",
+        narrative:
+          "Portal 28.4: why does the opportunity exist? If the market already agrees, the gap may already be in price. State consensus vs your view, evidence, and what would close the disagreement — being different for its own sake is not an edge.",
+        data: [
+          {
+            kind: "table",
+            title: "Variant quality (notes §28.4)",
+            headers: ["Weak", "Stronger"],
+            rows: [
+              [
+                "‘The company is good.’",
+                "Consensus 3% growth; evidence suggests 7% as a new channel scales",
+              ],
+              [
+                "‘The stock is cheap.’",
+                "Multiple assumes depressed margins; cost data suggests normalization",
+              ],
+              [
+                "‘Rates will fall.’",
+                "Forwards imply one cut; data suggests more easing is plausible",
+              ],
+            ],
+          },
+          {
+            kind: "news",
+            title: "Consensus tape",
+            items: [
+              {
+                headline: "Street embeds ~3% growth; channel KPIs tracking above plan",
+                source: "Research / ops data",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "thesis-5a",
+            "Write the variant: consensus ~3% growth vs evidence for ~7% channel scale — plus what would revise the street",
+            "gain",
+            0.015,
+            "Stronger variant perception is evidence-based disagreement embedded in price.",
+          ),
+          choice(
+            "thesis-5b",
+            "Buy because ‘everyone knows it’s a good company’ with no disagreement stated",
+            "loss",
+            -0.018,
+            "Identifying a good company is not enough if the market already priced that view.",
+          ),
+          choice(
+            "thesis-5c",
+            "Contrarian on purpose with no evidence — ‘fade the crowd’",
+            "loss",
+            -0.014,
+            "Different for its own sake is not an advantage.",
+          ),
+        ],
+      },
+      {
+        id: "thesis-6",
+        title: "Part 6 · Catalysts that connect to economics",
+        narrative:
+          "Portal 28.5: a variant view can stay unrewarded. A catalyst is a plausible mechanism for reassessment — earnings/margins, launch, refinancing, spin-off, regulation, macro — not a hope. Do not confuse catalyst with the thesis itself.",
+        data: [
+          {
+            kind: "table",
+            title: "Catalyst menu (notes §28.5)",
+            headers: ["Type", "Example"],
+            rows: [
+              ["Operational", "Earnings acceleration / margin recovery"],
+              ["Strategic", "Product launch, capacity, spin-off"],
+              ["Financial", "Debt reduction / refinancing"],
+              ["External", "Regulatory decision; rates / FX move"],
+            ],
+          },
+          {
+            kind: "news",
+            title: "Hope vs mechanism",
+            items: [
+              {
+                headline: "‘Something will happen’ — no date, no linked economics",
+                source: "Chat rumor",
+              },
+              {
+                headline: "Channel scale print next two quarters could revise 3%→higher growth",
+                source: "Thesis packet",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "thesis-6a",
+            "Tie the catalyst to channel-scale evidence that could revise growth expectations — not a vague hope",
+            "gain",
+            0.014,
+            "Strongest analysis connects the catalyst to underlying asset economics.",
+          ),
+          choice(
+            "thesis-6b",
+            "Depend on an unnamed ‘something will re-rate us’ catalyst",
+            "loss",
+            -0.02,
+            "The thesis should not depend on a catalyst that is merely hoped for.",
+          ),
+          choice(
+            "thesis-6c",
+            "Treat any headline event as proof the thesis is already complete",
+            "loss",
+            -0.012,
+            "A catalyst can occur without creating lasting value; it is not the thesis itself.",
+          ),
+        ],
+      },
+      {
+        id: "thesis-7",
+        title: "Part 7 · Falsifiers, sell rules, then size",
+        narrative:
+          "Portal 28.6: define falsification and sell criteria before emotion. Price down ≠ automatic sell if value is intact; price up ≠ automatic hold if valuation is excessive. Ticket the Highlands idea on the $14,800 book only with exits pre-committed.",
+        data: [
+          {
+            kind: "table",
+            title: "Falsification → action (notes §28.6)",
+            headers: ["Evidence", "Possible action"],
+            rows: [
+              ["Revenue driver fails", "Trim or exit"],
+              ["Balance-sheet risk past mandate", "Exit or hedge"],
+              ["Catalyst delayed; economics intact", "Reassess horizon; possibly hold"],
+              ["Price exceeds defensible value", "Trim or exit"],
+              ["Better opportunity, similar risk", "Rotate capital"],
+              ["Thesis succeeds; value realized", "Harvest / trim / exit"],
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "Ticket worksheet ($14,800 starter book)",
+            items: [
+              { label: "E(R) screen", value: "8.5%" },
+              { label: "Upside / bear path", value: "~31% vs ~−24%" },
+              { label: "Variant", value: "3% consensus vs ~7% evidence" },
+              { label: "Pre-commit", value: "Falsifiers + sell criteria before fill" },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "thesis-7a",
+            "Ticket with pre-written falsifiers and sell criteria — modest size on $14,800 until evidence confirms",
+            "gain",
+            0.018,
+            "Define failure conditions before loss or gain pressure. Process edge over story.",
+          ),
+          choice(
+            "thesis-7b",
+            "Ticket with no exit plan — ‘we’ll know when we see it’",
+            "loss",
+            -0.028,
+            "Without falsifiers, failing positions invite new excuses after the fact.",
+          ),
+          choice(
+            "thesis-7c",
+            "Sell only if price drops 5% regardless of value — ignore thesis-based exits",
+            "loss",
+            -0.016,
+            "A price decline alone is not necessarily a sell if value is unchanged; rules should be thesis-aware.",
+          ),
+        ],
       },
     ],
   }),
