@@ -24,13 +24,35 @@ If notes are missing, ask for them (or explicit permission to use repo classroom
 Before editing, confirm (ask if missing):
 
 1. `areaId` — city owning the sword
-2. `tradeId` — e.g. `tr-ex-ledger`
+2. **Target identity** — accept either:
+   - technical `tradeId` (e.g. `tr-ex-ledger`), **or**
+   - portal-style ordinal: `Sword 1`…`Sword 6` for that city (preferred for multi-city runs)
 3. Step count — **3, 4, or 5** (default **4**)
 4. **Notes package** — required unless user says “use repo classroom/notes only”
 5. Curriculum slice this sword practices (e.g. “acid-test + liquidity decision”, “EV/EBITDA comps”)
 6. Branch — prefer existing working branch
 
 Also load shared constraints: `.cursor/skills/questfolio-shared/SKILL.md`.
+
+## Cross-city sword ordinals (preferred human ids)
+
+Use these like portal numbers. Resolve to the technical `tradeId`, then keep that `id` frozen in code.
+
+| City (`areaId`) | Sword 1 | Sword 2 | Sword 3 | Sword 4 | Sword 5 | Sword 6 |
+|---|---|---|---|---|---|---|
+| Coral Ledger Bay (`coral-ledger-bay`) | `tr-bay-seed` | `tr-bay-ferry` | `tr-bay-palm` | `tr-bay-reef` | `tr-bay-tide` | `tr-bay-lagoon` |
+| Brick Exchange / Blue City (`brick-exchange`) | `tr-ex-ledger` | `tr-ex-acid` | `tr-ex-crane` | `tr-ex-wharf` | `tr-ex-ratio` | `tr-ex-smokestack` |
+| Signal Quay (`signal-quay`) | `tr-quay-wire` | `tr-quay-glass` | `tr-quay-crane` | `tr-quay-signal` | `tr-quay-pier` | *(none yet — ask before inventing)* |
+| Mandate Highlands (`mandate-highlands`) | `tr-high-mandate` | `tr-high-thesis` | `tr-high-ethics` | `tr-high-bias` | `tr-high-summit` | *(none yet — ask before inventing)* |
+
+Accepted prompt forms:
+- `Blue City Sword 2`
+- `brick-exchange Sword 2`
+- `Sword 2` + `City: brick-exchange`
+- `tr-ex-acid` (technical)
+
+If the user says only “Sword 2”, ask which city.  
+Do **not** rename technical ids to `s1`/`s2` in code (breaks saves / routes / completedTrades). Ordinals are aliases for targeting only.
 
 ## Hard constraints
 
