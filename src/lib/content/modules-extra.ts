@@ -484,58 +484,96 @@ export const MODULES_EXTRA: ModuleQuest[] = [
   {
     id: "m24",
     number: 24,
-    title: "Rates & Duration",
+    title: "Macroeconomics for Investors",
     mapLabel: "Duration Desk",
     x: 50,
     y: 50,
-    summary: "Link interest rates to bond and equity durations.",
+    summary:
+      "Understand GDP, inflation, interest rates, unemployment, monetary/fiscal policy, yield curves and cycles; assess implications across major portfolio asset classes.",
     concepts: [
-      "duration",
-      "discount rates",
-      "bond prices"
+      "macro transmission channels",
+      "real interest rate",
+      "yield-curve / term spread",
+      "inflation sensitivity by asset",
+      "economic cycle phases",
     ],
-    outcome: "Predict bond price move if yields jump.",
+    outcome:
+      "Stress the $14,800 book for growth, inflation and rate scenarios — asking how cash flows and required returns change — without treating macro as fortune-telling.",
     lesson:
-      "When yields rise, longer-duration assets fall more. Equities with distant cash flows behave like long duration.",
+      "Macro matters through transmission channels (e.g. higher rates → mortgages, corporate borrowing, bond prices, FX). Purpose is sensitivity analysis, not predicting every recession. For any macro event ask: (1) do cash flows change? (2) does the required return/discount rate change? Approximate real rate ≈ Nominal − Inflation (e.g. 5.5% − 3.2% ≈ 2.3%). Exact real rate = (1+n)/(1+π) − 1 (same inputs ≈ 2.23%). Term spread = Long govt yield − Short govt yield (e.g. 10Y 4.0% − 2Y 4.7% = −70 bps inversion). Inflation hits assets differently: cash purchasing power, nominal bonds, stocks (pricing power), property (rents vs financing), commodities, FX. Cycle map: expansion → late cycle → slowdown/recession → recovery, each with different portfolio questions about cyclicals, leverage, liquidity and valuations.",
     scenario:
-      "Apply Module 24 concepts inside Portfolio Lab with explicit size, risk, and a falsifier.",
+      "In Portfolio Lab rates are sticky and inflation is still above target. Before you ADD/TRIM any sleeve in the $14,800 book, compute the real rate, read the yield-curve spread, and map how cash, bonds, stocks, property, commodities and FX might respond.",
     questions: [
       {
         id: "m24-q1",
-        prompt: "In Module 24 (Rates & Duration), the best first step is to:",
+        prompt:
+          "In Green City Portal 24, the best use of macro analysis for portfolio management is to:",
         choices: [
-          "Skip the numbers and follow tips",
-          "Define the decision, risks, and what would change your mind",
-          "Maximise leverage",
-          "Ignore liquidity"
+          "Understand portfolio sensitivities to growth, inflation and rates (cash flows and discount rates) — not to forecast every policy move",
+          "Replace all company and asset analysis with GDP forecasts",
+          "Guarantee the timing of the next recession from one indicator",
+          "Ignore macro because only stock picking matters",
         ],
-        correctIndex: 1,
-        explanation: "Process first: decision, risks, falsifiers.",
+        correctIndex: 0,
+        explanation:
+          "Notes §24.1: macro provides the environment and transmission channels; it should not replace asset analysis or become fortune-telling.",
       },
       {
         id: "m24-q2",
-        prompt: "Which formula pair is most relevant when checking short-term survival?",
+        prompt:
+          "Nominal rate is 5.5% and inflation is 3.2%. Approximate real interest rate is:",
         choices: [
-          "P/E and PEG only",
-          "Current ratio and acid-test (quick) ratio",
-          "CAGR only",
-          "Dividend yield only"
+          "About +2.3%",
+          "About 8.7%",
+          "About −2.3%",
+          "Exactly 5.5%",
         ],
-        correctIndex: 1,
-        explanation: "Liquidity ratios stress near-term obligations.",
+        correctIndex: 0,
+        explanation:
+          "Notes Example 24.1: Real ≈ Nominal − Inflation = 5.5% − 3.2% ≈ 2.3%. Higher real rates can tighten conditions and pressure long-duration assets.",
       },
       {
         id: "m24-q3",
-        prompt: "A healthy learner response after being wrong is to:",
+        prompt:
+          "Using the exact Fisher formula with n=5.5% and π=3.2%, approximate exact real rate is:",
         choices: [
-          "Delete the journal",
-          "Update the thesis and falsifiers",
-          "Double the size immediately",
-          "Blame the market exclusively"
+          "About 2.23% — (1.055)/(1.032) − 1",
+          "Exactly 2.30% — same as simple subtraction always",
+          "About 1.055%",
+          "About 3.2%",
         ],
-        correctIndex: 1,
-        explanation: "Learning compounds through revised process.",
-      }
+        correctIndex: 0,
+        explanation:
+          "Notes Example 24.2: Exact real = (1+n)/(1+π) − 1 ≈ 2.23%. Use exact form when precision matters or rates/inflation are high.",
+      },
+      {
+        id: "m24-q4",
+        prompt:
+          "10-year government yield is 4.0% and 2-year yield is 4.7%. Term spread is:",
+        choices: [
+          "−0.70% (−70 bps) — this segment is inverted",
+          "+0.70%",
+          "+4.0%",
+          "Zero because both are government yields",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes Example 24.3: Term spread = 4.0% − 4.7% = −0.70%. Inversion is evidence to investigate, not a guaranteed recession timer.",
+      },
+      {
+        id: "m24-q5",
+        prompt:
+          "For the $14,800 book facing sticky inflation, which response best applies Portal 24?",
+        choices: [
+          "Ask how cash, nominal bonds, stocks, property, commodities and FX each transmit inflation/rate shocks before resizing sleeves",
+          "Assume cash always preserves purchasing power regardless of inflation",
+          "Treat inversion as an automatic signal to liquidate every equity",
+          "Ignore financing costs for property because rents always rise with inflation",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes §§24.5–24.6: inflation and cycle phases affect assets differently; map sensitivities across the portfolio rather than one blunt reaction.",
+      },
     ],
   },
   {
