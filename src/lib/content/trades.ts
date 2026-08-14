@@ -1770,23 +1770,275 @@ const QUAY: TradeArea[] = [
     id: "tr-quay-glass",
     areaId: "signal-quay",
     title: "Glass Tower REIT Slice",
-    summary: "Office REIT — yield versus vacancy risk.",
+    summary:
+      "Fit an office REIT into the strategic real-estate weight, audit liquidity and concentration, then size with a vacancy check — not max yield.",
     risk: "medium",
     capitalDeltaGain: 300,
     capitalDeltaLoss: -210,
+    goldReward: 1,
     x: 84,
     y: 18,
-    prompt: "Add the glass tower REIT slice?",
-    choices: [
+    prompt: "Complete the Glass Tower REIT allocation chain.",
+    choices: [],
+    steps: [
       {
-        label: "Size to yield with vacancy check",
-        outcome: "gain",
-        feedback: "Occupancy holds. Book up.",
+        id: "glass-1",
+        title: "Part 1 · Architecture before the ticker",
+        narrative:
+          "Glass Tower REIT looks attractive on yield, but Green City Portal 21 asks a harder question: how much of the $14,800 book should sit in real estate at all? Strategic allocation is architecture, not a month-ahead prediction.",
+        data: [
+          {
+            kind: "table",
+            title: "Target allocation on $14,800 (notes §21.2)",
+            headers: ["Asset class", "Target weight", "Dollar target"],
+            rows: [
+              ["Stocks", "30%", "$4,440"],
+              ["Bonds", "25%", "$3,700"],
+              ["Real estate", "15%", "$2,220"],
+              ["Broad ETF / other", "10%", "$1,480"],
+              ["Commodities / alts", "5%", "$740"],
+              ["Forex / hedge", "5%", "$740"],
+              ["Cash", "10%", "$1,480"],
+            ],
+          },
+          {
+            kind: "calc",
+            title: "Target dollars (notes Example 21.2)",
+            lines: [
+              "Target RE value = Portfolio × Weight = $14,800 × 0.15 = $2,220",
+              "An excellent property idea can still create a poor portfolio if its weight is excessive.",
+            ],
+          },
+          {
+            kind: "news",
+            title: "Quay chatter",
+            items: [
+              {
+                headline: "Glass Tower REIT: ‘7% distribution — fill the book’",
+                source: "Broker chat",
+                note: "No weight or liquidity check",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "glass-1a",
+            "Cap the sleeve to the 15% / $2,220 RE policy before shopping Glass Tower",
+            "gain",
+            0.015,
+            "Weights create discipline. Constraints and architecture come before ticker excitement.",
+          ),
+          choice(
+            "glass-1b",
+            "Ignore the SAA table and put 40% of the book into Glass Tower for yield",
+            "loss",
+            -0.025,
+            "Portal 21: even an attractive asset creates a poor portfolio at excessive weight.",
+          ),
+          choice(
+            "glass-1c",
+            "Treat strategic allocation as a prediction of next month’s winning asset",
+            "loss",
+            -0.012,
+            "Notes: SAA is long-term target structure driven by objectives — not a forecast of which asset wins next month.",
+          ),
+        ],
       },
       {
-        label: "Ignore vacancy, max yield",
-        outcome: "loss",
-        feedback: "Tenant exit. Book down.",
+        id: "glass-2",
+        title: "Part 2 · Liquidity: REIT vs direct property",
+        narrative:
+          "Portal 20 contrasts direct property (transaction/management costs) with a REIT ETF’s liquid diversified exposure. Portal 22.6: a portfolio can be diversified by class yet still face a liquidity problem — ask how long a sale might take.",
+        data: [
+          {
+            kind: "table",
+            title: "Exposure vs liquidity question (notes §22.6)",
+            headers: ["Exposure", "Typical liquidity question"],
+            rows: [
+              ["Cash / T-bills", "Can funds be accessed immediately?"],
+              ["Large listed stocks / ETFs", "Normal-sized trades with limited slippage?"],
+              ["Direct property", "How long might a sale take?"],
+              ["REIT / listed property fund", "Can the sleeve exit near fair value in stress?"],
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "Glass Tower desk facts",
+            items: [
+              { label: "Proposed ticket", value: "$2,220 (at RE target)" },
+              { label: "Stated distribution yield", value: "7%" },
+              { label: "Office vacancy (building)", value: "18% and rising" },
+              { label: "Vehicle", value: "Listed REIT (more liquid than direct tower)" },
+            ],
+          },
+          {
+            kind: "news",
+            title: "Property wire",
+            items: [
+              {
+                headline: "Glass Tower: two tenants non-renew; vacancy to 18%",
+                source: "Property manager update",
+              },
+              {
+                headline: "Direct pier warehouse for sale — 6–12 month close typical",
+                source: "Broker listing",
+                note: "Illiquid alternative to listed REIT",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "glass-2a",
+            "Prefer the listed REIT path for liquidity vs direct property, but treat rising vacancy as a cash-flow risk — not free yield",
+            "gain",
+            0.018,
+            "Liquidity diversification + asset analysis: REIT helps exitability; vacancy still hits distributions and price.",
+          ),
+          choice(
+            "glass-2b",
+            "Chase 7% yield and ignore vacancy because ‘property always diversifies’",
+            "loss",
+            -0.02,
+            "Diversification is not counting labels. Vacancy is a real cash-flow and risk driver.",
+          ),
+          choice(
+            "glass-2c",
+            "Buy the illiquid direct tower instead to ‘lock in’ the same yield",
+            "loss",
+            -0.015,
+            "Portal 22.6: direct property can leave you unable to sell when liquidity matters most.",
+          ),
+        ],
+      },
+      {
+        id: "glass-3",
+        title: "Part 3 · Current weight vs target — rebalance math",
+        narrative:
+          "The book already holds some property. Convert current dollars to weight (Portal 21.1) and compute the rebalancing trade to the $2,220 target (Portal 21.4) before adding Glass Tower.",
+        data: [
+          {
+            kind: "metrics",
+            title: "Current property sleeve",
+            items: [
+              { label: "Portfolio", value: "$14,800" },
+              { label: "Current RE holdings", value: "$1,480" },
+              { label: "Current RE weight", value: "$1,480 / $14,800 = 10%" },
+              { label: "Target RE", value: "15% = $2,220" },
+            ],
+          },
+          {
+            kind: "calc",
+            title: "Rebalancing trade (notes Example 21.4)",
+            lines: [
+              "Trade = Target − Current = $2,220 − $1,480 = +$740",
+              "Room to ADD ≈ $740 of Glass Tower without exceeding the 15% policy.",
+              "Overshooting to $3,000 would put RE at ≈20% — a deliberate overweight, not ‘fill the yield’.",
+            ],
+          },
+          {
+            kind: "calc",
+            title: "Concentration check (Portal 22.2)",
+            lines: [
+              "If Glass Tower alone were $2,220 / $14,800 → 15% in one office-REIT issuer",
+              "Ask: is that concentration deliberate and compensated — or hidden single-building risk?",
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "glass-3a",
+            "ADD about $740 to reach the $2,220 / 15% target — do not jump straight to a 20%+ office bet",
+            "gain",
+            0.02,
+            "Rebalancing reconnects actual holdings with strategic policy and keeps concentration intentional.",
+          ),
+          choice(
+            "glass-3b",
+            "Double the whole RE sleeve to $4,440 because vacancy ‘creates a bargain’",
+            "loss",
+            -0.028,
+            "A price decline is not automatically a bargain if cash flows deteriorated. Size still follows policy.",
+          ),
+          choice(
+            "glass-3c",
+            "Skip the weight math and average in whatever the chat desk recommends",
+            "loss",
+            -0.014,
+            "Portal 21: weights are the language of construction — calculate before comparing to desired allocation.",
+          ),
+        ],
+      },
+      {
+        id: "glass-4",
+        title: "Part 4 · Size with vacancy check",
+        narrative:
+          "Stress the property sleeve before clicking buy. Portal 26-style shock: real estate −15% on a larger property book hurts; pair that with vacancy risk and keep cash for optionality.",
+        data: [
+          {
+            kind: "calc",
+            title: "Property stress sketch (notes Example 26.9 style)",
+            lines: [
+              "If RE sleeve at target $2,220 and shock −15% → P/L ≈ $2,220 × (−0.15) ≈ −$333",
+              "Compare with risk tolerance and whether bonds/cash still protect the $14,800 book.",
+            ],
+          },
+          {
+            kind: "table",
+            title: "Decision options",
+            headers: ["Choice", "Size", "Vacancy handling"],
+            rows: [
+              [
+                "Disciplined ADD",
+                "~$740 to 15% target",
+                "Require occupancy/lease update; set exit if vacancy >22%",
+              ],
+              [
+                "Max yield",
+                "$3,000+ (overweight)",
+                "Ignore vacancy and financing risk",
+              ],
+              [
+                "Skip forever",
+                "$0 add",
+                "Leaves intentional 10% vs 15% without a recorded reason",
+              ],
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "Falsifier",
+            items: [
+              { label: "ADD ticket", value: "~$740 Glass Tower REIT" },
+              { label: "Review trigger", value: "Vacancy >22% or distribution cut" },
+              { label: "Liquidity preference", value: "Listed REIT over direct tower" },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "glass-4a",
+            "Size to yield with vacancy check — ADD ~$740 to the 15% target and write the occupancy falsifier",
+            "gain",
+            0.022,
+            "Occupancy discipline holds the process. Policy weight + liquidity + stress before yield chasing.",
+          ),
+          choice(
+            "glass-4b",
+            "Ignore vacancy, max yield — overweight Glass Tower past the SAA band",
+            "loss",
+            -0.03,
+            "Tenant exit / vacancy path. Yield without cash-flow and weight checks damages the book.",
+          ),
+          choice(
+            "glass-4c",
+            "Pledge cash and lever into a direct office floor for ‘more diversification’",
+            "loss",
+            -0.02,
+            "Leverage plus illiquidity is the opposite of Portal 22.6 liquidity diversification.",
+          ),
+        ],
       },
     ],
   }),
