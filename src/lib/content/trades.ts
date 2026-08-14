@@ -3437,23 +3437,284 @@ const HIGHLANDS: TradeArea[] = [
     id: "tr-high-ethics",
     areaId: "mandate-highlands",
     title: "Ethics Gate Swap",
-    summary: "Refuse a conflicted flow — reputation capital.",
+    summary:
+      "Defend process integrity under behavioural pressure — spot bias, compute recovery and disposition metrics, calibrate forecast error, then refuse FOMO/conflicted tickets that break the Highlands rules.",
     risk: "low",
     capitalDeltaGain: 200,
     capitalDeltaLoss: -300,
+    goldReward: 1,
     x: 24,
     y: 42,
-    prompt: "Take the conflicted principal swap?",
-    choices: [
+    prompt: "Complete the Behavioural Finance integrity chain.",
+    choices: [],
+    steps: [
       {
-        label: "Refuse and document",
-        outcome: "gain",
-        feedback: "Trust premium. Book and gold steady up.",
+        id: "ethics-1",
+        title: "Part 1 · Bias can override good math",
+        narrative:
+          "Portal 29.1: Portal 28’s thesis can still fail if emotion silently reallocates capital. Biases systematically distort gains, losses, social cues and prior beliefs. The Highlands ethic is rules and review — not pretending emotion disappears.",
+        data: [
+          {
+            kind: "table",
+            title: "Bias map (notes §29.1)",
+            headers: ["Bias", "Looks like", "Portfolio danger"],
+            rows: [
+              ["Loss aversion", "Losses hurt more than gains please", "Hold losers / avoid needed risk"],
+              ["FOMO", "Buy because others are winning", "Enter after the move"],
+              ["Anchoring", "Fixate on purchase price / old target", "Ignore new information"],
+              ["Overconfidence", "Overstate forecasting skill", "Oversized, under-diversified"],
+              ["Herding", "Follow consensus without analysis", "Crowded positioning"],
+              ["Confirmation", "Seek only supportive evidence", "Miss thesis decay"],
+              ["Disposition", "Sell winners; hold losers", "Poor capital allocation"],
+            ],
+          },
+          {
+            kind: "news",
+            title: "Gate chatter",
+            items: [
+              {
+                headline: "Principal swap: ‘everyone is in — skip the checklist’",
+                source: "Desk whisper",
+                note: "Herding + FOMO pressure",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "ethics-1a",
+            "Keep the checklist — identify which bias is pressing before any capital moves",
+            "gain",
+            0.015,
+            "Notes §29.1: create rules so emotion does not silently control allocation.",
+          ),
+          choice(
+            "ethics-1b",
+            "Skip process — take the herd flow because the tape is hot",
+            "loss",
+            -0.022,
+            "Herding/FOMO is exactly when process integrity is tested.",
+          ),
+          choice(
+            "ethics-1c",
+            "Assume knowing the math means bias cannot touch you",
+            "loss",
+            -0.014,
+            "Technically knowledgeable investors still make poor decisions under systematic distortion.",
+          ),
+        ],
       },
       {
-        label: "Take the conflicted flow",
-        outcome: "loss",
-        feedback: "Clawback. Portfolio damaged.",
+        id: "ethics-2",
+        title: "Part 2 · Recovery after a 30% loss",
+        narrative:
+          "Portal 29.2: Required gain after a loss = 1/(1−L) − 1. A 30% drawdown needs ≈42.86% to get back — the base shrank. Use the math to respect risk controls; still separate broken thesis from temporary volatility.",
+        data: [
+          {
+            kind: "calc",
+            title: "Recovery math (notes Example 29.1)",
+            lines: [
+              "Loss rate L = 30% = 0.30",
+              "Required gain = 1/(1 − 0.30) − 1",
+              "= 1/0.70 − 1",
+              "≈ 0.4286 = 42.86%",
+              "$100 → $70; need +$30 on $70 = 42.86%",
+            ],
+          },
+          {
+            kind: "news",
+            title: "Position under water",
+            items: [
+              {
+                headline: "‘It only fell 30% — a 30% bounce gets us flat’",
+                source: "PM chat",
+              },
+              {
+                headline: "Re-underwrite from today’s price; ask if thesis broke",
+                source: "Behavioural checklist",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "ethics-2a",
+            "Correct the math — need ≈42.86% to recover — then decide hold/sell from thesis and forward E(R), not break-even hope",
+            "gain",
+            0.018,
+            "Example 29.1: asymmetry explains why catastrophic losses matter; it does not justify panic-selling every dip.",
+          ),
+          choice(
+            "ethics-2b",
+            "Wait for a 30% bounce to ‘get flat’ and refuse to re-underwrite",
+            "loss",
+            -0.025,
+            "Break-even anchoring ignores the smaller capital base and the thesis test.",
+          ),
+          choice(
+            "ethics-2c",
+            "Treat every 30% print decline as permanent impairment and dump without reading why",
+            "loss",
+            -0.016,
+            "Notes: panic ≠ broken economics. Combine recovery math with the reason for the loss.",
+          ),
+        ],
+      },
+      {
+        id: "ethics-3",
+        title: "Part 3 · Measure the disposition effect",
+        narrative:
+          "Portal 29.3: PGR = RG/(RG+PG), PLR = RL/(RL+PL), indicator = PGR − PLR. A positive gap flags realizing gains faster than losses — investigate whether winners/losers use different standards.",
+        data: [
+          {
+            kind: "calc",
+            title: "Disposition indicator (notes Example 29.2)",
+            lines: [
+              "Realized gains = 12; paper gains = 8",
+              "Realized losses = 3; paper losses = 9",
+              "PGR = 12/(12+8) = 0.60",
+              "PLR = 3/(3+9) = 0.25",
+              "Indicator = 0.60 − 0.25 = 0.35",
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "Review prompts",
+            items: [
+              { label: "Sold winners", value: "Valuation/thesis — or just felt good to lock?" },
+              { label: "Held losers", value: "E(R) improved — or waiting for break-even?" },
+              { label: "Process fix", value: "Re-underwrite from today’s price, not purchase price" },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "ethics-3a",
+            "Flag disposition indicator 0.35 — audit winners sold vs losers held with one today’s-price standard",
+            "gain",
+            0.02,
+            "Example 29.2: 0.35 is a pattern signal, not proof every trade was wrong.",
+          ),
+          choice(
+            "ethics-3b",
+            "Ignore the 0.35 gap — ‘realized gains prove skill’",
+            "loss",
+            -0.02,
+            "Locking gains while avoiding losses can be comfort, not process.",
+          ),
+          choice(
+            "ethics-3c",
+            "Force-sell every loser tomorrow solely to drive PLR up",
+            "loss",
+            -0.015,
+            "The fix is consistent thesis/valuation standards — not cosmetic metric gaming.",
+          ),
+        ],
+      },
+      {
+        id: "ethics-4",
+        title: "Part 4 · Calibrate overconfidence",
+        narrative:
+          "Portal 29.4: Absolute percentage error = |Actual − Forecast| / |Forecast|. Revenue forecast $120m vs actual $102m → 15% APE. Large repeated misses mean lower confidence, wider scenarios, smaller size.",
+        data: [
+          {
+            kind: "calc",
+            title: "Forecast error (notes Example 29.3)",
+            lines: [
+              "Forecast revenue = $120m",
+              "Actual revenue = $102m",
+              "Absolute error = $18m",
+              "APE = $18m / $120m × 100% = 15%",
+            ],
+          },
+          {
+            kind: "news",
+            title: "Sizing pressure",
+            items: [
+              {
+                headline: "Double the sleeve — ‘my models never miss’",
+                source: "Overconfident ticket",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "ethics-4a",
+            "Log 15% APE — widen scenarios and cut size until forecasts recalibrate",
+            "gain",
+            0.018,
+            "Example 29.3: measure miss size; do not judge confidence by feeling.",
+          ),
+          choice(
+            "ethics-4b",
+            "Raise size anyway — one miss does not count",
+            "loss",
+            -0.028,
+            "Repeated large misses should reduce confidence or shrink positions.",
+          ),
+          choice(
+            "ethics-4c",
+            "Only track signed error and ignore absolute percentage misses",
+            "loss",
+            -0.012,
+            "APE answers how large the miss was; still review optimism/pessimism separately.",
+          ),
+        ],
+      },
+      {
+        id: "ethics-5",
+        title: "Part 5 · Journal, then refuse the conflicted swap",
+        narrative:
+          "Portal 29.5: run the behavioural journal before capital moves — feeling vs evidence, disagreeing facts, size vs confidence, purchase-price anchor, ‘would I buy today?’. Refuse the FOMO/herd principal swap that fails the checklist; keep process integrity on the $14,800 book.",
+        data: [
+          {
+            kind: "table",
+            title: "Behavioural decision journal (notes §29.5)",
+            headers: ["Question", "Gate response"],
+            rows: [
+              ["Feeling before the trade?", "Urgency from others’ gains"],
+              ["Price move or evidence?", "Price + herd — thin evidence"],
+              ["Disagreeing evidence?", "Not reviewed"],
+              ["Size from confidence or analysis?", "Confidence / FOMO"],
+              ["Purchase price anchoring?", "N/A — new ticket"],
+              ["Buy today with fresh eyes?", "No — fails checklist"],
+              ["Rule next time?", "No herd fill without thesis + falsifiers"],
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "Proposed conflicted flow",
+            items: [
+              { label: "Offer", value: "Principal swap ‘everyone is in’" },
+              { label: "Checklist", value: "Fails thesis, variant, falsifiers" },
+              { label: "Book", value: "$14,800 Highlands starter" },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "ethics-5a",
+            "Refuse and document — journal shows FOMO/herding; no ticket without evidence and rules",
+            "gain",
+            0.022,
+            "Process integrity is the ethics gate: rules prevent emotion from allocating capital.",
+          ),
+          choice(
+            "ethics-5b",
+            "Take the conflicted herd swap — reputation with the desk beats the journal",
+            "loss",
+            -0.03,
+            "Skipping the journal is how bias silently controls the book.",
+          ),
+          choice(
+            "ethics-5c",
+            "Half-fill ‘to stay in the conversation’ without falsifiers",
+            "loss",
+            -0.018,
+            "Partial FOMO is still process breach — size without evidence is overconfidence.",
+          ),
+        ],
       },
     ],
   }),
