@@ -579,58 +579,97 @@ export const MODULES_EXTRA: ModuleQuest[] = [
   {
     id: "m25",
     number: 25,
-    title: "FX for Portfolios",
+    title: "Earnings, News & New Information",
     mapLabel: "FX Desk",
     x: 50,
     y: 50,
-    summary: "Treat currency as an explicit risk, not an afterthought.",
+    summary:
+      "Understand earnings, guidance, analyst revisions, regulation, rate announcements and property-market information; distinguish thesis-changing evidence from market noise.",
     concepts: [
-      "FX exposure",
-      "hedging",
-      "base currency"
+      "expectation gap",
+      "earnings surprise",
+      "guidance revision",
+      "event return",
+      "information triage",
+      "noise vs thesis change",
     ],
-    outcome: "Decide whether to hedge a foreign equity sleeve.",
+    outcome:
+      "Triage new information for the $14,800 book — measure surprise and reaction, then decide ADD/HOLD/TRIM/EXIT only if cash flows, risk or valuation assumptions change.",
     lesson:
-      "FX can dominate short-horizon returns. Hedge when currency risk is unwanted; leave open when it is a deliberate view.",
+      "Markets respond to information vs expectations, not merely ‘good’ or ‘bad’ news. Separate fact → thesis impact → price reaction. Earnings surprise % = (Actual EPS − Expected EPS) / |Expected EPS| × 100% (e.g. $2.10 vs $1.95 → ≈ +7.69%). Guidance midpoint = (Low + High)/2; Guidance change % = (New midpoint − Old midpoint) / Old midpoint × 100% (e.g. old $980–$1,020m → $1,000m; new $1,040–$1,100m → $1,070m → +7.0%). Event return = (Post − Pre) / Pre × 100% (e.g. $50 → $46 = −8.0%) measures reaction, not correctness. Noise vs thesis: one-day falls, analyst moves, headlines and rate news only change the thesis when they alter cash flows, financing, regulation or valuation structurally. Triage: what changed? source credible? already expected? alters cash flows/risk/valuation/financing? temporary or structural? one holding or whole book? then ADD/HOLD/TRIM/EXIT or no action.",
     scenario:
-      "Apply Module 25 concepts inside Portfolio Lab with explicit size, risk, and a falsifier.",
+      "In Portfolio Lab an earnings print and a guidance update hit a core holding. Measure the surprise and the price reaction, then decide whether the $14,800 book needs an action — or whether the move is noise relative to expectations.",
     questions: [
       {
         id: "m25-q1",
-        prompt: "In Module 25 (FX for Portfolios), the best first step is to:",
+        prompt:
+          "In Green City Portal 25, markets primarily respond to news by comparing:",
         choices: [
-          "Skip the numbers and follow tips",
-          "Define the decision, risks, and what would change your mind",
-          "Maximise leverage",
-          "Ignore liquidity"
+          "New information versus what was already expected (the expectation gap)",
+          "Whether headlines sound optimistic in isolation",
+          "Only the size of the one-day price move",
+          "Whether the company reported a record number, regardless of consensus",
         ],
-        correctIndex: 1,
-        explanation: "Process first: decision, risks, falsifiers.",
+        correctIndex: 0,
+        explanation:
+          "Notes §25.1: a record profit can still disappoint if investors expected more. Separate fact, thesis impact and price.",
       },
       {
         id: "m25-q2",
-        prompt: "Which formula pair is most relevant when checking short-term survival?",
+        prompt:
+          "Actual EPS is $2.10 while consensus expected $1.95. Approximate earnings surprise is:",
         choices: [
-          "P/E and PEG only",
-          "Current ratio and acid-test (quick) ratio",
-          "CAGR only",
-          "Dividend yield only"
+          "About +7.69%",
+          "About +$0.15 with no percentage meaning",
+          "About −7.69%",
+          "Exactly 2.10%",
         ],
-        correctIndex: 1,
-        explanation: "Liquidity ratios stress near-term obligations.",
+        correctIndex: 0,
+        explanation:
+          "Notes Example 25.1: Surprise = ($2.10−$1.95)/$1.95 × 100% ≈ 7.69%. Still ask if the beat is sustainable.",
       },
       {
         id: "m25-q3",
-        prompt: "A healthy learner response after being wrong is to:",
+        prompt:
+          "Old revenue guidance $980m–$1.02bn; new guidance $1.04bn–$1.10bn. Guidance midpoint change is:",
         choices: [
-          "Delete the journal",
-          "Update the thesis and falsifiers",
-          "Double the size immediately",
-          "Blame the market exclusively"
+          "+7.0% ($1,000m → $1,070m)",
+          "+2.0%",
+          "−7.0%",
+          "Unchanged because both ranges include $1bn",
         ],
-        correctIndex: 1,
-        explanation: "Learning compounds through revised process.",
-      }
+        correctIndex: 0,
+        explanation:
+          "Notes Example 25.2: Old midpoint $1,000m; new $1,070m; change = 7.0%.",
+      },
+      {
+        id: "m25-q4",
+        prompt:
+          "A stock closes at $50 before earnings and $46 after. Event return is:",
+        choices: [
+          "−8.0%",
+          "+8.0%",
+          "−$4 with no percentage",
+          "Proof the market thesis is always correct",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes Example 25.3: Event return = ($46−$50)/$50 × 100% = −8.0%. Reaction ≠ correctness.",
+      },
+      {
+        id: "m25-q5",
+        prompt:
+          "For the $14,800 book, which response best applies Portal 25 information triage?",
+        choices: [
+          "Ask what changed, whether it was expected, and whether cash flows/risk/valuation changed structurally before ADD/HOLD/TRIM/EXIT",
+          "Trade immediately on every analyst downgrade and one-day price fall",
+          "Ignore guidance revisions if EPS beat consensus",
+          "Treat every true headline as automatically material to long-term value",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes §§25.4–25.6: source → expectation → economic impact → portfolio action; not every true fact is investment-relevant.",
+      },
     ],
   },
   {
