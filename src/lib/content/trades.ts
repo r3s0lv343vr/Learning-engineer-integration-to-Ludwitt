@@ -2058,7 +2058,7 @@ const QUAY: TradeArea[] = [
     choices: [],
     steps: [
       {
-        id: "crane-1",
+        id: "harbor-1",
         title: "Part 1 · What exposure does the wrapper hold?",
         narrative:
           "Harbor Crane Freight ETF is buzzing after a supply shock. Portal 20.1: an ETF is a wrapper — it does not remove underlying risk. Ask what economic exposure you are actually buying before riding the spike.",
@@ -2103,21 +2103,21 @@ const QUAY: TradeArea[] = [
         ],
         choices: [
           choice(
-            "crane-1a",
+            "harbor-1a",
             "Treat Crane as futures commodity exposure — read holdings, mandate, and roll risk before sizing",
             "gain",
             0.015,
             "The important question is not ‘Is this an ETF?’ but what exposure it contains.",
           ),
           choice(
-            "crane-1b",
+            "harbor-1b",
             "Buy because the name says diversified freight and the spike looks huge",
             "loss",
             -0.022,
             "Two ETFs can both be called diversified while holding very different concentration. Name ≠ due diligence.",
           ),
           choice(
-            "crane-1c",
+            "harbor-1c",
             "Assume the ETF removes commodity risk because it trades like a stock",
             "loss",
             -0.014,
@@ -2126,7 +2126,7 @@ const QUAY: TradeArea[] = [
         ],
       },
       {
-        id: "crane-2",
+        id: "harbor-2",
         title: "Part 2 · Fees and tracking difference",
         narrative:
           "Before scaling in, quantify cost drag (Portal 20.2–20.3). Fees and imperfect replication matter when comparing similar exposures.",
@@ -2153,21 +2153,21 @@ const QUAY: TradeArea[] = [
         ],
         choices: [
           choice(
-            "crane-2a",
+            "harbor-2a",
             "Prefer the cheaper, tighter-tracking vehicle when exposure is similar; keep Crane only if its futures mandate is the deliberate bet",
             "gain",
             0.018,
             "Costs and tracking difference influence long-run net return when exposures overlap.",
           ),
           choice(
-            "crane-2b",
+            "harbor-2b",
             "Ignore fees and tracking — ‘the spike will cover everything’",
             "loss",
             -0.02,
             "Portal 20: when two funds provide similar exposure, costs matter. Spikes fade; fee drag does not.",
           ),
           choice(
-            "crane-2c",
+            "harbor-2c",
             "Switch to any higher-fee thematic ETF with a louder marketing name",
             "loss",
             -0.012,
@@ -2176,7 +2176,7 @@ const QUAY: TradeArea[] = [
         ],
       },
       {
-        id: "crane-3",
+        id: "harbor-3",
         title: "Part 3 · Spot return vs futures structure",
         narrative:
           "Portal 20.4–20.5: commodities generally lack operating cash flow; investor return depends on price and the vehicle. Spot can be quiet while contango/backwardation on futures rolls helps or hurts the fund.",
@@ -2220,21 +2220,21 @@ const QUAY: TradeArea[] = [
         ],
         choices: [
           choice(
-            "crane-3a",
+            "harbor-3a",
             "Separate spot narrative from futures roll — include contango bleed in the thesis before adding",
             "gain",
             0.02,
             "Spot price is not always investor return. Curve structure can help or hurt fund returns.",
           ),
           choice(
-            "crane-3b",
+            "harbor-3b",
             "Assume ETF return equals the spot freight headline forever",
             "loss",
             -0.025,
             "Notes: commodity ETFs may hold futures that must be rolled — contango/backwardation matters.",
           ),
           choice(
-            "crane-3c",
+            "harbor-3c",
             "Buy physical cargo containers to ‘avoid ETF complexity’",
             "loss",
             -0.015,
@@ -2243,7 +2243,7 @@ const QUAY: TradeArea[] = [
         ],
       },
       {
-        id: "crane-4",
+        id: "harbor-4",
         title: "Part 4 · Scale in with defined risk",
         narrative:
           "Justify commodities by portfolio purpose (inflation/supply shock diversifier), not recent performance alone. Size to the 5% / $740 alternatives band on the $14,800 book — defined risk, not YOLO.",
@@ -2274,21 +2274,21 @@ const QUAY: TradeArea[] = [
         ],
         choices: [
           choice(
-            "crane-4a",
+            "harbor-4a",
             "Scale in with defined risk — fund the Crane sleeve up to ~$740 / 5% with a roll-cost falsifier",
             "gain",
             0.022,
             "Inclusion justified by portfolio purpose and sized to policy. Spike chase avoided.",
           ),
           choice(
-            "crane-4b",
+            "harbor-4b",
             "YOLO the full sleeve — 30% of the book into Crane on the disruption headline",
             "loss",
             -0.035,
             "Spike fades; concentration and futures structure punish oversized bets.",
           ),
           choice(
-            "crane-4c",
+            "harbor-4c",
             "Skip purpose entirely and chase whatever commodity rose most last week",
             "loss",
             -0.018,
