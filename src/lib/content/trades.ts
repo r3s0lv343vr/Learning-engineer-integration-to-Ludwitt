@@ -279,23 +279,244 @@ const BRICK: TradeArea[] = [
     id: "tr-ex-acid",
     areaId: "brick-exchange",
     title: "Acid-Test Screen",
-    summary: "Liquidity screen before buying a dockside issuer.",
+    summary:
+      "Run current vs quick (acid-test) ratios, then pass names that fail liquidity — do not chase yield through a cash crunch.",
     risk: "low",
     capitalDeltaGain: 190,
     capitalDeltaLoss: -100,
+    goldReward: 1,
     x: 76,
     y: 78,
-    prompt: "Pass names that fail the acid test?",
-    choices: [
+    prompt: "Complete the Acid-Test liquidity chain.",
+    choices: [],
+    steps: [
       {
-        label: "Filter and buy the survivors",
-        outcome: "gain",
-        feedback: "Avoided a cash crunch name.",
+        id: "acid-1",
+        title: "Part 1 · Current ratio is not the acid test",
+        narrative:
+          "A dockside issuer screens cheap on yield. Blue City Portal 12: profitability and liquidity are different questions. A profitable company can still miss near-term payments.",
+        data: [
+          {
+            kind: "table",
+            title: "Two liquidity lenses (notes 12.2)",
+            headers: ["Ratio", "Formula", "What it asks"],
+            rows: [
+              [
+                "Current",
+                "Current assets / Current liabilities",
+                "Pool of short-term accounting resources vs obligations due soon",
+              ],
+              [
+                "Quick (acid test)",
+                "(Cash + marketable securities + receivables) / Current liabilities",
+                "More liquid operating assets only — inventory is removed",
+              ],
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "Notes interpretation",
+            items: [
+              { label: "1.50× current", value: "$1.50 of current assets per $1 of current liabilities" },
+              { label: "Not a pass/fail", value: "Normal levels vary by industry and business model" },
+              { label: "Receivable quality", value: "Still matters even on the quick ratio" },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "acid-1a",
+            "Treat the acid test as the quick ratio — drop inventory; current ratio alone is not a universal pass",
+            "gain",
+            0.012,
+            "Right lens: liquidity is coverage of near-term claims, and inventory is the slower asset.",
+          ),
+          choice(
+            "acid-1b",
+            "Call any current ratio above 1.0× an automatic buy",
+            "loss",
+            -0.018,
+            "The notes: 1.50× is not a universal pass/fail. Asset quality still matters.",
+          ),
+          choice(
+            "acid-1c",
+            "Skip liquidity because last year’s net income was positive",
+            "loss",
+            -0.012,
+            "Portal 12: a profitable company can still experience financial stress if cash and liquid assets are insufficient.",
+          ),
+        ],
       },
       {
-        label: "Ignore liquidity, chase yield",
-        outcome: "loss",
-        feedback: "Working-capital scare. Loss.",
+        id: "acid-2",
+        title: "Part 2 · Work current vs quick",
+        narrative:
+          "PierChem’s filing matches the notes’ liquidity examples. Compute both ratios before you keep it on the screen.",
+        data: [
+          {
+            kind: "calc",
+            title: "Current ratio (example 12.2)",
+            lines: [
+              "Current assets $6.0m; current liabilities $4.0m",
+              "Current ratio = $6.0m / $4.0m = 1.50×",
+              "Interpretation: $1.50 of current assets per $1 of CL; quality still matters.",
+            ],
+          },
+          {
+            kind: "calc",
+            title: "Quick / acid-test ratio (example 12.3)",
+            lines: [
+              "Cash $1.0m + securities $0.4m + receivables $1.8m = $3.2m quick assets",
+              "Current liabilities $4.0m",
+              "Quick ratio = $3.2m / $4.0m = 0.80×",
+              "Interpretation: removing inventory reveals a tighter short-term position.",
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "Working-capital reminder (example 11.3)",
+            items: [
+              { label: "NWC", value: "$5.4m − $3.9m = $1.5m" },
+              { label: "Cash", value: "Immediately usable" },
+              { label: "Inventory / receivables", value: "May take time to convert" },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "acid-2a",
+            "Read 1.50× current against 0.80× quick — inventory was carrying the current ratio",
+            "gain",
+            0.016,
+            "The acid test tightened the picture. 0.80× is not automatically fatal, but it is not the same as 1.50×.",
+          ),
+          choice(
+            "acid-2b",
+            "Report both ratios as 1.50× because inventory ‘always counts as cash’",
+            "loss",
+            -0.022,
+            "Quick assets exclude inventory on purpose. That is the acid test.",
+          ),
+          choice(
+            "acid-2c",
+            "Invert the formula and call current 0.67× ($4.0m / $6.0m), then buy the ‘cheap’ name",
+            "loss",
+            -0.015,
+            "Numerator is current assets. Flipping the ratio invents distress that is not in the notes — and still skips the quick test.",
+          ),
+        ],
+      },
+      {
+        id: "acid-3",
+        title: "Part 3 · Fail names that fail the screen",
+        narrative:
+          "BrickGlass prints a similar current ratio but receivables are not racing sales. PierChem’s 1.50× sits on swelling inventory and receivables. Portal 12 red-flag list applies.",
+        data: [
+          {
+            kind: "table",
+            title: "Screen tape",
+            headers: ["Check", "BrickGlass", "PierChem"],
+            rows: [
+              ["Current ratio", "1.45×", "1.50×"],
+              ["Quick / acid", "1.20×", "0.80×"],
+              ["Receivables vs revenue", "In line", "Receivables growing much faster than sales"],
+              ["Inventory vs sales", "Stable", "Inventory growing much faster than sales"],
+              ["Street pitch", "Quiet", "‘Highest dockside yield — ignore the balance sheet’"],
+            ],
+          },
+          {
+            kind: "news",
+            title: "Red-flag checklist (notes 12.6)",
+            items: [
+              {
+                headline: "Revenue grows but receivables grow much faster",
+                source: "Blue City notes",
+              },
+              {
+                headline: "Inventory grows much faster than sales",
+                source: "Blue City notes",
+              },
+              {
+                headline: "Profit rises while operating cash flow repeatedly falls",
+                source: "Blue City notes",
+                note: "Watch if PierChem’s NI keeps outrunning cash",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "acid-3a",
+            "Pass / fail PierChem — keep BrickGlass; 1.50× current does not clear an 0.80× acid test plus WC red flags",
+            "gain",
+            0.018,
+            "Filter first. A cheap yield on a cash-crunch name is the trap the stub warned about.",
+          ),
+          choice(
+            "acid-3b",
+            "Buy PierChem for the yield and ignore the acid test",
+            "loss",
+            -0.025,
+            "Working-capital scare. Liquidity is not optional because the coupon looks large.",
+          ),
+          choice(
+            "acid-3c",
+            "Buy both because both current ratios beat 1.0×",
+            "loss",
+            -0.016,
+            "The screen is the quick ratio plus red flags, not a 1.0× current-ratio rubber stamp.",
+          ),
+        ],
+      },
+      {
+        id: "acid-4",
+        title: "Part 4 · Size the survivor on $14,800",
+        narrative:
+          "BrickGlass cleared the acid test. Conviction is still not a 100% book. Use the Blue City 8% sizing rule unless the mandate says otherwise.",
+        data: [
+          {
+            kind: "calc",
+            title: "Sleeve worksheet",
+            lines: [
+              "Book = $14,800",
+              "8% weight = $14,800 × 0.08 = $1,184",
+              "Chasing PierChem yield with the full book = 100% in a name that failed the screen",
+            ],
+          },
+          {
+            kind: "table",
+            title: "Choices",
+            headers: ["Action", "Weight", "Process"],
+            rows: [
+              ["BrickGlass $1,184", "8%", "Survivor, controlled size"],
+              ["PierChem full $14,800", "100%", "Failed acid test + concentration"],
+              ["Skip size after the screen", "0%", "Analysis without a ticket"],
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "acid-4a",
+            "Buy BrickGlass at $1,184 (8%) — screened in, sized to the book",
+            "gain",
+            0.014,
+            "Filter then size. Gold prints if the path stayed on the acid-test process.",
+          ),
+          choice(
+            "acid-4b",
+            "Rotate the full $14,800 into PierChem yield now that you ‘understand’ 1.50×",
+            "loss",
+            -0.022,
+            "You reversed the screen. Current 1.50× was the costume; 0.80× quick was the test.",
+          ),
+          choice(
+            "acid-4c",
+            "Leave the sleeve at zero and call the screen complete",
+            "loss",
+            -0.01,
+            "The lab still needs a controlled ticket in the name that passed.",
+          ),
+        ],
       },
     ],
   }),
