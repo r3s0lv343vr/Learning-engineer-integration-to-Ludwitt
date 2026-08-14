@@ -259,11 +259,25 @@ export const CITY_LIBRARIES: CityLibrary[] = [
   {
     areaId: "signal-quay",
     name: "Signal Quay Library",
-    tagline: "Markets studio — portfolio, macro, and crisis media packs.",
+    tagline:
+      "Green City portfolio management — study notes and the Portfolio Management teaching deck for portals 19–27.",
     // Just right of the Gherkin on a neighboring glass tower (Gherkin stays clear)
     x: 88,
     y: 17,
     classes: [
+      {
+        id: "quay-class-green",
+        title: "Green City Portfolio Management Walkthrough",
+        duration: "81 slides",
+        summary:
+          "Portfolio Management teaching deck walkthrough aligned to Green City portals 19–27.",
+        outline: [
+          "Bonds, ETFs & alternatives",
+          "Allocation & diversification",
+          "Add / trim / exit & macro",
+          "Risk, news and crisis practice",
+        ],
+      },
       {
         id: "quay-class-1",
         title: "Portfolio Construction Stream",
@@ -280,6 +294,24 @@ export const CITY_LIBRARIES: CityLibrary[] = [
       },
     ],
     resources: [
+      {
+        id: "quay-green-notes",
+        title: "Green City Portfolio Management Notes",
+        kind: "notes",
+        description:
+          "Expanded study notes for Signal Quay (Green City) portals 19–27. Downloadable PDF.",
+        file: "green-city-portfolio-management-notes.pdf",
+        downloadName: "green-city-portfolio-management-notes.pdf",
+      },
+      {
+        id: "quay-green-teaching-deck",
+        title: "Green City Portfolio Management Teaching Deck",
+        kind: "powerpoint",
+        description:
+          "81-slide teaching deck for Portals 19–27 (PDF). Powers the Signal Quay Library Classroom board.",
+        file: "green-city-portfolio-management-teaching-deck.pdf",
+        downloadName: "green-city-portfolio-management-teaching-deck.pdf",
+      },
       {
         id: "quay-pdf",
         title: "Quay Macro Paper",
