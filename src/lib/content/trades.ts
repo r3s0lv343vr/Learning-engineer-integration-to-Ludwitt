@@ -1266,23 +1266,249 @@ const BRICK: TradeArea[] = [
     id: "tr-ex-smokestack",
     areaId: "brick-exchange",
     title: "Smokestack Bond Lot",
-    summary: "Industrial bond — carry vs credit scare.",
+    summary:
+      "Do not chase a smokestack coupon — test coverage, net debt and DSCR, then buy only the senior tranche sized to the book.",
     risk: "medium",
     capitalDeltaGain: 240,
     capitalDeltaLoss: -170,
+    goldReward: 1,
     x: 84,
     y: 74,
-    prompt: "Take the industrial bond lot?",
-    choices: [
+    prompt: "Complete the Smokestack coverage chain.",
+    choices: [],
+    steps: [
       {
-        label: "Buy senior secured tranche",
-        outcome: "gain",
-        feedback: "Carry + stability. Book up.",
+        id: "smoke-1",
+        title: "Part 1 · Yield is not guaranteed",
+        narrative:
+          "A mill lot is pitched as ‘highest dock carry.’ Blue City Portal 14: a falling price can mechanically raise yield. High yield needs a sustainability check — coverage and balance-sheet capacity — not an automatic bargain.",
+        data: [
+          {
+            kind: "calc",
+            title: "Yield lesson (notes example 14.1)",
+            lines: [
+              "Annual cash $1.80; price $45",
+              "Yield = $1.80 / $45 × 100% = 4.0%",
+              "Interpretation: yield is not guaranteed; assess coverage and balance-sheet capacity.",
+            ],
+          },
+          {
+            kind: "calc",
+            title: "Payout / retention (example 14.2)",
+            lines: [
+              "Distributions $24m / net income $60m = 40% payout",
+              "60% of accounting profit is retained before other capital uses",
+              "For cash-intensive names, compare distributions with free cash flow as well.",
+            ],
+          },
+          {
+            kind: "news",
+            title: "Stack wires",
+            items: [
+              {
+                headline: "Street: ‘SubSmoke yield just jumped — load the junior paper’",
+                source: "Message board",
+                note: "Price in the denominator: a credit scare can raise headline yield",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "smoke-1a",
+            "Treat 4.0% as a starting yield — not a guaranteed carry — and demand coverage before buying the lot",
+            "gain",
+            0.013,
+            "Right first step. A high print can be a falling-price artifact. Coverage comes next.",
+          ),
+          choice(
+            "smoke-1b",
+            "Chase SubSmoke because the jumped yield is automatically a bargain",
+            "loss",
+            -0.02,
+            "The notes: a falling price can mechanically raise yield. That is a credit scare, not a gift.",
+          ),
+          choice(
+            "smoke-1c",
+            "Invert yield to $45 / $1.80 = 25× and call the coupon ‘too expensive to own’",
+            "loss",
+            -0.012,
+            "Yield is cash over price, not the reverse. Inventing a 25× screen skips the coverage test.",
+          ),
+        ],
       },
       {
-        label: "Stretch into subordinated paper",
-        outcome: "loss",
-        feedback: "Spread blowout. Book down.",
+        id: "smoke-2",
+        title: "Part 2 · Leverage vs interest coverage",
+        narrative:
+          "Portal 12: leverage shows how much debt is used; coverage tests whether operating profit can service it. A falling coverage ratio is often more informative than one isolated print.",
+        data: [
+          {
+            kind: "calc",
+            title: "D/E and coverage (examples 12.4–12.5)",
+            lines: [
+              "Debt $12m / equity $8m = 1.50× — debt equals 150% of book equity",
+              "EBIT $4.5m / interest $1.0m = 4.5× coverage",
+              "4.5× means EBIT is 4.5 times interest; trend and cyclicality still matter.",
+            ],
+          },
+          {
+            kind: "calc",
+            title: "Net debt (example 11.6)",
+            lines: [
+              "Debt $9.0m − cash $2.5m = $6.5m net debt",
+              "Cash can offset some gross borrowing; not all cash is necessarily available to repay debt.",
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "What the ratios ask",
+            items: [
+              { label: "D/E", value: "Creditor financing vs book equity — leverage can amplify losses" },
+              { label: "Coverage", value: "Operating-profit cushion for the interest burden" },
+              { label: "Net debt", value: "Gross debt minus cash; context still required" },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "smoke-2a",
+            "Read 1.50× D/E against 4.5× coverage and $6.5m net debt — do not skip coverage because the coupon looks large",
+            "gain",
+            0.016,
+            "Structure plus cushion. The bond lot lives or dies on whether EBIT can service the interest.",
+          ),
+          choice(
+            "smoke-2b",
+            "Ignore coverage because 1.50× D/E ‘is normal’ and the yield already compensates",
+            "loss",
+            -0.022,
+            "Coverage is the service test. Yield does not replace a 4.5× (or falling) interest cushion.",
+          ),
+          choice(
+            "smoke-2c",
+            "Report coverage as $1.0m / $4.5m = 0.22× and dump every mill name",
+            "loss",
+            -0.014,
+            "Coverage is EBIT / interest = 4.5×. Flipping the ratio invents distress the notes do not show.",
+          ),
+        ],
+      },
+      {
+        id: "smoke-3",
+        title: "Part 3 · Senior tranche vs junior stretch",
+        narrative:
+          "Two lots hit the tape. Portal 15: DSCR asks whether cash covers required principal and interest. Portal 12 red flag: debt rises while interest coverage weakens. The stub rule is buy senior secured — do not stretch into subordinated paper.",
+        data: [
+          {
+            kind: "calc",
+            title: "DSCR (example 15.5)",
+            lines: [
+              "Cash available $600,000; annual principal + interest $400,000",
+              "DSCR = $600,000 / $400,000 = 1.50×",
+              "Above 1.0× means modeled cash exceeds modeled debt service; the distance is the cushion.",
+            ],
+          },
+          {
+            kind: "table",
+            title: "Smokestack tape",
+            headers: ["Check", "StackForge senior", "SubSmoke junior"],
+            rows: [
+              ["Coupon / pitch", "Quiet 4%-style carry", "Headline yield jumped after the scare"],
+              ["Interest coverage", "4.5× and stable", "Coverage weakening as debt rises"],
+              ["DSCR", "1.50× on the teaching stack", "Cushion shrinking; extra leverage"],
+              ["Net debt", "$6.5m with $2.5m cash", "Gross debt, little cash offset"],
+              ["Tranche", "Senior secured", "Subordinated — last in a blowout"],
+            ],
+          },
+          {
+            kind: "news",
+            title: "Red-flag checklist (notes 12.6)",
+            items: [
+              {
+                headline: "Debt rises while interest coverage weakens",
+                source: "Blue City notes",
+              },
+              {
+                headline: "When debt rises, ask where the financing cash went",
+                source: "Blue City notes",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "smoke-3a",
+            "Buy StackForge senior — 4.5× coverage and 1.50× DSCR; fail SubSmoke’s junior stretch",
+            "gain",
+            0.018,
+            "Senior first. Extra carry on weakening coverage is the credit-scare trap.",
+          ),
+          choice(
+            "smoke-3b",
+            "Stretch into SubSmoke subordinated paper for the jumped yield",
+            "loss",
+            -0.025,
+            "Spread blowout. Debt up as coverage falls is a listed red flag — junior is last in line.",
+          ),
+          choice(
+            "smoke-3c",
+            "Buy both because both DSCR prints are ‘above zero’",
+            "loss",
+            -0.016,
+            "The test is a cushion above 1.0× plus the coverage trend — not any positive ratio.",
+          ),
+        ],
+      },
+      {
+        id: "smoke-4",
+        title: "Part 4 · Size the senior lot on $14,800",
+        narrative:
+          "StackForge senior cleared yield, coverage and DSCR. Conviction is still not a 100% book. Use the Blue City 8% sizing rule.",
+        data: [
+          {
+            kind: "calc",
+            title: "Sleeve worksheet",
+            lines: [
+              "Book = $14,800",
+              "8% weight = $14,800 × 0.08 = $1,184",
+              "Full-book SubSmoke = 100% in junior paper after a credit scare",
+            ],
+          },
+          {
+            kind: "table",
+            title: "Choices",
+            headers: ["Action", "Weight", "Process"],
+            rows: [
+              ["StackForge senior $1,184", "8%", "Covered tranche, controlled size"],
+              ["SubSmoke full $14,800", "100%", "Junior stretch + concentration"],
+              ["Skip size after the screen", "0%", "Analysis without a ticket"],
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "smoke-4a",
+            "Buy StackForge senior at $1,184 (8%) — covered, sized to the book",
+            "gain",
+            0.014,
+            "Filter then size. Gold prints if the path stayed on coverage and the senior tranche.",
+          ),
+          choice(
+            "smoke-4b",
+            "Rotate the full $14,800 into SubSmoke now that you ‘understand’ 4.5×",
+            "loss",
+            -0.022,
+            "You reversed the screen. 4.5× was StackForge; the junior lot was the scare.",
+          ),
+          choice(
+            "smoke-4c",
+            "Leave the sleeve at zero and call the smokestack complete",
+            "loss",
+            -0.01,
+            "The lab still needs a controlled ticket in the senior lot that passed.",
+          ),
+        ],
       },
     ],
   }),
