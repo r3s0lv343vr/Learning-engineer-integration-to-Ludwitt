@@ -1251,58 +1251,97 @@ export const MODULES_EXTRA: ModuleQuest[] = [
   {
     id: "m32",
     number: 32,
-    title: "Committee Simulation",
+    title: "Historical Market Simulator",
     mapLabel: "Committee Hall",
     x: 50,
     y: 50,
-    summary: "Defend a recommendation under hostile questions.",
+    summary:
+      "Understand crisis environments resembling 1987, dot-com, 2008, COVID and the 2022 inflation/rate shock — and manage without knowing the historical outcome in advance.",
     concepts: [
-      "process defence",
-      "uncertainty",
-      "alternatives"
+      "information-limited simulation",
+      "drawdown vs volatility",
+      "recovery mathematics",
+      "decision log under uncertainty",
+      "hindsight bias",
+      "process vs outcome scoring",
     ],
-    outcome: "Answer a sceptical IC question without bluffing.",
+    outcome:
+      "Run an information-limited crisis lab on the Highlands book: measure drawdown and recovery burden, log decisions with falsifiers before outcomes are revealed, and judge process — not hindsight.",
     lesson:
-      "Committees reward clarity about what you know, what you don't, and what would change your mind.",
+      "Historical simulation is a decision laboratory, not a memory test: reveal events sequentially and decide before the next stage. Environments stress liquidity, leverage, valuations, credit and simultaneous stock/bond pressure (1987, dot-com, 2008, COVID, 2022). Drawdown = (Trough−Peak)/Peak (e.g. $10.8m→$8.1m = −25%) — the loss investors actually experience, distinct from volatility. Recovery = Peak/Trough−1 (e.g. 10.8/8.1−1 ≈ 33.33% after a 25% loss). Do not automatically take more risk to ‘earn it back.’ Keep a decision log: information known, decision, reason, what would change your mind — then outcome later. Avoid hindsight bias: score process with information available at the time; a good process can have a bad outcome.",
     scenario:
-      "Apply Module 32 concepts inside Portfolio Lab with explicit size, risk, and a falsifier.",
+      "Portfolio Lab runs a Highlands crisis sim without naming the year. After a peak-to-trough move, compute drawdown and recovery math on the book, write a decision log before the next reveal, and refuse hindsight scoring when the outcome appears.",
     questions: [
       {
         id: "m32-q1",
-        prompt: "In Module 32 (Committee Simulation), the best first step is to:",
+        prompt:
+          "In Yellow City Portal 32, how should historical market simulation be run?",
         choices: [
-          "Skip the numbers and follow tips",
-          "Define the decision, risks, and what would change your mind",
-          "Maximise leverage",
-          "Ignore liquidity"
+          "As an information-limited decision lab — decide with only what is known so far, before the next stage is revealed",
+          "As a memory test where the final historical outcome is shown first",
+          "As a guarantee that past crises will repeat exactly",
+          "As a reason to ignore drawdown limits because long-run returns eventually work",
         ],
-        correctIndex: 1,
-        explanation: "Process first: decision, risks, falsifiers.",
+        correctIndex: 0,
+        explanation:
+          "Notes §32.1: if the ending is known, the task becomes memory; stress relationships that change in crises.",
       },
       {
         id: "m32-q2",
-        prompt: "Which formula pair is most relevant when checking short-term survival?",
+        prompt:
+          "A simulated fund peaks at $10.8m and later falls to $8.1m. Drawdown is:",
         choices: [
-          "P/E and PEG only",
-          "Current ratio and acid-test (quick) ratio",
-          "CAGR only",
-          "Dividend yield only"
+          "−25%",
+          "−33.33%",
+          "+25%",
+          "−2.7%",
         ],
-        correctIndex: 1,
-        explanation: "Liquidity ratios stress near-term obligations.",
+        correctIndex: 0,
+        explanation:
+          "Notes Example 32.1: ($8.1m−$10.8m)/$10.8m = −25%. Drawdown is peak-to-trough loss experience, not volatility.",
       },
       {
         id: "m32-q3",
-        prompt: "A healthy learner response after being wrong is to:",
+        prompt:
+          "To recover from $8.1m back to the $10.8m peak, approximate return required is:",
         choices: [
-          "Delete the journal",
-          "Update the thesis and falsifiers",
-          "Double the size immediately",
-          "Blame the market exclusively"
+          "33.33%",
+          "25%",
+          "75%",
+          "8.1%",
         ],
-        correctIndex: 1,
-        explanation: "Learning compounds through revised process.",
-      }
+        correctIndex: 0,
+        explanation:
+          "Notes Example 32.2: $10.8m/$8.1m − 1 ≈ 33.33%. A 25% loss needs a larger subsequent gain because the base shrank.",
+      },
+      {
+        id: "m32-q4",
+        prompt:
+          "What is hindsight bias in crisis evaluation?",
+        choices: [
+          "Treating the correct action as obvious after the outcome, understating the uncertainty that existed in real time",
+          "Recording what was known before deciding",
+          "Scoring process quality with information available at the time",
+          "Distinguishing volatility from drawdown",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes §32.5: judge whether the process was reasonable then; good decisions can have bad outcomes.",
+      },
+      {
+        id: "m32-q5",
+        prompt:
+          "Best Portfolio Lab response mid-sim after a −25% drawdown on the Highlands book is:",
+        choices: [
+          "Log the decision with reason and falsifier before the next reveal; do not automatically raise risk just to recover the 33% required gain",
+          "Max leverage immediately to earn back the peak this week",
+          "Skip the journal because the ending will make the answer obvious later",
+          "Ignore drawdown because long-run average return looks fine",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes §§32.3–32.4: recovery burden rises after deep losses; response depends on remaining opportunity set and risk budget, with a written decision log.",
+      },
     ],
   },
   {
