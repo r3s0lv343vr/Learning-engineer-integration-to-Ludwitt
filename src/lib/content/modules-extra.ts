@@ -771,58 +771,97 @@ export const MODULES_EXTRA: ModuleQuest[] = [
   {
     id: "m27",
     number: 27,
-    title: "Liquidity Playbook",
+    title: "Green City Crisis Challenge",
     mapLabel: "Liquidity Desk",
     x: 50,
     y: 50,
-    summary: "Plan exits before you need them.",
+    summary:
+      "Integrate a multi-asset market-shock simulation and decide what to sell, protect, add to, or leave untouched under pressure — without abandoning process.",
     concepts: [
-      "bid-ask",
-      "capacity",
-      "stress liquidity"
+      "crisis triage order",
+      "liquidity first",
+      "thesis break vs bargain",
+      "duration & FX shock math",
+      "concentration after moves",
+      "ADD/HOLD/TRIM/EXIT/REPLACE/HEDGE",
     ],
-    outcome: "Size a position given thin average volume.",
+    outcome:
+      "Under an integrated shock on the $14,800 book, triage liquidity and thesis breaks first, quantify rate/FX hits, refresh weights, then record ADD/HOLD/TRIM/EXIT/REPLACE/HEDGE with evidence.",
     lesson:
-      "Liquidity is the ability to exit near fair value. Stress can erase it — size positions to the worst plausible exit.",
+      "A crisis is a decision test: incomplete information, fast prices, emotional pressure. Do not sell every fall — separate liquidity needs, thesis breaks, valuation opportunities and portfolio-level risk. Cash has option value. Triage order: (1) liquidity/obligations, (2) forced risks (margin, refinancing, covenants), (3) thesis breaks, (4) concentration, (5) scenario losses/recovery, (6) valuation vs updated fundamentals, (7) decide ADD/HOLD/TRIM/EXIT/REPLACE/HEDGE, (8) record the reason. Integrated shock example: rates +1.0 pp, equities −15%, property −10%, credit spreads wider, home currency +6%, one holding cuts guidance. Duration: %ΔPrice ≈ −Duration × ΔYield; e.g. $3,700 bonds, duration 5.0, Δy = +1.0% → ≈ −5% → ≈ −$185. FX: Domestic return = (1+Local)(1+FX)−1; 0% local and −6% FX → −6% domestic. Concentration: New weight = Position / New portfolio value; e.g. $2,500 on a book that fell $14,800 → $12,500 = 20%. Debrief: expected market risk vs thesis failure, diversification, correlations, liquidity, leverage, panic sells, missed opportunities, and which rule to change before the next crisis.",
     scenario:
-      "Apply Module 27 concepts inside Portfolio Lab with explicit size, risk, and a falsifier.",
+      "Portfolio Lab runs Green City’s crisis challenge on the $14,800 book: rates jump, equities and property fall, spreads widen, the home currency strengthens, and a core name cuts guidance. Triage first, compute the bond and FX hits, refresh weights, then decide — with a written reason — what to sell, protect, add, or leave alone.",
     questions: [
       {
         id: "m27-q1",
-        prompt: "In Module 27 (Liquidity Playbook), the best first step is to:",
+        prompt:
+          "In Green City Portal 27, why is a falling price alone not enough reason to sell?",
         choices: [
-          "Skip the numbers and follow tips",
-          "Define the decision, risks, and what would change your mind",
-          "Maximise leverage",
-          "Ignore liquidity"
+          "Price can fall while fundamentals stay intact (improving expected return) or because economics truly deteriorated — you must identify which case before acting",
+          "Every price decline is always a bargain that must be bought",
+          "Crisis prices are always wrong, so never update the thesis",
+          "Only maximum drawdown statistics matter; prices are irrelevant",
         ],
-        correctIndex: 1,
-        explanation: "Process first: decision, risks, falsifiers.",
+        correctIndex: 0,
+        explanation:
+          "Notes §27.1: separate liquidity needs, thesis breaks, valuation opportunities and portfolio-level risk; do not react to every falling price.",
       },
       {
         id: "m27-q2",
-        prompt: "Which formula pair is most relevant when checking short-term survival?",
+        prompt:
+          "Crisis triage: which check comes first, and why before hunting bargains?",
         choices: [
-          "P/E and PEG only",
-          "Current ratio and acid-test (quick) ratio",
-          "CAGR only",
-          "Dividend yield only"
+          "Liquidity and forced risks (obligations, margin, refinancing) — an elegant long-term plan fails if you cannot implement it or must raise cash immediately",
+          "Average down on every name that fell 30%",
+          "Maximize Sharpe using yesterday’s volatility only",
+          "Hedge every foreign asset before checking cash needs",
         ],
-        correctIndex: 1,
-        explanation: "Liquidity ratios stress near-term obligations.",
+        correctIndex: 0,
+        explanation:
+          "Notes §27.2: liquidity first; thesis breaks before bargains — a 30% decline is not automatically a bargain if cash flows deteriorated more than the price.",
       },
       {
         id: "m27-q3",
-        prompt: "A healthy learner response after being wrong is to:",
+        prompt:
+          "A $3,700 bond sleeve has modified duration 5.0. Yields rise 1.0 percentage point. Approximate dollar P/L is:",
         choices: [
-          "Delete the journal",
-          "Update the thesis and falsifiers",
-          "Double the size immediately",
-          "Blame the market exclusively"
+          "−$185",
+          "−$3,700",
+          "+$185",
+          "−$37",
         ],
-        correctIndex: 1,
-        explanation: "Learning compounds through revised process.",
-      }
+        correctIndex: 0,
+        explanation:
+          "Notes Example 27.1: %ΔPrice ≈ −5.0 × 0.010 = −5%; $3,700 × (−0.05) ≈ −$185 (ignoring convexity/credit).",
+      },
+      {
+        id: "m27-q4",
+        prompt:
+          "A foreign holding has 0% local return while the foreign currency falls 6% vs home. Domestic-currency return is:",
+        choices: [
+          "−6.0%",
+          "0%",
+          "+6.0%",
+          "−0.6%",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes Example 27.2: Domestic = (1+0)(1−0.06)−1 = −6%. FX can create loss even when local asset price is unchanged.",
+      },
+      {
+        id: "m27-q5",
+        prompt:
+          "After the shock the $14,800 book is $12,500; a defensive holding is still $2,500 (20% new weight). Best Portfolio Lab next step is:",
+        choices: [
+          "Use updated weights for crisis rebalancing, then record ADD/HOLD/TRIM/EXIT/REPLACE/HEDGE with evidence — not old target percentages or panic selling on price alone",
+          "Ignore new weights because the dollar value did not rise",
+          "Sell every name that fell regardless of thesis or liquidity",
+          "Deploy all cash immediately without a review trigger",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes Examples 27.3 + §§27.4/27.8–27.9: concentration can rise without the position rising; decide with a recorded reason and debrief which rule to change next time.",
+      },
     ],
   },
   {
