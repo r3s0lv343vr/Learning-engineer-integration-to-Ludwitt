@@ -101,58 +101,96 @@ export const MODULES_EXTRA: ModuleQuest[] = [
   {
     id: "m20",
     number: 20,
-    title: "Risk Budgeting Basics",
+    title: "ETFs, Commodities & Alternatives",
     mapLabel: "Risk Budget",
     x: 50,
     y: 50,
-    summary: "Translate mandate language into numeric risk budgets.",
+    summary:
+      "Understand index funds, sector ETFs, gold, commodities and alternative exposures; compare direct ownership with pooled vehicles.",
     concepts: [
-      "risk budget",
-      "volatility",
-      "position limits"
+      "ETF exposure vs wrapper",
+      "expense ratio",
+      "tracking difference",
+      "commodity drivers",
+      "direct vs pooled ownership",
     ],
-    outcome: "Propose risk limits for a moderate investor.",
+    outcome:
+      "Compare direct ownership with ETF/pooled and commodity exposures, then decide what role each vehicle plays in the $14,800 portfolio.",
     lesson:
-      "A risk budget caps how much pain is allowed: max drawdown, sector caps, single-name caps, and liquidity rules. Numbers beat vibes.",
+      "An ETF is a wrapper around a basket or strategy that trades on an exchange — it does not remove underlying risk (a tech ETF still has tech risk; a long-duration bond ETF still has rate risk). Ask 'What exposure does this ETF actually contain?' and check holdings, mandate, expense ratio, bid-ask spread, tracking difference, liquidity, concentration and currency hedge status. Approximate annual fund fee = Amount invested × Expense ratio (e.g. $8,000 × 0.25% ≈ $20/year). Tracking difference = ETF return − Benchmark return (e.g. ETF 8.9% vs index 9.2% → −0.30 pp). Commodities (energy, metals, agriculture) generally do not produce operating earnings like a business; returns depend on price, supply/demand, inventories, weather, geopolitics, USD pricing and futures structure (contango/backwardation can affect fund returns even if spot barely moves). Price return = (Ending − Beginning) / Beginning × 100% (e.g. gold $2,000 → $2,140 = 7%). Direct ownership vs pooled: stocks/bonds/gold/property/commodities can be held directly or via ETFs/REITs/futures funds — choose the vehicle for a portfolio purpose, not recent price alone.",
     scenario:
-      "Apply Module 20 concepts inside Portfolio Lab with explicit size, risk, and a falsifier.",
+      "In Portfolio Lab you can buy single names, a broad ETF, a sector ETF, or a commodity/gold vehicle inside the $14,800 book. Before you allocate, compare what exposure you actually get, what it costs, how closely it tracks, and whether a commodity sleeve is justified by inflation/supply risk — not by a hot chart.",
     questions: [
       {
         id: "m20-q1",
-        prompt: "In Module 20 (Risk Budgeting Basics), the best first step is to:",
+        prompt:
+          "In Green City Portal 20, the most important question when evaluating an ETF is:",
         choices: [
-          "Skip the numbers and follow tips",
-          "Define the decision, risks, and what would change your mind",
-          "Maximise leverage",
-          "Ignore liquidity"
+          "What economic exposure does this ETF actually contain?",
+          "Whether the product is labeled an ETF, regardless of holdings",
+          "Whether the ticker looks diversified in its marketing name alone",
+          "Whether the fund can eliminate underlying market risk",
         ],
-        correctIndex: 1,
-        explanation: "Process first: decision, risks, falsifiers.",
+        correctIndex: 0,
+        explanation:
+          "Notes §20.1: an ETF is a wrapper; it does not remove underlying risks. Two 'diversified' ETFs can have very different concentration.",
       },
       {
         id: "m20-q2",
-        prompt: "Which formula pair is most relevant when checking short-term survival?",
+        prompt:
+          "An investor places $8,000 in an ETF with a 0.25% annual expense ratio. Approximate annual fund fee is:",
         choices: [
-          "P/E and PEG only",
-          "Current ratio and acid-test (quick) ratio",
-          "CAGR only",
-          "Dividend yield only"
+          "About $20 ($8,000 × 0.0025)",
+          "About $200",
+          "About $2",
+          "$8,000 — the whole investment is the fee",
         ],
-        correctIndex: 1,
-        explanation: "Liquidity ratios stress near-term obligations.",
+        correctIndex: 0,
+        explanation:
+          "Notes Example 20.1: Annual fee ≈ Investment × Expense ratio = $8,000 × 0.0025 ≈ $20. Small yearly, compounds over long holdings.",
       },
       {
         id: "m20-q3",
-        prompt: "A healthy learner response after being wrong is to:",
+        prompt:
+          "An index rises 9.2% while the ETF tracking it returns 8.9%. Tracking difference is:",
         choices: [
-          "Delete the journal",
-          "Update the thesis and falsifiers",
-          "Double the size immediately",
-          "Blame the market exclusively"
+          "−0.30 percentage points (ETF return − index return)",
+          "+0.30 percentage points",
+          "9.2%",
+          "8.9%",
         ],
-        correctIndex: 1,
-        explanation: "Learning compounds through revised process.",
-      }
+        correctIndex: 0,
+        explanation:
+          "Notes Example 20.2: Tracking difference = 8.9% − 9.2% = −0.30 pp. Fees, trading costs, cash drag and imperfect replication can create gaps.",
+      },
+      {
+        id: "m20-q4",
+        prompt:
+          "Gold rises from $2,000 to $2,140 per ounce. Ignoring costs and vehicle structure, price return is:",
+        choices: [
+          "7.0%",
+          "14.0%",
+          "6.5%",
+          "0% because commodities have no earnings",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes Example 20.3: ($2,140 − $2,000) / $2,000 × 100% = 7.0%. Commodities lack operating cash flow like a business; return depends heavily on price and vehicle.",
+      },
+      {
+        id: "m20-q5",
+        prompt:
+          "For the $14,800 Portfolio Lab book, which choice best applies Portal 20?",
+        choices: [
+          "Prefer a pooled ETF/REIT/futures vehicle when it delivers the intended exposure more practically than direct ownership — after checking holdings, costs and tracking",
+          "Buy any commodity ETF solely because the spot price chart is rising",
+          "Assume a sector ETF is as diversified as a broad global index because both are ETFs",
+          "Ignore expense ratio and tracking difference if the fund name says 'index'",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes §§20.1–20.6: compare direct vs pooled ownership; justify commodity/alternative sleeves by portfolio purpose; research exposure, costs and tracking.",
+      },
     ],
   },
   {
