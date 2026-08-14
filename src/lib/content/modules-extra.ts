@@ -1635,58 +1635,98 @@ export const MODULES_EXTRA: ModuleQuest[] = [
   {
     id: "m36",
     number: 36,
-    title: "Capstone Defence Prep",
+    title: "Final Investment Committee",
     mapLabel: "Defence Prep",
     x: 50,
     y: 50,
-    summary: "Prepare the final mandate defence packet.",
+    summary:
+      "Defend the multi-year $10m Highlands fund before the AI Investment Committee — total and active return, contribution and allocation intuition, drawdown, skill vs luck, and a coherent investment philosophy.",
     concepts: [
-      "IPS",
-      "risk limits",
-      "crisis plan"
+      "committee as process + outcome defence",
+      "total fund return",
+      "active / benchmark-relative return",
+      "contribution to return",
+      "allocation effect (simple)",
+      "skill vs luck",
+      "investment philosophy",
     ],
-    outcome: "List the artefacts required for mandate defence.",
+    outcome:
+      "Present a committee defence that attributes performance, separates skill from luck, admits mistakes, and states a philosophy specific enough to guide future Highlands decisions.",
     lesson:
-      "IPS, holdings with weights, risk dashboard, crisis playbook, and decision journal excerpts.",
+      "The committee is not a victory speech: connect results to prior decisions, risk controls and mandate compliance. Total return = (Ending − Beginning − net flows) / Beginning × 100% (no flows: $11.3m on $10m → 13%). Active return = Rp − Rb (13.0% − 9.5% = +3.5 pp). Contribution ≈ beginning weight × asset return (40% × 15% ≈ +6.0 pp). Allocation effect ≈ (wp − wb) × benchmark asset return (50%−40% × 12% ≈ +1.2 pp). Skill looks like a repeatable, mandate-consistent process; luck looks like one concentrated bet or rewritten narratives. Close with a philosophy: sources of edge, evidence, valuation/quality, concentration, drawdown response, and when to revise the process.",
     scenario:
-      "Apply Module 36 concepts inside Portfolio Lab with explicit size, risk, and a falsifier.",
+      "Your multi-year $10m Portfolio Lab track record is closed. Prepare the Final Investment Committee packet: compute total and active return, show equity contribution and a simple allocation effect, flag what may have been luck, and state the Highlands investment philosophy you will defend — without claiming victory for mandate breaches.",
     questions: [
       {
         id: "m36-q1",
-        prompt: "In Module 36 (Capstone Defence Prep), the best first step is to:",
+        prompt:
+          "In Yellow City Portal 36, what should the Final Investment Committee primarily evaluate?",
         choices: [
-          "Skip the numbers and follow tips",
-          "Define the decision, risks, and what would change your mind",
-          "Maximise leverage",
-          "Ignore liquidity"
+          "Both outcomes and process — including whether returns came from intended decisions within the mandate, not a victory speech for absolute gains alone",
+          "Only the highest absolute return, regardless of mandate or concentration",
+          "Only the stock tickers held at the last close",
+          "Whether the manager skipped the decision journal",
         ],
-        correctIndex: 1,
-        explanation: "Process first: decision, risks, falsifiers.",
+        correctIndex: 0,
+        explanation:
+          "Notes §36.1: strong returns from hidden concentration or mandate violations are not automatically strong management.",
       },
       {
         id: "m36-q2",
-        prompt: "Which formula pair is most relevant when checking short-term survival?",
+        prompt:
+          "Fund begins at $10m and ends at $11.3m with no external flows. Total fund return is:",
         choices: [
-          "P/E and PEG only",
-          "Current ratio and acid-test (quick) ratio",
-          "CAGR only",
-          "Dividend yield only"
+          "13.0%",
+          "11.3%",
+          "1.3%",
+          "$1.3 million (not a return rate)",
         ],
-        correctIndex: 1,
-        explanation: "Liquidity ratios stress near-term obligations.",
+        correctIndex: 0,
+        explanation:
+          "Notes Example 36.1: ($11.3m − $10.0m) / $10.0m × 100% = 13.0%. Still compare to benchmark, risk and drawdown.",
       },
       {
         id: "m36-q3",
-        prompt: "A healthy learner response after being wrong is to:",
+        prompt:
+          "Fund return 13.0%; benchmark return 9.5%. Active return is:",
         choices: [
-          "Delete the journal",
-          "Update the thesis and falsifiers",
-          "Double the size immediately",
-          "Blame the market exclusively"
+          "+3.5 percentage points",
+          "22.5%",
+          "13.0%",
+          "−3.5 percentage points",
         ],
-        correctIndex: 1,
-        explanation: "Learning compounds through revised process.",
-      }
+        correctIndex: 0,
+        explanation:
+          "Notes Example 36.2: 13.0% − 9.5% = +3.5 pp. Ask whether outperformance came from intended decisions or accidental exposures.",
+      },
+      {
+        id: "m36-q4",
+        prompt:
+          "Beginning equity weight 40%; equities return 15%. Approximate contribution to portfolio return is:",
+        choices: [
+          "+6.0 percentage points",
+          "15%",
+          "40%",
+          "+1.5 percentage points",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes Example 36.3: 0.40 × 0.15 = 0.060 → +6.0 pp. A high asset return is not the same as its portfolio contribution.",
+      },
+      {
+        id: "m36-q5",
+        prompt:
+          "Best Final Committee defence in Portfolio Lab after the multi-year $10m path is:",
+        choices: [
+          "Attribute gains/losses (contribution and simple allocation), compare active return and drawdown to the mandate, distinguish skill-like process from luck, admit mistakes, and state a specific investment philosophy for future decisions",
+          "Present only absolute return and declare skill proven by one good year",
+          "Hide mandate breaches if the ending NAV beat the $14,800 starter book",
+          "Rewrite the journal after results so every trade looks intentional",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes §36.6–36.8: skill needs repeatability and mandate consistency; philosophy must guide future decisions, not slogans.",
+      },
     ],
   }
 ];
