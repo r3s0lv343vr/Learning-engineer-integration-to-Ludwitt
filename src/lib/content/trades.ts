@@ -3722,23 +3722,238 @@ const HIGHLANDS: TradeArea[] = [
     id: "tr-high-bias",
     areaId: "mandate-highlands",
     title: "Bias Drill Auction",
-    summary: "Auction lot designed to bait anchoring.",
+    summary:
+      "Beat anchoring at the auction, then optimize the Highlands book as a system — expected portfolio return, correlation-aware risk, and risk budgets under real constraints.",
     risk: "medium",
     capitalDeltaGain: 250,
     capitalDeltaLoss: -180,
+    goldReward: 1,
     x: 40,
     y: 34,
-    prompt: "Bid with a pre-committed ceiling?",
-    choices: [
+    prompt: "Complete the Bias + Optimization drill chain.",
+    choices: [],
+    steps: [
       {
-        label: "Ceiling bid only",
-        outcome: "gain",
-        feedback: "Avoided anchor trap. Gain.",
+        id: "bias-1",
+        title: "Part 1 · Anchoring vs a pre-committed ceiling",
+        narrative:
+          "Portal 29 → 30 bridge: the auction is built to bait anchoring on the last print or an old target. Bias distorts single-ticket decisions; optimization later asks how holdings work together. Bid only with a pre-committed ceiling tied to thesis/value — not the room’s heat.",
+        data: [
+          {
+            kind: "table",
+            title: "Anchor traps (notes §29.1)",
+            headers: ["Cue", "Distortion"],
+            rows: [
+              ["Purchase / last print", "Fixate on old price; ignore new info"],
+              ["Room bid heat", "FOMO / herding lifts the ceiling mid-auction"],
+              ["Old street target", "Treat outdated number as fair value"],
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "Pre-commit worksheet ($14,800 book)",
+            items: [
+              { label: "Thesis max bid", value: "$48 (MoS vs fair value)" },
+              { label: "Last print / chatter", value: "$52 and rising" },
+              { label: "Room ask", value: "‘Chase — everyone is marking higher’" },
+            ],
+          },
+          {
+            kind: "news",
+            title: "Auction floor",
+            items: [
+              {
+                headline: "Lift the ceiling — don’t look stupid vs the desk",
+                source: "Floor chatter",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "bias-1a",
+            "Hold the $48 ceiling — refuse to re-anchor on the room’s rising print",
+            "gain",
+            0.018,
+            "Anchoring ignores new information. Pre-committed ceilings protect process before optimization.",
+          ),
+          choice(
+            "bias-1b",
+            "Chase the room above $48 because the last print ‘proves’ value",
+            "loss",
+            -0.025,
+            "Last print is not a thesis. FOMO/anchoring overpays.",
+          ),
+          choice(
+            "bias-1c",
+            "Scrap the ceiling mid-bid and size up on confidence alone",
+            "loss",
+            -0.016,
+            "Overconfidence plus anchoring is how single tickets poison the portfolio system.",
+          ),
+        ],
       },
       {
-        label: "Chase the room higher",
-        outcome: "loss",
-        feedback: "Overpaid. Book down.",
+        id: "bias-2",
+        title: "Part 2 · Expected portfolio return",
+        narrative:
+          "Portal 30.1–30.2: optimization improves the return/risk trade-off under constraints — it is not max return at any cost. E(Rp) = Σ wᵢE(Rᵢ). Weights as decimals must sum to 1.00 before you trust the total.",
+        data: [
+          {
+            kind: "calc",
+            title: "E(Rp) (notes Example 30.1)",
+            lines: [
+              "Equities 40% × 9% = 3.60%",
+              "Bonds 25% × 4% = 1.00%",
+              "Real estate 20% × 6% = 1.20%",
+              "Cash 15% × 2% = 0.30%",
+              "E(Rp) = 6.10%",
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "Weight check",
+            items: [
+              { label: "Sum of weights", value: "40+25+20+15 = 100%" },
+              { label: "Largest driver", value: "Equities contribute 3.60 pp of 6.10%" },
+              { label: "Caution", value: "Inputs are estimates — not permanent facts" },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "bias-2a",
+            "Record E(Rp) = 6.10% and refuse to ‘optimize’ by chasing only the highest single-asset forecast",
+            "gain",
+            0.02,
+            "Example 30.1: weighted contributions show what drives the book. Max forecast return ≠ efficient portfolio.",
+          ),
+          choice(
+            "bias-2b",
+            "Dump bonds/cash and go 100% equities because 9% > 6.10%",
+            "loss",
+            -0.022,
+            "Highest forecast return can bring unacceptable volatility, concentration or liquidity risk.",
+          ),
+          choice(
+            "bias-2c",
+            "Average 9%, 4%, 6%, 2% without weights and call it 5.25%",
+            "loss",
+            -0.014,
+            "Each asset influences E(Rp) in proportion to capital allocated — use Σ wᵢE(Rᵢ).",
+          ),
+        ],
+      },
+      {
+        id: "bias-3",
+        title: "Part 3 · Correlation cuts portfolio volatility",
+        narrative:
+          "Portal 30.3: risk is not a weighted average of vols — correlation matters. σp² = w₁²σ₁² + w₂²σ₂² + 2w₁w₂σ₁σ₂ρ. With ρ = 0.25, 60/40 A/B yields ≈11.29% vol — below Asset A’s 16%.",
+        data: [
+          {
+            kind: "calc",
+            title: "Two-asset volatility (notes Example 30.2)",
+            lines: [
+              "wA=0.60, σA=16%; wB=0.40, σB=10%; ρ=0.25",
+              "Term1 = 0.36 × 0.0256 = 0.009216",
+              "Term2 = 0.16 × 0.0100 = 0.001600",
+              "Cross = 2×0.60×0.40×0.16×0.10×0.25 = 0.001920",
+              "Variance = 0.012736 → σp ≈ 11.29%",
+            ],
+          },
+          {
+            kind: "table",
+            title: "Diversification read",
+            headers: ["If correlation…", "Then…"],
+            rows: [
+              ["→ +1", "Diversification benefit shrinks"],
+              ["Lower / negative", "Offsetting moves can cut σp more"],
+              ["Ignored", "‘Safe’ add-ons that move together still concentrate risk"],
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "bias-3a",
+            "Keep the diversifier — ≈11.29% portfolio vol shows ρ=0.25 offsets; judge the system, not each name alone",
+            "gain",
+            0.022,
+            "Example 30.2: portfolio risk depends on how risks interact, not only standalone vols.",
+          ),
+          choice(
+            "bias-3b",
+            "Cut Asset B because 10% vol ‘does nothing’ next to A’s 16%",
+            "loss",
+            -0.02,
+            "Low-vol alone does not diversify if behavior matches existing exposures.",
+          ),
+          choice(
+            "bias-3c",
+            "Average 16% and 10% to 13% and ignore the cross term",
+            "loss",
+            -0.015,
+            "Weighted-average volatility skips correlation — the engine of diversification.",
+          ),
+        ],
+      },
+      {
+        id: "bias-4",
+        title: "Part 4 · Risk budgets, Sharpe, constraints",
+        narrative:
+          "Portal 30.4–30.6: Sharpe = (E(Rp)−Rf)/σp (8%−3%)/10% = 0.50. Risk share ≈ wσ/Σ(wσ) — Asset B can match A’s ~45% risk share at only 30% capital. Constraints (max name, liquidity, sectors) stop unconstrained math from concentrating the $14,800 book.",
+        data: [
+          {
+            kind: "calc",
+            title: "Sharpe (notes Example 30.3)",
+            lines: [
+              "E(Rp)=8%, Rf=3%, σp=10%",
+              "Excess = 5% → Sharpe = 0.05/0.10 = 0.50",
+            ],
+          },
+          {
+            kind: "calc",
+            title: "Stand-alone risk shares (notes Example 30.4)",
+            lines: [
+              "A: 0.50×0.12 = 0.060 → 45.45%",
+              "B: 0.30×0.20 = 0.060 → 45.45%",
+              "C: 0.20×0.06 = 0.012 → 9.09%",
+              "B matches A’s risk share despite lower capital weight",
+            ],
+          },
+          {
+            kind: "news",
+            title: "Optimizer pitch",
+            items: [
+              {
+                headline: "Remove all constraints — model loves three names at 90%+",
+                source: "Unconstrained solver",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "bias-4a",
+            "Trim/re-budget where risk share (not just weight) dominates; keep max-position and liquidity constraints — accept Sharpe as one lens only",
+            "gain",
+            0.025,
+            "Examples 30.3–30.4 + §30.6: efficient and deliberate under real limits — not mechanical max-return output.",
+          ),
+          choice(
+            "bias-4b",
+            "Accept the unconstrained 90% concentration because the solver’s Sharpe looks best",
+            "loss",
+            -0.03,
+            "Unreliable forecasts + no constraints → hidden concentration, liquidity and mandate risk.",
+          ),
+          choice(
+            "bias-4c",
+            "Judge risk only by capital weights — ignore that B’s 30% weight can equal A’s risk share",
+            "loss",
+            -0.018,
+            "Largest capital weight is not always the largest risk contributor.",
+          ),
+        ],
       },
     ],
   }),
