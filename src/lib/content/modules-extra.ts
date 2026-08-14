@@ -867,58 +867,97 @@ export const MODULES_EXTRA: ModuleQuest[] = [
   {
     id: "m28",
     number: 28,
-    title: "Scenario Trees",
+    title: "Build an Investment Thesis",
     mapLabel: "Scenario Tree",
     x: 50,
     y: 50,
-    summary: "Build bull/base/bear paths with probabilities.",
+    summary:
+      "Develop expected return, catalysts, risks, variant perception, falsification and sell criteria — then write a formal, testable thesis before sizing capital.",
     concepts: [
-      "scenarios",
-      "expected value",
-      "tails"
+      "testable thesis",
+      "scenario-weighted expected return",
+      "upside / downside / MoS",
+      "variant perception",
+      "catalysts",
+      "falsification & sell criteria",
     ],
-    outcome: "Write three scenarios for one holding.",
+    outcome:
+      "Write a formal thesis for a major holding on the $14,800 book: expected return, upside/downside, variant view, catalyst, falsifiers, and sell rules — before sizing.",
     lesson:
-      "E[R] = Σ p_i R_i. Force yourself to price the ugly path, not only the base case.",
+      "An investment thesis is a structured, testable argument for risk-adjusted return over a horizon — not a pile of positive facts. Connect economics, valuation, catalysts, risks, and evidence that would prove you wrong. Vague praise (‘strong company’) is not a thesis. Sequence: research → valuation → why the gap may close → then size. Expected return = Σ(Probabilityᵢ × Scenario returnᵢ); probabilities sum to 100% (e.g. 30%/+25%, 50%/+10%, 20%/−20% → 8.5%). Upside to fair value = (Fair value − Price) / Price (e.g. $55 vs $42 ≈ 30.95%); compare with downside and confidence — reward must compensate for being wrong. Variant perception: state what the market embeds vs your evidence-based difference (not ‘cheap’ or ‘good’). Catalysts are mechanisms that may change expectations (earnings, launch, refinancing, regulation, rates) — not the thesis itself. Falsification + sell criteria (thesis-, valuation-, risk-, or opportunity-based) are set before emotional pressure; a price fall alone is not an automatic sell if value is unchanged.",
     scenario:
-      "Apply Module 28 concepts inside Portfolio Lab with explicit size, risk, and a falsifier.",
+      "In Portfolio Lab you must approve a Highlands holding for the $14,800 book. Build a Yellow City thesis: scenario-weighted expected return, upside vs bear downside, a clear variant perception, a plausible catalyst, and written falsifiers/sell criteria — then decide whether the idea earns a size at all.",
     questions: [
       {
         id: "m28-q1",
-        prompt: "In Module 28 (Scenario Trees), the best first step is to:",
+        prompt:
+          "In Yellow City Portal 28, what makes an investment thesis professional rather than vague praise?",
         choices: [
-          "Skip the numbers and follow tips",
-          "Define the decision, risks, and what would change your mind",
-          "Maximise leverage",
-          "Ignore liquidity"
+          "It is a testable argument linking economics, valuation, catalysts, risks, and evidence that would prove the view wrong",
+          "It is a list of every positive fact about the company",
+          "It is a guarantee that price will rise within a week",
+          "It is only a chart pattern with no assumptions stated",
         ],
-        correctIndex: 1,
-        explanation: "Process first: decision, risks, falsifiers.",
+        correctIndex: 0,
+        explanation:
+          "Notes §28.1: a thesis must be specific enough to become wrong; ‘strong company’ is too vague.",
       },
       {
         id: "m28-q2",
-        prompt: "Which formula pair is most relevant when checking short-term survival?",
+        prompt:
+          "Scenario-weighted expected return uses 30% chance of +25%, 50% of +10%, and 20% of −20%. E(R) is:",
         choices: [
-          "P/E and PEG only",
-          "Current ratio and acid-test (quick) ratio",
-          "CAGR only",
-          "Dividend yield only"
+          "8.5%",
+          "15%",
+          "25%",
+          "−4%",
         ],
-        correctIndex: 1,
-        explanation: "Liquidity ratios stress near-term obligations.",
+        correctIndex: 0,
+        explanation:
+          "Notes Example 28.1: 0.30×0.25 + 0.50×0.10 + 0.20×(−0.20) = 7.5% + 5.0% − 4.0% = 8.5%. Not a promised outcome.",
       },
       {
         id: "m28-q3",
-        prompt: "A healthy learner response after being wrong is to:",
+        prompt:
+          "Current price $42; estimated fair value $55. Upside to fair value is about:",
         choices: [
-          "Delete the journal",
-          "Update the thesis and falsifiers",
-          "Double the size immediately",
-          "Blame the market exclusively"
+          "30.95%",
+          "13%",
+          "55%",
+          "42%",
         ],
-        correctIndex: 1,
-        explanation: "Learning compounds through revised process.",
-      }
+        correctIndex: 0,
+        explanation:
+          "Notes Example 28.2: ($55 − $42) / $42 ≈ 30.95%. Compare that gap with downside and confidence before sizing.",
+      },
+      {
+        id: "m28-q4",
+        prompt:
+          "Which statement is the strongest form of variant perception?",
+        choices: [
+          "Consensus prices 3% growth; evidence supports ~7% because a new distribution channel is scaling faster than expected",
+          "The company is good",
+          "The stock is cheap",
+          "Disagree with the market for the sake of being different",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes §28.4: state consensus assumption, alternative assumption, evidence, and what could close the gap.",
+      },
+      {
+        id: "m28-q5",
+        prompt:
+          "Before putting capital from the $14,800 book into the idea, the best Portfolio Lab close is:",
+        choices: [
+          "Write falsifiers and sell criteria now (thesis/valuation/risk/opportunity), then size only if expected return compensates for downside — do not wait until after a loss",
+          "Skip falsifiers and buy maximum size because upside looks large",
+          "Sell automatically if price dips 1% regardless of value",
+          "Treat a hoped-for catalyst as the entire thesis",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes §§28.5–28.6: catalysts are mechanisms, not the thesis; define failure conditions before emotional pressure; price alone is not the sell rule.",
+      },
     ],
   },
   {
