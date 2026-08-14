@@ -1013,23 +1013,252 @@ const BRICK: TradeArea[] = [
     id: "tr-ex-ratio",
     areaId: "brick-exchange",
     title: "Ratio Reliquary Deal",
-    summary: "Buy only when EV/EBITDA clears your band.",
+    summary:
+      "Separate price from value, compute EV/EBITDA and FCF yield, then wait for the industrial band — do not chase a peak multiple across unrelated names.",
     risk: "low",
     capitalDeltaGain: 210,
     capitalDeltaLoss: -110,
+    goldReward: 1,
     x: 72,
     y: 66,
-    prompt: "Wait for the multiple to enter band?",
-    choices: [
+    prompt: "Complete the Ratio Reliquary valuation chain.",
+    choices: [],
+    steps: [
       {
-        label: "Wait for the band",
-        outcome: "gain",
-        feedback: "Entry improves. Book gains.",
+        id: "ratio-1",
+        title: "Part 1 · Price is not value",
+        narrative:
+          "A tape note calls RelicKiln ‘cheap at 15×’ and PeakFad ‘a steal at PEG 2.’ Blue City Portal 13: price is what the market asks; value is an estimate from expected economics. A multiple is not a cash return.",
+        data: [
+          {
+            kind: "calc",
+            title: "P/E (notes example 13.1)",
+            lines: [
+              "Share price $48; EPS $3.20",
+              "P/E = Price / EPS = $48 / $3.20 = 15.0×",
+              "Interpretation: investors pay $15 per $1 of current annual EPS — not that they automatically earn 1/15.",
+            ],
+          },
+          {
+            kind: "calc",
+            title: "PEG (example 13.3)",
+            lines: [
+              "P/E 24×; expected EPS growth 12% (enter 12, not 0.12)",
+              "PEG = 24 / 12 = 2.0",
+              "PEG is a shortcut, not a valuation model; growth forecasts can be wrong.",
+            ],
+          },
+          {
+            kind: "news",
+            title: "Reliquary wires",
+            items: [
+              {
+                headline: "Blast: ‘15× P/E means a 6.7% locked-in return — load RelicKiln’",
+                source: "Sell-side blast",
+                note: "The notes reject treating 1/P/E as a guaranteed cash yield",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "ratio-1a",
+            "Treat 15.0× as dollars of price per dollar of EPS — not a locked-in return — and PEG 2.0 as a screen only",
+            "gain",
+            0.012,
+            "Right first step. Valuation frames assumptions in the price; it does not produce certainty.",
+          ),
+          choice(
+            "ratio-1b",
+            "Chase RelicKiln because 15× means you automatically earn 1/15 in cash",
+            "loss",
+            -0.018,
+            "P/E is a price-to-earnings multiple, not a coupon. The notes: you do not automatically earn 1/15.",
+          ),
+          choice(
+            "ratio-1c",
+            "Compute PEG as 24 / 0.12 = 200 and call PeakFad infinitely cheap",
+            "loss",
+            -0.012,
+            "Enter growth as a whole percent (12), not 0.12. That convention is in the notes on purpose.",
+          ),
+        ],
       },
       {
-        label: "Chase at peak multiple",
-        outcome: "loss",
-        feedback: "Multiple compresses. Loss.",
+        id: "ratio-2",
+        title: "Part 2 · Work EV/EBITDA and FCF yield",
+        narrative:
+          "The stub’s band is an enterprise multiple, not headline P/E. Compute RelicKiln on the notes’ EV stack, then remember EBITDA is not cash.",
+        data: [
+          {
+            kind: "calc",
+            title: "EV/EBITDA (example 13.5)",
+            lines: [
+              "Market cap $900m; debt $300m; cash $100m; EBITDA $125m",
+              "EV = $900m + $300m − $100m = $1.10bn",
+              "EV/EBITDA = $1.10bn / $125m = 8.8×",
+              "EBITDA is not cash flow and can understate the economic burden of capex.",
+            ],
+          },
+          {
+            kind: "calc",
+            title: "FCF yield (example 13.6)",
+            lines: [
+              "FCF $72m; market cap $900m",
+              "FCF yield = $72m / $900m × 100% = 8.0%",
+              "Yield still needs sustainability — it is not a guaranteed carry.",
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "P/B reminder (example 13.4)",
+            items: [
+              { label: "BVPS", value: "$500m / 100m shares = $5.00" },
+              { label: "P/B", value: "$7.50 / $5.00 = 1.50×" },
+              { label: "Use", value: "More informative for asset-heavy names; a premium is not automatic mispricing" },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "ratio-2a",
+            "Print EV $1.10bn and 8.8× EBITDA, with 8.0% FCF yield — do not treat EBITDA as cash",
+            "gain",
+            0.016,
+            "Numerator-denominator consistency: enterprise value over EBITDA. The band starts here, not at headline P/E.",
+          ),
+          choice(
+            "ratio-2b",
+            "Call EV $900m because ‘cash and debt cancel,’ then buy 8.8× as if it were FCF",
+            "loss",
+            -0.022,
+            "EV adds debt and subtracts cash. EBITDA is not cash and can understate capex.",
+          ),
+          choice(
+            "ratio-2c",
+            "Report FCF yield as 72% ($72m as a percent of nothing) and chase the ‘yield’",
+            "loss",
+            -0.015,
+            "Denominator is market cap: $72m / $900m = 8.0%. Inflating yield is how you chase a peak story.",
+          ),
+        ],
+      },
+      {
+        id: "ratio-3",
+        title: "Part 3 · Wait for the band",
+        narrative:
+          "PeakFad prints a 24× P/E and PEG 2.0 while RelicKiln sits at 8.8× EV/EBITDA with a 25% MOS on the teaching stack. Portal 13: never compare P/E, EV/EBITDA or P/B mechanically across unrelated companies.",
+        data: [
+          {
+            kind: "table",
+            title: "Reliquary tape",
+            headers: ["Check", "RelicKiln (industrial)", "PeakFad (unrelated consumer)"],
+            rows: [
+              ["P/E", "15.0× ($48 / $3.20)", "24× (growth story)"],
+              ["PEG", "Not the pitch", "2.0 (24 / 12) — screen, not a model"],
+              ["EV/EBITDA", "8.8× — inside the industrial teaching print", "Not comparable 1-for-1"],
+              ["FCF yield", "8.0%", "Street ignores cash"],
+              ["MOS vs $60 value", "Price $45 → 25% MOS", "Chasing the print; no MOS rule"],
+            ],
+          },
+          {
+            kind: "news",
+            title: "Valuation discipline (notes 13)",
+            items: [
+              {
+                headline: "Never compare P/E, EV/EBITDA or P/B mechanically across unrelated companies",
+                source: "Blue City notes",
+                note: "Growth, margins, cyclicality, leverage and capital intensity can justify different multiples",
+              },
+              {
+                headline: "Street: ‘PEG 2 is the same as 8.8× — chase PeakFad now’",
+                source: "Message board",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "ratio-3a",
+            "Wait for / keep RelicKiln in the 8.8× industrial band with MOS — do not chase PeakFad’s peak P/E because PEG looks ‘equal’",
+            "gain",
+            0.018,
+            "Band first. Unrelated multiples are not interchangeable. Entry improves when you refuse the chase.",
+          ),
+          choice(
+            "ratio-3b",
+            "Chase PeakFad at 24× because PEG 2.0 proves it is cheaper than RelicKiln’s 8.8×",
+            "loss",
+            -0.025,
+            "Multiple compresses. PEG is a shortcut and the names are unrelated — the notes forbid mechanical comparison.",
+          ),
+          choice(
+            "ratio-3c",
+            "Buy both because any multiple below 25× is ‘in band’",
+            "loss",
+            -0.016,
+            "A band needs a defended multiple and a comparable business. 25× is not in the notes.",
+          ),
+        ],
+      },
+      {
+        id: "ratio-4",
+        title: "Part 4 · Max price, then size on $14,800",
+        narrative:
+          "RelicKiln cleared the band. Convert MOS into a purchase cap, then size — conviction is still not a 100% book.",
+        data: [
+          {
+            kind: "calc",
+            title: "Margin of safety → max price (examples 13.10–13.11)",
+            lines: [
+              "($60 − $45) / $60 = 25% MOS on the teaching print",
+              "Required 20% MOS on $80 value → max price = $80 × (1 − 0.20) = $64",
+              "A target price converts valuation into a rule; a large MOS is fake if the value estimate is unrealistic",
+            ],
+          },
+          {
+            kind: "calc",
+            title: "Sleeve worksheet",
+            lines: [
+              "Book = $14,800",
+              "8% weight = $14,800 × 0.08 = $1,184",
+              "Chase PeakFad with the full book = 100% at a peak multiple",
+            ],
+          },
+          {
+            kind: "table",
+            title: "Choices",
+            headers: ["Action", "Weight", "Process"],
+            rows: [
+              ["RelicKiln $1,184, cap $64", "8%", "In band, MOS rule, sized"],
+              ["PeakFad full $14,800", "100%", "Peak multiple + concentration"],
+              ["Skip size after the band", "0%", "Analysis without a ticket"],
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "ratio-4a",
+            "Buy RelicKiln at $1,184 (8%) only at or below the $64 MOS cap",
+            "gain",
+            0.014,
+            "Wait for the band, then size. Gold prints if the path stayed on multiples and MOS.",
+          ),
+          choice(
+            "ratio-4b",
+            "Chase PeakFad with the full $14,800 because PEG 2 ‘already is’ a margin of safety",
+            "loss",
+            -0.022,
+            "PEG is not MOS. Peak multiple plus a 100% book is the stub’s compression trap.",
+          ),
+          choice(
+            "ratio-4c",
+            "Leave the sleeve at zero and call the reliquary complete",
+            "loss",
+            -0.01,
+            "The lab still needs a controlled ticket in the name that entered the band.",
+          ),
+        ],
       },
     ],
   }),
