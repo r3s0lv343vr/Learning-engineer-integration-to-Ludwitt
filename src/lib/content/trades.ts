@@ -2046,23 +2046,255 @@ const QUAY: TradeArea[] = [
     id: "tr-quay-crane",
     areaId: "signal-quay",
     title: "Harbor Crane Freight",
-    summary: "Freight futures sleeve into a supply shock.",
+    summary:
+      "Compare a freight/commodity pooled sleeve with direct ownership, check fees and futures structure, then scale to the alternatives budget — not a YOLO spike chase.",
     risk: "high",
     capitalDeltaGain: 520,
     capitalDeltaLoss: -400,
+    goldReward: 1,
     x: 70,
     y: 42,
-    prompt: "Ride the freight spike?",
-    choices: [
+    prompt: "Complete the Harbor Crane freight-and-alts chain.",
+    choices: [],
+    steps: [
       {
-        label: "Scale in with defined risk",
-        outcome: "gain",
-        feedback: "Contango pays. Book rises.",
+        id: "crane-1",
+        title: "Part 1 · What exposure does the wrapper hold?",
+        narrative:
+          "Harbor Crane Freight ETF is buzzing after a supply shock. Portal 20.1: an ETF is a wrapper — it does not remove underlying risk. Ask what economic exposure you are actually buying before riding the spike.",
+        data: [
+          {
+            kind: "table",
+            title: "ETF due-diligence checklist (notes §20.1)",
+            headers: ["Feature", "Harbor Crane Freight ETF"],
+            rows: [
+              ["Underlying holdings", "Freight / energy futures basket (not operating carriers)"],
+              ["Index / mandate", "Rolls nearby commodity futures; no equity cash flows"],
+              ["Expense ratio", "0.45%"],
+              ["Bid-ask spread", "Wider than broad equity ETF in stress"],
+              ["Concentration", "Top contracts heavily energy + dry bulk proxies"],
+              ["Currency", "USD-priced commodities; unhedged for home book"],
+            ],
+          },
+          {
+            kind: "news",
+            title: "Quay wires",
+            items: [
+              {
+                headline: "Shipping disruption: ‘freight to the moon — YOLO the Crane ETF’",
+                source: "Social feed",
+                note: "No holdings or roll-structure check",
+              },
+              {
+                headline: "Fund fact sheet: exposure via futures, not physical cargo",
+                source: "Prospectus / fact sheet",
+              },
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "Book context",
+            items: [
+              { label: "Portfolio", value: "$14,800" },
+              { label: "SAA alts / commodities target", value: "5% = $740 (Portal 21 table)" },
+              { label: "Proposed chat-desk ticket", value: "$4,440 (30% of book)" },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "crane-1a",
+            "Treat Crane as futures commodity exposure — read holdings, mandate, and roll risk before sizing",
+            "gain",
+            0.015,
+            "The important question is not ‘Is this an ETF?’ but what exposure it contains.",
+          ),
+          choice(
+            "crane-1b",
+            "Buy because the name says diversified freight and the spike looks huge",
+            "loss",
+            -0.022,
+            "Two ETFs can both be called diversified while holding very different concentration. Name ≠ due diligence.",
+          ),
+          choice(
+            "crane-1c",
+            "Assume the ETF removes commodity risk because it trades like a stock",
+            "loss",
+            -0.014,
+            "Portal 20: the wrapper makes trading convenient; it does not remove underlying risks.",
+          ),
+        ],
       },
       {
-        label: "Yolo the full sleeve",
-        outcome: "loss",
-        feedback: "Spike fades overnight. Loss.",
+        id: "crane-2",
+        title: "Part 2 · Fees and tracking difference",
+        narrative:
+          "Before scaling in, quantify cost drag (Portal 20.2–20.3). Fees and imperfect replication matter when comparing similar exposures.",
+        data: [
+          {
+            kind: "calc",
+            title: "Expense ratio (notes Example 20.1 style)",
+            lines: [
+              "Proposed within-policy ticket $740; expense ratio 0.45% = 0.0045",
+              "Annual fee ≈ $740 × 0.0045 ≈ $3.33",
+              "If the chat desk forced $8,000 into a 0.25% fund → fee ≈ $20/year (Example 20.1).",
+              "Small in one year; compounds over long holds — compare similar exposures on cost.",
+            ],
+          },
+          {
+            kind: "calc",
+            title: "Tracking difference (notes Example 20.2)",
+            lines: [
+              "Freight index +9.2%; Crane ETF +8.9%",
+              "Tracking difference = 8.9% − 9.2% = −0.30 pp",
+              "Fees, rolls, cash drag and imperfect replication can explain the gap.",
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "crane-2a",
+            "Prefer the cheaper, tighter-tracking vehicle when exposure is similar; keep Crane only if its futures mandate is the deliberate bet",
+            "gain",
+            0.018,
+            "Costs and tracking difference influence long-run net return when exposures overlap.",
+          ),
+          choice(
+            "crane-2b",
+            "Ignore fees and tracking — ‘the spike will cover everything’",
+            "loss",
+            -0.02,
+            "Portal 20: when two funds provide similar exposure, costs matter. Spikes fade; fee drag does not.",
+          ),
+          choice(
+            "crane-2c",
+            "Switch to any higher-fee thematic ETF with a louder marketing name",
+            "loss",
+            -0.012,
+            "Due diligence is holdings and methodology — not marketing volume.",
+          ),
+        ],
+      },
+      {
+        id: "crane-3",
+        title: "Part 3 · Spot return vs futures structure",
+        narrative:
+          "Portal 20.4–20.5: commodities generally lack operating cash flow; investor return depends on price and the vehicle. Spot can be quiet while contango/backwardation on futures rolls helps or hurts the fund.",
+        data: [
+          {
+            kind: "calc",
+            title: "Gold-style price return (notes Example 20.3)",
+            lines: [
+              "Illustrative metal: $2,000 → $2,140",
+              "Price return = ($2,140 − $2,000) / $2,000 = 7.0%",
+              "Interpretation: price return only — ignores costs and the specific vehicle.",
+            ],
+          },
+          {
+            kind: "table",
+            title: "Commodity drivers (notes §20.4)",
+            headers: ["Driver", "Harbor Crane relevance"],
+            rows: [
+              ["Supply", "Port/shipping disruption, production cuts"],
+              ["Demand", "Trade volumes, industrial activity"],
+              ["Inventories", "Low stocks amplify shocks"],
+              ["Geopolitics", "Sanctions / shipping lanes"],
+              ["Futures structure", "Contango can bleed roll yield even if spot is flat"],
+            ],
+          },
+          {
+            kind: "news",
+            title: "Curve desk",
+            items: [
+              {
+                headline: "Nearby freight futures in contango; roll cost estimated −1.2% this quarter",
+                source: "Futures curve note",
+              },
+              {
+                headline: "Spot freight index barely changed this week",
+                source: "Harbor index",
+                note: "Spot ≠ investor return in a futures ETF",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "crane-3a",
+            "Separate spot narrative from futures roll — include contango bleed in the thesis before adding",
+            "gain",
+            0.02,
+            "Spot price is not always investor return. Curve structure can help or hurt fund returns.",
+          ),
+          choice(
+            "crane-3b",
+            "Assume ETF return equals the spot freight headline forever",
+            "loss",
+            -0.025,
+            "Notes: commodity ETFs may hold futures that must be rolled — contango/backwardation matters.",
+          ),
+          choice(
+            "crane-3c",
+            "Buy physical cargo containers to ‘avoid ETF complexity’",
+            "loss",
+            -0.015,
+            "Portal 20.6: physical commodity ownership is often impractical; pooled vehicles exist for a reason — still require purpose.",
+          ),
+        ],
+      },
+      {
+        id: "crane-4",
+        title: "Part 4 · Scale in with defined risk",
+        narrative:
+          "Justify commodities by portfolio purpose (inflation/supply shock diversifier), not recent performance alone. Size to the 5% / $740 alternatives band on the $14,800 book — defined risk, not YOLO.",
+        data: [
+          {
+            kind: "table",
+            title: "Direct vs pooled (notes §20.6)",
+            headers: ["Exposure", "Direct", "Pooled / ETF"],
+            rows: [
+              ["Commodities", "Physical often impractical", "Futures or related instruments"],
+              ["Gold", "Storage/security burden", "Gold-linked fund easier to trade"],
+              ["Role check", "Operating cash flow? Usually no", "Purpose: inflation / shock diversifier?"],
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "Sizing options",
+            items: [
+              { label: "Policy alts target", value: "$740 (5%)" },
+              { label: "Scale-in plan", value: "$370 now + $370 if thesis holds" },
+              { label: "YOLO ticket", value: "$4,440 (30%) — breach" },
+              {
+                label: "Falsifier",
+                value: "Contango bleed >2%/quarter with flat spot → trim/exit",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "crane-4a",
+            "Scale in with defined risk — fund the Crane sleeve up to ~$740 / 5% with a roll-cost falsifier",
+            "gain",
+            0.022,
+            "Inclusion justified by portfolio purpose and sized to policy. Spike chase avoided.",
+          ),
+          choice(
+            "crane-4b",
+            "YOLO the full sleeve — 30% of the book into Crane on the disruption headline",
+            "loss",
+            -0.035,
+            "Spike fades; concentration and futures structure punish oversized bets.",
+          ),
+          choice(
+            "crane-4c",
+            "Skip purpose entirely and chase whatever commodity rose most last week",
+            "loss",
+            -0.018,
+            "Notes: inclusion should be justified by portfolio purpose, not recent price performance alone.",
+          ),
+        ],
       },
     ],
   }),
