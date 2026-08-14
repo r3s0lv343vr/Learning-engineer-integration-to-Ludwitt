@@ -2302,23 +2302,252 @@ const QUAY: TradeArea[] = [
     id: "tr-quay-signal",
     areaId: "signal-quay",
     title: "Signal Overlay Swap",
-    summary: "Swap overlay to rebalance factor exposure.",
+    summary:
+      "Detect factor/weight drift outside rebalancing bands, quantify the trim, then rebalance with ADD/HOLD/TRIM/EXIT discipline — do not skip the quarter.",
     risk: "medium",
     capitalDeltaGain: 270,
     capitalDeltaLoss: -150,
+    goldReward: 1,
     x: 88,
     y: 38,
-    prompt: "Run the factor overlay swap?",
-    choices: [
+    prompt: "Complete the Signal Overlay rebalance chain.",
+    choices: [],
+    steps: [
       {
-        label: "Rebalance to target weights",
-        outcome: "gain",
-        feedback: "Tracking error shrinks. Gain.",
+        id: "signal-1",
+        title: "Part 1 · Drift vs the band",
+        narrative:
+          "A growth-factor sleeve has run hot. Portal 23.2: rebalancing bands tolerate normal noise but trigger review when exposures move too far. Crossing a band is analysis — not an automatic command.",
+        data: [
+          {
+            kind: "metrics",
+            title: "Equity sleeve on the Quay book",
+            items: [
+              { label: "Portfolio (mark)", value: "$16,000 (post-rally book)" },
+              { label: "Stock / growth-factor sleeve", value: "$6,000" },
+              { label: "Current weight", value: "$6,000 / $16,000 = 37.5%" },
+              { label: "Strategic target", value: "30%" },
+              { label: "Band (±5 pp)", value: "25% – 35% (notes Example 23.1)" },
+            ],
+          },
+          {
+            kind: "calc",
+            title: "Band check (notes Example 23.1)",
+            lines: [
+              "Upper band = 30% + 5% = 35%",
+              "Lower band = 30% − 5% = 25%",
+              "37.5% > 35% → band breach → review required",
+            ],
+          },
+          {
+            kind: "news",
+            title: "Desk chatter",
+            items: [
+              {
+                headline: "Skip rebalance this quarter — winners keep winning",
+                source: "Message board",
+              },
+              {
+                headline: "Policy note: bands exist so emotion does not set size",
+                source: "Portfolio Lab mandate",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "signal-1a",
+            "Flag a band breach at 37.5% vs 25–35% — open a rebalance review before adding more growth",
+            "gain",
+            0.015,
+            "Bands create a decision rule before emotion enters. Breach triggers analysis.",
+          ),
+          choice(
+            "signal-1b",
+            "Skip rebalance this quarter because the sleeve is ‘working’",
+            "loss",
+            -0.02,
+            "Holding without review is not the same as an active HOLD. Drift past the band needs a process.",
+          ),
+          choice(
+            "signal-1c",
+            "Trade every 0.1% wiggle back to exactly 30% all day",
+            "loss",
+            -0.012,
+            "Notes: bands avoid unnecessary trading for tiny deviations — costs and attention matter.",
+          ),
+        ],
       },
       {
-        label: "Skip rebalance this quarter",
-        outcome: "loss",
-        feedback: "Drift hurts. Book slips.",
+        id: "signal-2",
+        title: "Part 2 · Hidden concentration & correlation",
+        narrative:
+          "Portal 22: diversification is not counting names. The overlay may be many tickers but one growth/tech factor. Rising correlation reduces the diversification benefit of ‘leaving winners alone.’",
+        data: [
+          {
+            kind: "calc",
+            title: "Sector concentration (notes Example 22.1 style)",
+            lines: [
+              "Tech-related names inside the sleeve ≈ $6,216 equivalent risk on a $14,800 reference book → 42%",
+              "Several securities can still be one broad sector bet.",
+            ],
+          },
+          {
+            kind: "table",
+            title: "Two-asset stress on correlation (notes Examples 22.2–22.3)",
+            headers: ["Case", "ρ", "Approx σp"],
+            rows: [
+              ["Calm sample", "0.20", "~10.56%"],
+              ["Stress sample", "0.90", "~12.72%"],
+            ],
+          },
+          {
+            kind: "news",
+            title: "Factor wire",
+            items: [
+              {
+                headline: "Growth names moving together; pairwise ρ drifting toward 0.9",
+                source: "Risk desk",
+                note: "Diversification weakens when risky assets co-move",
+              },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "signal-2a",
+            "Treat the sleeve as concentrated factor risk — rebalance urgency rises as correlation spikes",
+            "gain",
+            0.018,
+            "Correlation is not permanent. Crisis-like co-movement is a reason to restore target weights.",
+          ),
+          choice(
+            "signal-2b",
+            "Assume many tickers automatically mean diversified — ignore ρ",
+            "loss",
+            -0.022,
+            "Portal 22: diversification examines overlapping exposures, not ticker count.",
+          ),
+          choice(
+            "signal-2c",
+            "Add more of the same factor because correlation ‘proves the theme’",
+            "loss",
+            -0.015,
+            "Higher co-movement raises portfolio volatility for the same weights — opposite of a free lunch.",
+          ),
+        ],
+      },
+      {
+        id: "signal-3",
+        title: "Part 3 · Trim math to target",
+        narrative:
+          "Portal 23.3: compute how much to trim. Separate thesis from size — you can still like the companies and reduce concentration.",
+        data: [
+          {
+            kind: "calc",
+            title: "Trim to target (notes Example 23.2)",
+            lines: [
+              "Portfolio = $16,000; position = $6,000; target weight = 30%",
+              "Target value = $16,000 × 0.30 = $4,800",
+              "Trim = $6,000 − $4,800 = $1,200",
+              "Selling $1,200 returns the sleeve to ~30% (ignoring costs).",
+            ],
+          },
+          {
+            kind: "calc",
+            title: "Valuation upside check (notes Example 23.3)",
+            lines: [
+              "Estimated value $72; market $66",
+              "Upside = ($72 − $66) / $66 ≈ 9.09%",
+              "Thesis may remain intact while remaining reward-to-risk no longer supports max size.",
+            ],
+          },
+          {
+            kind: "table",
+            title: "Decision vocabulary (notes §23.1)",
+            headers: ["Action", "Meaning here"],
+            rows: [
+              ["TRIM", "Cut $1,200 — thesis OK, size too large"],
+              ["HOLD", "Only if size still appropriate inside band"],
+              ["ADD", "Would worsen the breach"],
+              ["REPLACE", "Fund a better risk-adjusted sleeve if advantage is real"],
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "signal-3a",
+            "TRIM $1,200 back toward the 30% target — thesis can stay; size cannot",
+            "gain",
+            0.02,
+            "A trim reduces concentration without rejecting the investment thesis.",
+          ),
+          choice(
+            "signal-3b",
+            "ADD more because $66 still sits under a $72 estimate",
+            "loss",
+            -0.025,
+            "Upside alone does not justify breaching the band when concentration and correlation have risen.",
+          ),
+          choice(
+            "signal-3c",
+            "EXIT the entire sleeve solely because price rose",
+            "loss",
+            -0.014,
+            "Portal 23: falling or rising price is not automatic EXIT — use thesis, size, and rules.",
+          ),
+        ],
+      },
+      {
+        id: "signal-4",
+        title: "Part 4 · Overlay swap / capital rotation",
+        narrative:
+          "Execute the rebalance: TRIM the overweight growth overlay and, if justified, REPLACE a slice into a higher expected-return opportunity with similar risk (Portal 23.5). Record the reason.",
+        data: [
+          {
+            kind: "calc",
+            title: "Relative advantage (notes Example 23.4)",
+            lines: [
+              "Current trimmed sleeve expected return assumption: 5%",
+              "Candidate quality/bond barbell sleeve: 9% with similar risk/liquidity assumptions",
+              "Relative advantage = 9% − 5% = 4 percentage points",
+              "Still account for costs, uncertainty, and thesis quality — not one forecast alone.",
+            ],
+          },
+          {
+            kind: "metrics",
+            title: "Proposed overlay swap",
+            items: [
+              { label: "TRIM from growth sleeve", value: "$1,200" },
+              { label: "ADD to target mix / candidate", value: "$1,200 (or hold in cash if liquidity needed)" },
+              { label: "Reference starting book", value: "$14,800 policy capital" },
+              { label: "Falsifier", value: "If candidate thesis breaks or liquidity worsens → reverse REPLACE" },
+            ],
+          },
+        ],
+        choices: [
+          choice(
+            "signal-4a",
+            "Rebalance to target weights — TRIM $1,200 and rotate with a written relative-advantage check",
+            "gain",
+            0.022,
+            "Tracking error and concentration shrink. Process beats ‘skip this quarter.’",
+          ),
+          choice(
+            "signal-4b",
+            "Skip the swap and leave the 37.5% breach untouched",
+            "loss",
+            -0.03,
+            "Drift hurts. Bands without follow-through are decoration.",
+          ),
+          choice(
+            "signal-4c",
+            "REPLACE the whole book into the 9% forecast with max leverage",
+            "loss",
+            -0.02,
+            "Notes: replacement still needs costs, uncertainty, and thesis quality — not a single expected-return number.",
+          ),
+        ],
       },
     ],
   }),
