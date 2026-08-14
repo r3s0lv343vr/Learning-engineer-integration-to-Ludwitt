@@ -388,58 +388,97 @@ export const MODULES_EXTRA: ModuleQuest[] = [
   {
     id: "m23",
     number: 23,
-    title: "Working Capital Watch",
+    title: "Add, Trim or Exit",
     mapLabel: "WC Watch",
     x: 50,
     y: 50,
-    summary: "Read inventory and receivables for stress.",
+    summary:
+      "Understand rebalancing bands, valuation discipline, thesis deterioration, sell rules and capital rotation; choose ADD, HOLD, TRIM, EXIT or REPLACE for every holding.",
     concepts: [
-      "inventory days",
-      "receivables",
-      "cash cycle"
+      "ADD/HOLD/TRIM/EXIT/REPLACE",
+      "rebalancing bands",
+      "trim-to-target",
+      "valuation upside",
+      "capital rotation",
+      "thesis deterioration",
     ],
-    outcome: "Interpret rising inventory with flat sales.",
+    outcome:
+      "For each material holding in the $14,800 book, choose ADD, HOLD, TRIM, EXIT or REPLACE using bands, valuation and thesis rules — not emotion.",
     lesson:
-      "Working capital can hide demand weakness. Inventory builds and slower collections often precede earnings misses.",
+      "HOLD is an active decision that thesis, valuation and size remain appropriate — not neglect. Separate thesis from size: you can still like an asset and TRIM it for concentration. Decision set: ADD (increase), HOLD (unchanged), TRIM (reduce), EXIT (close), REPLACE (exit one to fund another). Rebalancing band: Upper = Target + deviation, Lower = Target − deviation (e.g. 30% ±5 pp → 25%–35%). Crossing a band triggers analysis, not an automatic trade. Trim amount = Current position value − Target position value; Target value = Portfolio × Target weight (e.g. $16,000 book, $6,000 position, 30% target → trim $1,200). Upside to estimated value = (Value − Price) / Price × 100% (e.g. $72 vs $66 → ≈9.09%). Relative expected-return advantage = New E(R) − Current E(R) (e.g. 9% − 5% = 4 pp) — still weigh costs, taxes and thesis quality. Exit/trim also when thesis drivers weaken, debt risk rises, valuation no longer compensates, concentration is too high, or a superior opportunity emerges.",
     scenario:
-      "Apply Module 23 concepts inside Portfolio Lab with explicit size, risk, and a falsifier.",
+      "In Portfolio Lab a sleeve has drifted and one name looks expensive versus your estimate while another opportunity looks better. Use bands and written rules to choose ADD, HOLD, TRIM, EXIT or REPLACE on the $14,800 book without letting attachment decide.",
     questions: [
       {
         id: "m23-q1",
-        prompt: "In Module 23 (Working Capital Watch), the best first step is to:",
+        prompt:
+          "In Green City Portal 23, choosing HOLD for a position primarily means:",
         choices: [
-          "Skip the numbers and follow tips",
-          "Define the decision, risks, and what would change your mind",
-          "Maximise leverage",
-          "Ignore liquidity"
+          "An active conclusion that the thesis remains intact, valuation is acceptable and size is appropriate",
+          "That the portfolio has been forgotten and needs no review",
+          "That price falls always require adding",
+          "That liking a company forbids ever trimming it",
         ],
-        correctIndex: 1,
-        explanation: "Process first: decision, risks, falsifiers.",
+        correctIndex: 0,
+        explanation:
+          "Notes §23.1: HOLD is a decision, not neglect. Thesis and position size are separate questions.",
       },
       {
         id: "m23-q2",
-        prompt: "Which formula pair is most relevant when checking short-term survival?",
+        prompt:
+          "Target stock weight is 30% with a ±5 percentage-point band. The acceptable range is:",
         choices: [
-          "P/E and PEG only",
-          "Current ratio and acid-test (quick) ratio",
-          "CAGR only",
-          "Dividend yield only"
+          "25% to 35%",
+          "30% to 35% only",
+          "0% to 5%",
+          "Exactly 30% every day",
         ],
-        correctIndex: 1,
-        explanation: "Liquidity ratios stress near-term obligations.",
+        correctIndex: 0,
+        explanation:
+          "Notes Example 23.1: Upper = 30%+5%=35%; Lower = 30%−5%=25%. Bands avoid trading tiny noise while creating discipline.",
       },
       {
         id: "m23-q3",
-        prompt: "A healthy learner response after being wrong is to:",
+        prompt:
+          "Portfolio value is $16,000; a stock position is worth $6,000; target weight is 30%. Trim amount to target is:",
         choices: [
-          "Delete the journal",
-          "Update the thesis and falsifiers",
-          "Double the size immediately",
-          "Blame the market exclusively"
+          "$1,200",
+          "$4,800",
+          "$6,000",
+          "$1,600",
         ],
-        correctIndex: 1,
-        explanation: "Learning compounds through revised process.",
-      }
+        correctIndex: 0,
+        explanation:
+          "Notes Example 23.2: Target value = $16,000 × 0.30 = $4,800; Trim = $6,000 − $4,800 = $1,200.",
+      },
+      {
+        id: "m23-q4",
+        prompt:
+          "Estimated value is $72 and market price is $66. Approximate upside to estimated value is:",
+        choices: [
+          "About 9.09%",
+          "About 8.33% (($72−$66)/$72)",
+          "About 72%",
+          "Zero because the thesis is still correct",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes Example 23.3: Upside = ($72−$66)/$66 × 100% ≈ 9.09%. A valid thesis can still be a poor size/price decision.",
+      },
+      {
+        id: "m23-q5",
+        prompt:
+          "Current holding E(R)=5%; a new opportunity E(R)=9% with similar risk/liquidity. Relative expected-return advantage is:",
+        choices: [
+          "4 percentage points — still check costs, taxes, uncertainty and thesis quality before REPLACE",
+          "14% — add the two expected returns",
+          "Automatic REPLACE with no further analysis",
+          "0 — expected returns cannot be compared across holdings",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes Example 23.4: Relative advantage = 9% − 5% = 4 pp. Replacement still accounts for frictions and thesis quality.",
+      },
     ],
   },
   {
