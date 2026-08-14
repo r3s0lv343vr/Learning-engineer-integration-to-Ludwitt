@@ -1347,58 +1347,97 @@ export const MODULES_EXTRA: ModuleQuest[] = [
   {
     id: "m33",
     number: 33,
-    title: "Client Letter Craft",
+    title: "Global Investment Strategy",
     mapLabel: "Client Letter",
     x: 50,
     y: 50,
-    summary: "Explain performance and process in plain language.",
+    summary:
+      "Understand international markets, country risk, emerging vs developed markets, currency exposure and geopolitical risk — then build a global allocation with cross-border risks managed explicitly.",
     concepts: [
-      "communication",
-      "attribution",
-      "expectations"
+      "listing vs economic vs currency exposure",
+      "home-currency return",
+      "hedged vs unhedged FX",
+      "country weight / concentration",
+      "country-risk checklist",
+      "developed vs emerging trade-offs",
     ],
-    outcome: "Draft three sentences on a down month.",
+    outcome:
+      "Add or size a foreign sleeve on the Highlands book by separating local asset return from FX, stating hedge intent, and checking country concentration — not just collecting more country names.",
     lesson:
-      "Clients need honesty on drivers and adherence to IPS — not jargon theatre.",
+      "Global investing expands opportunity but adds FX, political, legal, capital-control and information risks. Diversification is not listing location alone — distinguish listing, revenue, currency and economic exposure. Home-currency return = (1+Local)(1+FX)−1 (e.g. +12% local and −8% FX → 3.04% home). Separate the asset thesis from currency exposure; state whether FX is intentional or hedged (hedging can cut volatility but is not free). Country weight = Country exposure / Portfolio (e.g. $3.2m/$10m = 32%) — also track economic exposure for multinationals. Use a country-risk checklist (politics, convertibility, inflation, fiscal, banks, trade, geopolitics, governance).",
     scenario:
-      "Apply Module 33 concepts inside Portfolio Lab with explicit size, risk, and a falsifier.",
+      "Portfolio Lab proposes a foreign equity for the Highlands book. Compute home-currency return after an FX move, decide hedge vs unhedged with a written reason, measure country weight, and refuse ‘more countries = diversified’ without economic-exposure checks.",
     questions: [
       {
         id: "m33-q1",
-        prompt: "In Module 33 (Client Letter Craft), the best first step is to:",
+        prompt:
+          "In Yellow City Portal 33, why is owning more country listings not automatically diversification?",
         choices: [
-          "Skip the numbers and follow tips",
-          "Define the decision, risks, and what would change your mind",
-          "Maximise leverage",
-          "Ignore liquidity"
+          "Listing location can differ from revenue, currency and economic exposure — names in different countries may still share the same industry or shock",
+          "Global investing never introduces new risks",
+          "Only the stock ticker country matters for risk",
+          "Emerging markets have no currency risk",
         ],
-        correctIndex: 1,
-        explanation: "Process first: decision, risks, falsifiers.",
+        correctIndex: 0,
+        explanation:
+          "Notes §33.1: understand connections — listing, revenue, FX and economic exposure — not more country labels alone.",
       },
       {
         id: "m33-q2",
-        prompt: "Which formula pair is most relevant when checking short-term survival?",
+        prompt:
+          "Foreign stock +12% local; foreign currency −8% vs home. Home-currency return is:",
         choices: [
-          "P/E and PEG only",
-          "Current ratio and acid-test (quick) ratio",
-          "CAGR only",
-          "Dividend yield only"
+          "3.04%",
+          "12%",
+          "4%",
+          "−8%",
         ],
-        correctIndex: 1,
-        explanation: "Liquidity ratios stress near-term obligations.",
+        correctIndex: 0,
+        explanation:
+          "Notes Example 33.1: (1.12)(0.92)−1 = 3.04%. Most of the local gain was offset by FX depreciation.",
       },
       {
         id: "m33-q3",
-        prompt: "A healthy learner response after being wrong is to:",
+        prompt:
+          "What is the professional point of choosing hedged vs unhedged foreign exposure?",
         choices: [
-          "Delete the journal",
-          "Update the thesis and falsifiers",
-          "Double the size immediately",
-          "Blame the market exclusively"
+          "State whether currency risk is intentional; hedging can reduce unwanted FX volatility but has cost/basis risk and may remove FX gains",
+          "Always hedge because FX never matters",
+          "Never hedge because local return equals home return",
+          "Leave FX unmanaged because overlooking it is fine",
         ],
-        correctIndex: 1,
-        explanation: "Learning compounds through revised process.",
-      }
+        correctIndex: 0,
+        explanation:
+          "Notes §33.3: separate currency decision from asset decision; unmanaged FX should not exist by accident.",
+      },
+      {
+        id: "m33-q4",
+        prompt:
+          "A $10m fund has $3.2m exposed to one country. Country weight is:",
+        choices: [
+          "32%",
+          "3.2%",
+          "68%",
+          "10%",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes Example 33.2: $3.2m/$10m = 32%. Country limits help prevent accidental concentration.",
+      },
+      {
+        id: "m33-q5",
+        prompt:
+          "Best Portfolio Lab next step before sizing a global sleeve into the Highlands book is:",
+        choices: [
+          "Separate asset thesis from FX, set hedge intent, check country weight plus the country-risk checklist (politics, convertibility, liquidity, governance)",
+          "Buy every country ETF equally and skip FX math",
+          "Assume developed-market listings remove all political risk",
+          "Treat the lowest valuation emerging market as automatically safest",
+        ],
+        correctIndex: 0,
+        explanation:
+          "Notes §§33.2–33.5: manage cross-border risks explicitly; valuation discounts may reflect higher risk.",
+      },
     ],
   },
   {
