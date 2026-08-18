@@ -95,8 +95,8 @@ function clampPct(n: number) {
 export function QuestMap({ state }: { state: GameState }) {
   const router = useRouter();
   const [toast, setToast] = useState<string | null>(null);
-  const [showStreets, setShowStreets] = useState(false);
-  const [posterStrength, setPosterStrength] = useState(1);
+  const showStreets = false;
+  const posterStrength = 1;
   const mapRef = useRef<HTMLDivElement>(null);
   const coinDragRef = useRef<{
     id: number;
@@ -232,45 +232,6 @@ export function QuestMap({ state }: { state: GameState }) {
 
   return (
     <div className="space-y-3">
-      <div className="flex flex-wrap gap-2 text-[10px] uppercase tracking-wide">
-        {MAP_AREAS.map((a) => (
-          <span
-            key={a.id}
-            className="rounded-full border px-2 py-1"
-            style={{ borderColor: a.color, color: a.color }}
-            title={a.blurb}
-          >
-            {a.name} · M{a.moduleStart}–{a.moduleEnd}
-          </span>
-        ))}
-      </div>
-
-      <div className="flex flex-wrap items-center gap-3 text-xs text-[var(--muted)]">
-        <label className="inline-flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={showStreets}
-            onChange={(e) => setShowStreets(e.target.checked)}
-          />
-          Real street basemap
-        </label>
-        <label className="inline-flex items-center gap-2">
-          Poster strength
-          <input
-            type="range"
-            min={0.35}
-            max={1}
-            step={0.05}
-            value={posterStrength}
-            onChange={(e) => setPosterStrength(Number(e.target.value))}
-            className="w-28"
-          />
-        </label>
-        <Link href="/formulae" className="text-[var(--accent)] underline">
-          Formulae Desk
-        </Link>
-      </div>
-
       <MapPanZoom
         overlay={
           <>

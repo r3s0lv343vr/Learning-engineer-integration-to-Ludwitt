@@ -16,10 +16,6 @@ export default async function MapPage() {
         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
           <div>
             <h1 className="display text-3xl text-[var(--gold)]">Investment Map</h1>
-            <p className="mt-1 max-w-2xl text-[var(--muted)]">
-              Pan & zoom the map · trade desks · chests stay put.
-              Your token is the gold coin.
-            </p>
           </div>
           <div className="flex flex-wrap gap-2 text-sm">
             <span className="rounded-full border border-[var(--path)]/40 px-3 py-1">
