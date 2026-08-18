@@ -32,7 +32,6 @@ import {
   CoinIcon,
   CompassRose,
   ExamBadgeIcon,
-  HudBookIcon,
   HudCompassIcon,
   HudFlagIcon,
   HudScrollIcon,
@@ -48,7 +47,6 @@ const RealBasemap = dynamic(
 );
 
 const HUD_ICON = {
-  book: HudBookIcon,
   scroll: HudScrollIcon,
   compass: HudCompassIcon,
   flag: HudFlagIcon,
@@ -239,11 +237,9 @@ export function QuestMap({ state }: { state: GameState }) {
               {MAP_HUD_ICONS.map((icon) => {
                 const Icon = HUD_ICON[icon.id];
                 const href =
-                  icon.id === "book"
-                    ? nextModuleHref
-                    : icon.id === "scroll"
-                      ? `/sidequest/${sideDeals.find((s) => !state.completedSidequests.includes(s.id))?.id ?? sideDeals[0]?.id ?? "sq-bank-loan"}`
-                      : icon.href;
+                  icon.id === "scroll"
+                    ? `/sidequest/${sideDeals.find((s) => !state.completedSidequests.includes(s.id))?.id ?? sideDeals[0]?.id ?? "sq-bank-loan"}`
+                    : icon.href;
                 return (
                   <Link
                     key={icon.id}

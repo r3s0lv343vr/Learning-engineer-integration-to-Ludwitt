@@ -159,13 +159,6 @@ export function moduleGridPosition(i: number) {
 
 export const MAP_HUD_ICONS = [
   {
-    id: "book",
-    label: "Syllabus",
-    hue: "purple",
-    href: "/quest/m1",
-    title: "Open syllabus quest",
-  },
-  {
     id: "scroll",
     label: "Side deals",
     hue: "blue",
