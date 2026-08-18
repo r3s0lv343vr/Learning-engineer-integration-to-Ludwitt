@@ -2,7 +2,6 @@ import { redirect } from "next/navigation";
 import { loadState } from "@/lib/session";
 import { StatusBar } from "@/components/StatusBar";
 import { QuestMap } from "@/components/QuestMap";
-import Link from "next/link";
 
 export default async function MapPage() {
   const state = await loadState();
@@ -30,13 +29,6 @@ export default async function MapPage() {
           </div>
         </div>
         <QuestMap state={state} />
-        <div className="mt-4 flex flex-wrap gap-2 text-xs text-[var(--muted)]">
-          <span>♥ Hearts: start 5 · +1 per 5 correct · −1 per 4 wrong streak</span>
-          <span>·</span>
-          <Link href="/quest/m1" className="text-[var(--accent)] underline">
-            Continue Opening Bell
-          </Link>
-        </div>
       </section>
     </main>
   );

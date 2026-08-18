@@ -571,12 +571,7 @@ export function QuestMap({ state }: { state: GameState }) {
             Dismiss
           </button>
         </div>
-      ) : (
-        <p className="text-xs text-[var(--muted)]">
-          Drag to pan · zoom +/− · drag the gold coin · click open portals to
-          complete them · chests stay put.
-        </p>
-      )}
+      ) : null}
     </div>
   );
 }
