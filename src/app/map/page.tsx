@@ -2,7 +2,6 @@ import { redirect } from "next/navigation";
 import { loadState } from "@/lib/session";
 import { StatusBar } from "@/components/StatusBar";
 import { QuestMap } from "@/components/QuestMap";
-import Link from "next/link";
 
 export default async function MapPage() {
   const state = await loadState();
@@ -15,16 +14,14 @@ export default async function MapPage() {
       <section className="panel rounded-2xl p-4 sm:p-6">
         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h1 className="display text-3xl text-[var(--gold)]">Questfolio Board</h1>
-            <p className="mt-1 max-w-2xl text-[var(--muted)]">
-              Monopoly-style board: move your coin clockwise from GO through 18
-              property quests. “?” side quests and ◆ wealth chests sit inside the
-              board.
-            </p>
+            <h1 className="display text-3xl text-[var(--gold)]">Investment Map</h1>
           </div>
-          <div className="flex gap-2 text-sm">
+          <div className="flex flex-wrap gap-2 text-sm">
             <span className="rounded-full border border-[var(--path)]/40 px-3 py-1">
-              Modules {state.completedModules.length}/18
+              Modules {state.completedModules.length}/36
+            </span>
+            <span className="rounded-full border border-[var(--path)]/40 px-3 py-1">
+              Exams {(state.completedExams ?? []).length}/9
             </span>
             <span className="rounded-full border border-[var(--path)]/40 px-3 py-1">
               Sidequests {state.completedSidequests.length}
@@ -32,13 +29,6 @@ export default async function MapPage() {
           </div>
         </div>
         <QuestMap state={state} />
-        <div className="mt-4 flex flex-wrap gap-2 text-xs text-[var(--muted)]">
-          <span>♥ Hearts: start 5 · +1 per 5 correct · −1 per 4 wrong streak</span>
-          <span>·</span>
-          <Link href="/quest/m1" className="text-[var(--accent)] underline">
-            Continue Trailhead
-          </Link>
-        </div>
       </section>
     </main>
   );

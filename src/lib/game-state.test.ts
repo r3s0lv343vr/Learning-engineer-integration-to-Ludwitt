@@ -3,6 +3,7 @@ import {
   applyAnswer,
   createInitialState,
   completeModule,
+  completeExam,
   applySidequestResult,
 } from "./game-state";
 
@@ -38,6 +39,22 @@ describe("game-state", () => {
     s = completeModule(s, "m1");
     expect(s.completedModules).toContain("m1");
     expect(s.unlockedModules).toContain("m2");
+  });
+
+  it("unlocks exam I after m4 while still advancing the next portal", () => {
+    let s = createInitialState({ userId: "u1" });
+    for (const id of ["m1", "m2", "m3", "m4"]) s = completeModule(s, id);
+    expect(s.unlockedExams).toContain("exam-1");
+    expect(s.unlockedModules).toContain("m5");
+    expect(s.mapPosition).toEqual(
+      expect.objectContaining({
+        x: expect.any(Number),
+        y: expect.any(Number),
+      }),
+    );
+    s = completeExam(s, "exam-1");
+    expect(s.completedExams).toContain("exam-1");
+    expect(s.unlockedModules).toContain("m5");
   });
 
   it("opens a wealth chest for gold bars", () => {

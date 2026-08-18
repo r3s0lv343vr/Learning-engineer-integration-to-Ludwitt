@@ -30,15 +30,25 @@ export function StatusBar({ state }: { state: GameState }) {
           <strong>${portfolioValue(state).toLocaleString()}</strong>
         </div>
         <nav className="flex gap-2">
+          <Link
+            className="btn btn-ghost px-3 py-1 text-xs"
+            href="/library/coral-ledger-bay/classroom"
+          >
+            Libraries
+          </Link>
+          <Link className="btn btn-ghost px-3 py-1 text-xs" href="/formulae">
+            Formulae
+          </Link>
           <Link className="btn btn-ghost px-3 py-1 text-xs" href="/markets">
             Markets
           </Link>
           <Link className="btn btn-ghost px-3 py-1 text-xs" href="/portfolio">
             Portfolio
           </Link>
-          <Link className="btn btn-ghost px-3 py-1 text-xs" href="/auth/logout">
+          {/* Plain <a>: Next Link prefetch would GET /auth/logout and wipe the session */}
+          <a className="btn btn-ghost px-3 py-1 text-xs" href="/auth/logout">
             Exit
-          </Link>
+          </a>
         </nav>
       </div>
     </header>
